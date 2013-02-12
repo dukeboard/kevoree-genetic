@@ -9,3 +9,13 @@ target/
 **.ipr
 **.iws
 **.idea/
+.classpath
+.project
+.settings/
+.idea/
+*.iml
+*.iws
+.DS_Store
+log/
+target/
+MOEAFramework-1.17/moea.framework.iml

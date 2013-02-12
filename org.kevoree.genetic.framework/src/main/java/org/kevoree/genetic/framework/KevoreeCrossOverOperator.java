@@ -8,7 +8,7 @@ import org.kevoree.ContainerRoot;
  * Date: 12/02/13
  * Time: 15:30
  */
-public interface KevoreeCrossOverOperator {
+public interface KevoreeCrossOverOperator extends KevoreeOperator {
 
     public ContainerRoot cross(ContainerRoot parent, ContainerRoot parent2);
 
