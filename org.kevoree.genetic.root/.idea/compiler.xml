@@ -4,16 +4,14 @@
     <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions />
     <wildcardResourcePatterns>
-      <entry name="?*.properties" />
-      <entry name="?*.xml" />
-      <entry name="?*.gif" />
-      <entry name="?*.png" />
-      <entry name="?*.jpeg" />
-      <entry name="?*.jpg" />
-      <entry name="?*.html" />
-      <entry name="?*.dtd" />
-      <entry name="?*.tld" />
-      <entry name="?*.ftl" />
+      <entry name="!?*.java" />
+      <entry name="!?*.form" />
+      <entry name="!?*.class" />
+      <entry name="!?*.groovy" />
+      <entry name="!?*.scala" />
+      <entry name="!?*.flex" />
+      <entry name="!?*.kt" />
+      <entry name="!?*.clj" />
     </wildcardResourcePatterns>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="false">
@@ -26,11 +24,14 @@
         <processorPath useClasspath="true" />
         <module name="moea.framework" />
         <module name="org.kevoree.genetic.framework" />
+        <module name="org.kevoree.genetic.sample" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="moea.framework" target="1.6" />
       <module name="org.kevoree.genetic.framework" target="1.6" />
       <module name="org.kevoree.genetic.root" target="1.6" />
+      <module name="org.kevoree.genetic.sample" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>

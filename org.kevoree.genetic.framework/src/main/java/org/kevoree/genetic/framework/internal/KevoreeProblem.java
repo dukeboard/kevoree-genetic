@@ -2,13 +2,11 @@ package org.kevoree.genetic.framework.internal;
 
 import org.kevoree.KevoreeFactory;
 import org.kevoree.genetic.framework.KevoreeFitnessFunction;
-import org.kevoree.impl.ContainerRootImpl;
 import org.kevoree.impl.DefaultKevoreeFactory;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

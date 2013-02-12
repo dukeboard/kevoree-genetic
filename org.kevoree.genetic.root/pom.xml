@@ -43,6 +43,7 @@
     <modules>
         <module>../MOEAFramework-1.17</module>
         <module>../org.kevoree.genetic.framework</module>
+        <module>../org.kevoree.genetic.sample</module>
     </modules>
 
     <repositories>
