@@ -4,6 +4,9 @@ import org.kevoree.impl.ContainerRootImpl;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: jbourcie
@@ -13,15 +16,27 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class KevoreeProblem extends AbstractProblem{
 
+
+
+    private List<KevoreeFitnessFunction> fitness = new ArrayList<KevoreeFitnessFunction>();
+
     public KevoreeProblem(int numberOfObjectives) {
         // 1 variable = 1 Kevoree Variable
         // Number of Objectives = number of Objectives of the subproblem
         super(1, numberOfObjectives);
     }
 
+    public List<KevoreeFitnessFunction> getFitness() {
+         return fitness;
+      }
+
+    public void setFitness(List<KevoreeFitnessFunction> fitnessList) {
+         this.fitness = fitness;
+    }
+
     @Override
     public void evaluate(Solution solution) {
-        //TODO call the fitness function here and set the result to the fitness function solution.setObjective( 0 , double);
+        //TODO call the fitness functions here and set the result to the fitness function solution.setObjective( 0 , double);
     }
 
     @Override
