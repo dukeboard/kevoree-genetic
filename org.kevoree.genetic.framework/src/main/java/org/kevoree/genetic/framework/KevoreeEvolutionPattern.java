@@ -1,4 +1,4 @@
-package org.kevoree.genetic;
+package org.kevoree.genetic.framework;
 
 /**
  * Created with IntelliJ IDEA.
