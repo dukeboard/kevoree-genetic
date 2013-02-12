@@ -27,7 +27,7 @@ public class AddComponentMutator implements KevoreeMutationOperator {
     @Override
     public ContainerRoot mutate(ContainerRoot parent) {
         //Parent is mutable, and already protected
-        List<Object> targets = parent.selectByQuery("nodes[{name = * }]");
+        List<Object> targets = parent.selectByQuery("nodes[{components.size > 0 }]");
         if (targets.size() > 0) {
             ComponentInstance instance = factory.createComponentInstance();
             instance.setTypeDefinition(parent.findTypeDefinitionsByID(typeName));
