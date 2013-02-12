@@ -12,4 +12,6 @@ public interface KevoreeFitnessFunction {
 
     public double evaluate(ContainerRoot model);
 
+    public String getName();
+
 }

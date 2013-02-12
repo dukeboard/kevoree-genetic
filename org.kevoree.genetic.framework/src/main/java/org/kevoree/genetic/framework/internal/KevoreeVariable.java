@@ -1,4 +1,4 @@
-package org.kevoree.genetic.framework;
+package org.kevoree.genetic.framework.internal;
 
 import org.kevoree.ContainerRoot;
 import org.kevoree.cloner.ModelCloner;
