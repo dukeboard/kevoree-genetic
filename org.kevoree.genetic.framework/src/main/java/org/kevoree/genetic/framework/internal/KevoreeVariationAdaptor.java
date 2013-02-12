@@ -39,15 +39,19 @@ public class KevoreeVariationAdaptor implements Variation {
     @Override
     public Solution[] evolve(Solution[] parents) {
         if (mutator != null) {
-            ContainerRoot m = (ContainerRoot) parents[0].getVariable(0);
+
+            KevoreeVariable variable = (KevoreeVariable) parents[0].getVariable(0);
+            ContainerRoot m = variable.getModel();
             ContainerRoot afterMutation = mutator.mutate(m);
             Solution s = new Solution(parents[0].getNumberOfVariables(), parents[0].getNumberOfObjectives());
             s.setVariable(0, new KevoreeVariable(afterMutation));
             return Arrays.asList(s).toArray(parents);
         }
         if (cross != null) {
-            ContainerRoot m = (ContainerRoot) parents[0].getVariable(0).copy();
-            ContainerRoot m2 = (ContainerRoot) parents[0].getVariable(0).copy();
+            KevoreeVariable variable = (KevoreeVariable) parents[0].getVariable(0);
+            ContainerRoot m = variable.getModel();
+            KevoreeVariable variable2 = (KevoreeVariable) parents[1].getVariable(0);
+            ContainerRoot m2 = variable2.getModel();
             ContainerRoot afterMutation = cross.cross(m, m2);
             Solution s = new Solution(parents[0].getNumberOfVariables(), parents[0].getNumberOfObjectives());
             s.setVariable(0, new KevoreeVariable(afterMutation));

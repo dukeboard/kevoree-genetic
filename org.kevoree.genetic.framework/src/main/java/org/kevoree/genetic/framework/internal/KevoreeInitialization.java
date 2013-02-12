@@ -30,6 +30,7 @@ public class KevoreeInitialization implements Initialization {
         Solution[] results = new Solution[models.size()];
         for (int i = 0; i < models.size(); i++) {
             Solution s = new Solution(problem.getNumberOfVariables(), problem.getNumberOfObjectives());
+            s.setVariable(0,new KevoreeVariable(models.get(0)));
             results[i] = s;
 
         }
