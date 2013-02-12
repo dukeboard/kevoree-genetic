@@ -17,10 +17,11 @@ import java.util.List;
 public class KevoreeInitialization implements Initialization {
 
     private KevoreePopulationFactory factory = null;
-    private Problem _problem = null;
+    private Problem problem = null;
 
     public KevoreeInitialization(KevoreePopulationFactory _factory, Problem _problem) {
         factory = _factory;
+        problem = _problem;
     }
 
     @Override
