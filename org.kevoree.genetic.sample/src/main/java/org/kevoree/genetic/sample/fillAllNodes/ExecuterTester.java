@@ -53,5 +53,13 @@ public class ExecuterTester {
             }
 
         }
+
+        System.out.println("Hello Genetic :-)");
+
+        Population pop = algorithm.getResult() ;
+        for(Solution s : pop){
+
+        }
+
     }
 }
