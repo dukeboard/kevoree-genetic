@@ -1,6 +1,7 @@
 package org.kevoree.genetic.sample.fillAllNodes;
 
 import org.kevoree.genetic.framework.KevoreeFitnessFunction;
+import org.kevoree.genetic.framework.internal.KevoreeInitialization;
 import org.kevoree.genetic.framework.internal.KevoreeProblem;
 import org.kevoree.genetic.framework.internal.KevoreeVariationAdaptor;
 import org.moeaframework.algorithm.Checkpoints;
@@ -11,6 +12,7 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.util.distributed.DistributedProblem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,11 +25,11 @@ import java.util.List;
 public class ExecuterTester {
 
     public static void main(String[] args) {
-        Problem problem = null;
         List<KevoreeFitnessFunction> fitnesses = new ArrayList<KevoreeFitnessFunction>();
         fitnesses.add(new FillAllFitness());
+        Problem problem = new KevoreeProblem(fitnesses);
         Variation variation = new KevoreeVariationAdaptor(new AddComponentMutator("FakeConsole"));
-        Algorithm algorithm = new NSGAII(new KevoreeProblem(fitnesses), new NondominatedSortingPopulation(), new EpsilonBoxDominanceArchive(0.5), new TournamentSelection(),variation ,new Initialization() );
+        Algorithm algorithm = new NSGAII(problem, new NondominatedSortingPopulation(), new EpsilonBoxDominanceArchive(0.5), new TournamentSelection(),variation ,new KevoreeInitialization(new MiniCloudPopulationFactory(),problem) );
         int maxEvaluations = 10000;
         try {
 
