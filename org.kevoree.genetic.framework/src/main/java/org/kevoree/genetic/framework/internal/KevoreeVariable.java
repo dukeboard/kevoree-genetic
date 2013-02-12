@@ -13,6 +13,7 @@ import org.moeaframework.core.Variable;
 public class KevoreeVariable implements Variable {
 
     private ContainerRoot model;
+    private ModelCloner modelCloner = new ModelCloner();
 
     public KevoreeVariable(ContainerRoot _model) {
         this.model = _model;
@@ -20,8 +21,6 @@ public class KevoreeVariable implements Variable {
 
     @Override
     public Variable copy() {
-        // make use of the modelCloner
-        ModelCloner modelCloner = new ModelCloner();
         return new KevoreeVariable(modelCloner.clone(model));
     }
 
