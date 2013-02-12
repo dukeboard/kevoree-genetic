@@ -29,7 +29,7 @@ public class KevoreeInitialization implements Initialization {
         List<ContainerRoot> models = factory.createPopulation();
         Solution[] results = new Solution[models.size()];
         for (int i = 0; i < models.size(); i++) {
-            Solution s = new Solution(_problem.getNumberOfVariables(), _problem.getNumberOfObjectives());
+            Solution s = new Solution(problem.getNumberOfVariables(), problem.getNumberOfObjectives());
             results[i] = s;
 
         }
