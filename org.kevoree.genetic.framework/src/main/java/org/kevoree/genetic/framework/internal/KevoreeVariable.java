@@ -9,15 +9,13 @@ import org.moeaframework.core.Variable;
  * User: jbourcie
  * Date: 12/02/13
  * Time: 13:51
- * To change this template use File | Settings | File Templates.
  */
 public class KevoreeVariable implements Variable {
 
-
     private ContainerRoot model;
 
-    public KevoreeVariable(ContainerRoot model) {
-        model = model;
+    public KevoreeVariable(ContainerRoot _model) {
+        this.model = _model;
     }
 
     @Override
