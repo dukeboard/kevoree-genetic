@@ -21,6 +21,7 @@ public class KevoreeVariable implements Variable {
 
     @Override
     public Variable copy() {
+        //TODO Do not clone immutable model elements
         return new KevoreeVariable(modelCloner.clone(model));
     }
 

@@ -22,18 +22,14 @@ public class KevoreeProblem extends AbstractProblem {
     private List<KevoreeFitnessFunction> fitnesses = new ArrayList<KevoreeFitnessFunction>();
     private KevoreeFactory factory = new DefaultKevoreeFactory();
 
-    public KevoreeProblem(int numberOfObjectives) {
+    public KevoreeProblem(List<KevoreeFitnessFunction> _fitnesses) {
         // 1 variable = 1 Kevoree Variable
         // Number of Objectives = number of Objectives of the subproblem
-        super(1, numberOfObjectives);
+        super(1, _fitnesses.size());
     }
 
     public List<KevoreeFitnessFunction> getFitnesses() {
         return fitnesses;
-    }
-
-    public void setFitnesses(List<KevoreeFitnessFunction> _fitnesses) {
-        this.fitnesses = Collections.unmodifiableList(_fitnesses); //Set to immutable to protect the use of index
     }
 
     @Override
@@ -48,7 +44,7 @@ public class KevoreeProblem extends AbstractProblem {
     @Override
     public Solution newSolution() {
         Solution solution = new Solution(1, numberOfObjectives);
-        solution.setVariable(0, new KevoreeVariable(new ContainerRootImpl()));
+        solution.setVariable(0, new KevoreeVariable(factory.createContainerRoot()));
         return solution;
     }
 }
