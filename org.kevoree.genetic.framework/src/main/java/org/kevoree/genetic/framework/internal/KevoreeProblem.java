@@ -32,7 +32,7 @@ public class KevoreeProblem extends AbstractProblem {
         return fitnesses;
     }
 
-    public void setFitness(List<KevoreeFitnessFunction> _fitnesses) {
+    public void setFitnesses(List<KevoreeFitnessFunction> _fitnesses) {
         this.fitnesses = Collections.unmodifiableList(_fitnesses); //Set to immutable to protect the use of index
     }
 
