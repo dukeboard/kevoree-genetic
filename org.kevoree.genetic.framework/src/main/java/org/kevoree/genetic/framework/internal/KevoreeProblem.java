@@ -1,5 +1,6 @@
 package org.kevoree.genetic.framework.internal;
 
+import org.kevoree.genetic.framework.KevoreeFitnessFunction;
 import org.kevoree.impl.ContainerRootImpl;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
@@ -12,10 +13,8 @@ import java.util.List;
  * User: jbourcie
  * Date: 11/02/13
  * Time: 14:57
- * To change this template use File | Settings | File Templates.
  */
-public class KevoreeProblem extends AbstractProblem{
-
+public class KevoreeProblem extends AbstractProblem {
 
 
     private List<KevoreeFitnessFunction> fitness = new ArrayList<KevoreeFitnessFunction>();
@@ -27,11 +26,11 @@ public class KevoreeProblem extends AbstractProblem{
     }
 
     public List<KevoreeFitnessFunction> getFitness() {
-         return fitness;
-      }
+        return fitness;
+    }
 
     public void setFitness(List<KevoreeFitnessFunction> fitnessList) {
-         this.fitness = fitness;
+        this.fitness = fitness;
     }
 
     @Override
