@@ -1,10 +1,7 @@
 package org.kevoree.genetic.framework;
 
 import org.kevoree.ContainerRoot;
-import org.kevoree.genetic.framework.internal.KevoreeInitialization;
-import org.kevoree.genetic.framework.internal.KevoreeProblem;
-import org.kevoree.genetic.framework.internal.KevoreeVariable;
-import org.kevoree.genetic.framework.internal.KevoreeVariationAdaptor;
+import org.kevoree.genetic.framework.internal.*;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.*;
 import org.moeaframework.core.operator.TournamentSelection;
@@ -20,7 +17,7 @@ import java.util.List;
  */
 public class KevoreeGeneticEngine {
 
-    private List<KevoreeVariationAdaptor> operators = new ArrayList<KevoreeVariationAdaptor>();
+    private List<Variation> operators = new ArrayList<Variation>();
 
     private List<KevoreeFitnessFunction> fitnesses = new ArrayList<KevoreeFitnessFunction>();
 
@@ -44,7 +41,7 @@ public class KevoreeGeneticEngine {
     public List<ContainerRoot> solve() {
 
         Problem problem = new KevoreeProblem(fitnesses);
-        Algorithm algorithm = new NSGAII(problem, new NondominatedSortingPopulation(), new EpsilonBoxDominanceArchive(0.5), new TournamentSelection(), operators.get(0) /* TODO REMOVE WHY ONLY ONE ? */, new KevoreeInitialization(populationFactory, problem));
+        Algorithm algorithm = new NSGAII(problem, new NondominatedSortingPopulation(), new EpsilonBoxDominanceArchive(0.5), new TournamentSelection(), new RandomCompoundVariation(operators) , new KevoreeInitialization(populationFactory, problem));
         int maxEvaluations = 10000;
         try {
             while (!algorithm.isTerminated() &&

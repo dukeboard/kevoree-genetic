@@ -1,11 +1,10 @@
 package org.kevoree.genetic.framework.internal;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.CompoundVariation;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -22,6 +21,10 @@ public class RandomCompoundVariation extends CompoundVariation {
     public Solution[] evolve(Solution[] parents) {
         int indice = rand.nextInt(operators.size());
         return operators.get(indice).evolve(parents);
+    }
+
+    public RandomCompoundVariation(List<Variation> ops){
+         operators = ops;
     }
 
 
