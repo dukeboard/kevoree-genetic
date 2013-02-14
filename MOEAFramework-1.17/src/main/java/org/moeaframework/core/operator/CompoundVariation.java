@@ -48,7 +48,7 @@ public class CompoundVariation implements Variation {
 	/**
 	 * The variation operators in the order they are applied.
 	 */
-	private final List<Variation> operators;
+	protected final List<Variation> operators;
 	
 	/**
 	 * The name of this variation operator.
