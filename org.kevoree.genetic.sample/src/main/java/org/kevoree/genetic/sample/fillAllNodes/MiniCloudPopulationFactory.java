@@ -42,19 +42,4 @@ public class MiniCloudPopulationFactory implements KevoreePopulationFactory {
 
     }
 
-    public static void main(String args[]) {
-        MiniCloudPopulationFactory fact = new MiniCloudPopulationFactory();
-        ContainerRoot model = fact.createPopulation().get(0);
-
-        System.out.println(model.getNodes().size());
-
-        for(ContainerNode node : model.getNodes()){
-            System.out.println(node.getComponents().size());
-        }
-
-        System.out.println("result="+model.selectByQuery("nodes[{components.name = Console*}]").size());
-
-    }
-
-
 }

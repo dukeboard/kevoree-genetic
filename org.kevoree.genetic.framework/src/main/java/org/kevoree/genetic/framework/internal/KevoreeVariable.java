@@ -22,7 +22,7 @@ public class KevoreeVariable implements Variable {
     @Override
     public Variable copy() {
         //TODO Do not clone immutable model elements
-        return new KevoreeVariable(modelCloner.clone(model));
+        return new KevoreeVariable(modelCloner.clone(model,true));
     }
 
     public ContainerRoot getModel() {
@@ -31,5 +31,6 @@ public class KevoreeVariable implements Variable {
 
     public void setModel(ContainerRoot model) {
         this.model = model;
+        model.setRecursiveReadOnly();
     }
 }

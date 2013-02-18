@@ -24,6 +24,7 @@ public class KevoreeProblem extends AbstractProblem {
         // 1 variable = 1 Kevoree Variable
         // Number of Objectives = number of Objectives of the subproblem
         super(1, _fitnesses.size());
+        fitnesses = _fitnesses;
     }
 
     public List<KevoreeFitnessFunction> getFitnesses() {
