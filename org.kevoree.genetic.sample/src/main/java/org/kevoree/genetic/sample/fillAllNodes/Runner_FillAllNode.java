@@ -43,7 +43,14 @@ public class Runner_FillAllNode implements KevoreeFitnessFunction {
 
     @Override
     public double evaluate(ContainerRoot model) {
-        return model.selectByQuery("nodes[{components.size = 0 }]").size();
+        double res = 0;
+        for(ContainerNode n : model.getNodes()){
+            if(n.getComponents().isEmpty()){
+                res++;
+            }
+        }
+        return res;
+        //return model.selectByQuery("nodes[{components.size = 0 }]").size();
     }
 
     @Override

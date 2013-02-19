@@ -23,6 +23,8 @@ public class KevoreeGeneticEngine {
 
     private KevoreePopulationFactory populationFactory = null;
 
+    private Integer maxStep = 100;
+
     public KevoreeGeneticEngine addOperator(KevoreeOperator operator) {
         operators.add(new KevoreeVariationAdaptor(operator));
         return this;
@@ -38,27 +40,29 @@ public class KevoreeGeneticEngine {
         return this;
     }
 
-    public List<ContainerRoot> solve() {
+    public Integer getMaxStep() {
+        return maxStep;
+    }
 
+    public KevoreeGeneticEngine setMaxStep(Integer maxStep) {
+        this.maxStep = maxStep;
+        return this;
+    }
+
+    public List<ContainerRoot> solve() {
         Problem problem = new KevoreeProblem(fitnesses);
-        Algorithm algorithm = new NSGAII(problem, new NondominatedSortingPopulation(), new EpsilonBoxDominanceArchive(0.5), new TournamentSelection(), new RandomCompoundVariation(operators) , new KevoreeInitialization(populationFactory, problem));
-        int maxEvaluations = 10000;
+        Algorithm algorithm = new NSGAII(problem, new NondominatedSortingPopulation(), new EpsilonBoxDominanceArchive(0.5), new TournamentSelection(), new RandomCompoundVariation(operators), new KevoreeInitialization(populationFactory, problem));
         try {
             while (!algorithm.isTerminated() &&
-                    (algorithm.getNumberOfEvaluations() < maxEvaluations)) {
+                    (algorithm.getNumberOfEvaluations() < maxStep)) {
                 algorithm.step();
             }
             NondominatedPopulation result = new NondominatedPopulation();
             result.addAll(algorithm.getResult());
         } finally {
-            if (algorithm != null) {
-                algorithm.terminate();
-            }
-            if (problem != null) {
-                problem.close();
-            }
+            algorithm.terminate();
+            problem.close();
         }
-
         ArrayList<ContainerRoot> results = new ArrayList<ContainerRoot>();
         Population pop = algorithm.getResult();
         for (Solution s : pop) {
