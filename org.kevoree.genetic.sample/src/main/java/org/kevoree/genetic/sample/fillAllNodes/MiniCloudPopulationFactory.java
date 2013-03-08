@@ -20,12 +20,10 @@ import java.util.List;
 public class MiniCloudPopulationFactory implements KevoreePopulationFactory {
     @Override
     public List<ContainerRoot> createPopulation() {
-
         ArrayList<ContainerRoot> population = new ArrayList<ContainerRoot>();
         KevoreeFactory factory = new DefaultKevoreeFactory();
         ModelLoader loader = new ModelLoader();
         ModelCloner cloner = new ModelCloner();
-
         //CReate init Model
         ContainerRoot rootModel = loader.loadModelFromStream(this.getClass().getClassLoader().getResourceAsStream("base.kev")).get(0);
         for (int i = 0; i < 5; i++) {
@@ -39,7 +37,5 @@ public class MiniCloudPopulationFactory implements KevoreePopulationFactory {
             population.add(cloner.clone(rootModel));
         }
         return population;
-
     }
-
 }

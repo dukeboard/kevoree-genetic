@@ -66,8 +66,6 @@ public class KevoreeGeneticEngine {
             while (continueEngineComputation(algorithm, beginTimeMilli)) {
                 algorithm.step();
             }
-            NondominatedPopulation result = new NondominatedPopulation();
-            result.addAll(algorithm.getResult());
         } finally {
             algorithm.terminate();
             problem.close();
