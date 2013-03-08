@@ -23,7 +23,7 @@ public class KevoreeGeneticEngine {
 
     private KevoreePopulationFactory populationFactory = null;
 
-    private Integer maxStep = 100;
+    private Integer maxGeneration = 100;
     private Long maxTime = -1l;
 
     public KevoreeGeneticEngine addOperator(KevoreeOperator operator) {
@@ -41,12 +41,12 @@ public class KevoreeGeneticEngine {
         return this;
     }
 
-    public Integer getMaxStep() {
-        return maxStep;
+    public Integer getMaxGeneration() {
+        return maxGeneration;
     }
 
-    public KevoreeGeneticEngine setMaxStep(Integer maxStep) {
-        this.maxStep = maxStep;
+    public KevoreeGeneticEngine setMaxGeneration(Integer maxGeneration) {
+        this.maxGeneration = maxGeneration;
         return this;
     }
 
@@ -54,17 +54,20 @@ public class KevoreeGeneticEngine {
         return maxTime;
     }
 
-    public void setMaxTime(Long maxTime) {
+    public KevoreeGeneticEngine setMaxTime(Long maxTime) {
         this.maxTime = maxTime;
+        return this;
     }
 
     public List<ContainerRoot> solve() {
+        Integer generation = 0;
         Problem problem = new KevoreeProblem(fitnesses);
         Algorithm algorithm = new NSGAII(problem, new NondominatedSortingPopulation(), new EpsilonBoxDominanceArchive(0.5), new TournamentSelection(), new RandomCompoundVariation(operators), new KevoreeInitialization(populationFactory, problem));
         Long beginTimeMilli = System.currentTimeMillis();
         try {
-            while (continueEngineComputation(algorithm, beginTimeMilli)) {
+            while (continueEngineComputation(algorithm, beginTimeMilli,generation)) {
                 algorithm.step();
+                generation ++ ;
             }
         } finally {
             algorithm.terminate();
@@ -79,7 +82,7 @@ public class KevoreeGeneticEngine {
         return results;
     }
 
-    protected boolean continueEngineComputation(Algorithm alg, Long beginTimeMilli) {
+    protected boolean continueEngineComputation(Algorithm alg, Long beginTimeMilli, Integer nbGeneration) {
         if (alg.isTerminated()) {
             return false;
         }
@@ -88,7 +91,7 @@ public class KevoreeGeneticEngine {
                 return false;
             }
         }
-        if (alg.getNumberOfEvaluations() >= maxStep) {
+        if (nbGeneration >= maxGeneration) {
             return false;
         }
         return true;

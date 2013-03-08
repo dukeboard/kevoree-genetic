@@ -35,7 +35,7 @@ public class KevoreeProblem extends AbstractProblem {
     public void evaluate(Solution solution) {
         for (int i = 0; i < fitnesses.size(); i++) {
             KevoreeVariable var = (KevoreeVariable) solution.getVariable(0);
-            double result = fitnesses.get(0).evaluate(var.getModel());
+            double result = fitnesses.get(i).evaluate(var.getModel());
             solution.setObjective(i, result);
         }
     }
