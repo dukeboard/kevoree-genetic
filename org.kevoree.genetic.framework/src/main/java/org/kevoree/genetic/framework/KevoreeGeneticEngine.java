@@ -24,6 +24,7 @@ public class KevoreeGeneticEngine {
     private KevoreePopulationFactory populationFactory = null;
 
     private Integer maxStep = 100;
+    private Long maxTime = -1l;
 
     public KevoreeGeneticEngine addOperator(KevoreeOperator operator) {
         operators.add(new KevoreeVariationAdaptor(operator));
@@ -49,12 +50,20 @@ public class KevoreeGeneticEngine {
         return this;
     }
 
+    public Long getMaxTime() {
+        return maxTime;
+    }
+
+    public void setMaxTime(Long maxTime) {
+        this.maxTime = maxTime;
+    }
+
     public List<ContainerRoot> solve() {
         Problem problem = new KevoreeProblem(fitnesses);
         Algorithm algorithm = new NSGAII(problem, new NondominatedSortingPopulation(), new EpsilonBoxDominanceArchive(0.5), new TournamentSelection(), new RandomCompoundVariation(operators), new KevoreeInitialization(populationFactory, problem));
+        Long beginTimeMilli = System.currentTimeMillis();
         try {
-            while (!algorithm.isTerminated() &&
-                    (algorithm.getNumberOfEvaluations() < maxStep)) {
+            while (continueEngineComputation(algorithm, beginTimeMilli)) {
                 algorithm.step();
             }
             NondominatedPopulation result = new NondominatedPopulation();
@@ -70,6 +79,21 @@ public class KevoreeGeneticEngine {
             results.add(var.getModel());
         }
         return results;
+    }
+
+    protected boolean continueEngineComputation(Algorithm alg, Long beginTimeMilli) {
+        if (alg.isTerminated()) {
+            return false;
+        }
+        if (maxTime != -1) {
+            if ( (System.currentTimeMillis() - beginTimeMilli) >= maxTime ) {
+                return false;
+            }
+        }
+        if (alg.getNumberOfEvaluations() >= maxStep) {
+            return false;
+        }
+        return true;
     }
 
 
