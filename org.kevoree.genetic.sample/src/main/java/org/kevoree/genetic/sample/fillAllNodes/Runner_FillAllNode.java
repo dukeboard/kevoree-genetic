@@ -26,6 +26,8 @@ public class Runner_FillAllNode implements KevoreeFitnessFunction {
                 .addOperator(new AddComponent().setComponentTypeName("FakeConsole").setSelectorQuery("nodes[{components.size = 0 }]"))
                 .setPopulationFactory(new MiniCloudPopulationFactory());
 
+        engine.setMaxStep(1000);
+
         //Solve and print solutions
         List<ContainerRoot> result = engine.solve();
 
@@ -43,6 +45,7 @@ public class Runner_FillAllNode implements KevoreeFitnessFunction {
 
     @Override
     public double evaluate(ContainerRoot model) {
+
         double res = 0;
         for(ContainerNode n : model.getNodes()){
             if(n.getComponents().isEmpty()){
@@ -50,6 +53,7 @@ public class Runner_FillAllNode implements KevoreeFitnessFunction {
             }
         }
         return res;
+
         //return model.selectByQuery("nodes[{components.size = 0 }]").size();
     }
 
