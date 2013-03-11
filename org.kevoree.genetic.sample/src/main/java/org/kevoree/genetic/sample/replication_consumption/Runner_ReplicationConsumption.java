@@ -4,6 +4,7 @@ import org.kevoree.ContainerNode;
 import org.kevoree.ContainerRoot;
 import org.kevoree.genetic.framework.KevoreeFitnessFunction;
 import org.kevoree.genetic.framework.KevoreeGeneticEngine;
+import org.kevoree.genetic.framework.KevoreeSolution;
 import org.kevoree.genetic.library.operator.AddComponent;
 import org.kevoree.genetic.sample.fillAllNodes.MiniCloudPopulationFactory;
 
@@ -33,15 +34,10 @@ public class Runner_ReplicationConsumption implements KevoreeFitnessFunction {
         //engine.setMaxTime(500l);
         //Solve and print solutions
         long currentTime = System.currentTimeMillis();
-        List<ContainerRoot> result = engine.solve();
+        List<KevoreeSolution> result = engine.solve();
         System.out.println("Find solutions in " + (System.currentTimeMillis() - currentTime) + " ms");
-        int i = 0;
-        for (ContainerRoot solution : result) {
-            i++;
-            System.out.println("Solution " + i);
-            for (ContainerNode node : solution.getNodes()) {
-                System.out.println("    Node:" + node.getName() + ",components=" + node.getComponents().size());
-            }
+        for(KevoreeSolution sol : result){
+           sol.print(System.out);
         }
     }
 

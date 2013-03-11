@@ -12,7 +12,7 @@ import org.kevoree.genetic.framework.KevoreeFitnessFunction;
  */
 public class ConsumptionFitness implements KevoreeFitnessFunction {
 
-    private static double costPerComponent = 0.25;
+    private static double costPerComponent = 0.5;
 
     @Override
     public double evaluate(ContainerRoot model) {
