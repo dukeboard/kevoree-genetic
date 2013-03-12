@@ -2,6 +2,7 @@ package org.kevoree.genetic.framework;
 
 import org.kevoree.ContainerRoot;
 import org.kevoree.genetic.framework.internal.KevoreeProblem;
+import org.kevoree.genetic.framework.internal.KevoreeSolutionPrettyPrint;
 import org.kevoree.genetic.framework.internal.KevoreeVariable;
 import org.moeaframework.core.Solution;
 
@@ -41,20 +42,11 @@ public class KevoreeSolution {
         return results.get(name);
     }
 
+
     public void print(PrintStream writer) {
-        writer.print("Solution( ");
-        boolean isFirst = true;
-        for (String name : results.keySet()) {
-            if (!isFirst) {
-                writer.print(" , ");
-            }
-            writer.print(name);
-            writer.print("=");
-            writer.print(results.get(name));
-            isFirst = false;
-        }
-        writer.print(" )");
-        writer.println();
+        KevoreeSolutionPrettyPrint printer = new KevoreeSolutionPrettyPrint();
+        printer.fitnessPrint(this, writer);
+        printer.structuralPrint(this, writer);
     }
 
 

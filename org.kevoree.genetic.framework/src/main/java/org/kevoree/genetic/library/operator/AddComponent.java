@@ -28,17 +28,12 @@ public class AddComponent extends AbstractKevoreeOperator {
     protected void applyMutation(Object target, ContainerRoot root) {
         if (componentTypeName != null && target instanceof ContainerNode) {
             TypeDefinition td = root.findTypeDefinitionsByID(componentTypeName);
-            if (td == null) {
-                endMutation();
-            } else {
+            if (td != null) {
                 ComponentInstance inst = factory.createComponentInstance();
                 inst.setName(generateName());
                 inst.setTypeDefinition(td);
                 ((ContainerNode) target).addComponents(inst);
-                endMutation();
             }
-        } else {
-            endMutation();
         }
     }
 

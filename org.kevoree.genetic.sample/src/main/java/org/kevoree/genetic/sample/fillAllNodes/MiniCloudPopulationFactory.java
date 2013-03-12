@@ -1,8 +1,6 @@
 package org.kevoree.genetic.sample.fillAllNodes;
 
-import org.kevoree.ContainerNode;
-import org.kevoree.ContainerRoot;
-import org.kevoree.KevoreeFactory;
+import org.kevoree.*;
 import org.kevoree.cloner.ModelCloner;
 import org.kevoree.genetic.framework.KevoreePopulationFactory;
 import org.kevoree.impl.DefaultKevoreeFactory;
@@ -26,6 +24,18 @@ public class MiniCloudPopulationFactory implements KevoreePopulationFactory {
         ModelCloner cloner = new ModelCloner();
         //CReate init Model
         ContainerRoot rootModel = loader.loadModelFromStream(this.getClass().getClassLoader().getResourceAsStream("base.kev")).get(0);
+
+        /* Fix Immutable */
+        for (TypeDefinition td : rootModel.getTypeDefinitions()) {
+            td.setRecursiveReadOnly();
+        }
+        for (DeployUnit du : rootModel.getDeployUnits()) {
+            du.setRecursiveReadOnly();
+        }
+        for (Repository r : rootModel.getRepositories()) {
+            r.setRecursiveReadOnly();
+        }
+
         for (int i = 0; i < 5; i++) {
             ContainerNode n = factory.createContainerNode();
             n.setName("node_" + i);
@@ -34,7 +44,7 @@ public class MiniCloudPopulationFactory implements KevoreePopulationFactory {
         }
         //Add to population
         for (int i = 0; i < 10; i++) {
-            population.add(cloner.clone(rootModel));
+            population.add(cloner.cloneMutableOnly(rootModel, false));
         }
         return population;
     }

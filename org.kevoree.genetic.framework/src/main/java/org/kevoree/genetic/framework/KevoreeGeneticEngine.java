@@ -75,7 +75,12 @@ public class KevoreeGeneticEngine {
         return this;
     }
 
-    public List<KevoreeSolution> solve() {
+    public List<KevoreeSolution> solve() throws Exception {
+
+        if(operators.isEmpty()){
+             throw new Exception("No Kevoree operator are added, please configure at least one");
+        }
+
         Integer generation = 0;
         KevoreeProblem problem = new KevoreeProblem(fitnesses);
 
@@ -95,6 +100,7 @@ public class KevoreeGeneticEngine {
         Long beginTimeMilli = System.currentTimeMillis();
         try {
             while (continueEngineComputation(kalgo, beginTimeMilli, generation)) {
+                //System.out.println("Generation #"+generation);
                 kalgo.step();
                 generation++;
             }
