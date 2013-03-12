@@ -27,7 +27,7 @@ public abstract class AbstractKevoreeOperator implements KevoreeMutationOperator
     public ContainerRoot mutate(ContainerRoot parent) {
         String query = getSelectorQuery();
         if (query != null && !query.equals("")) {
-            List<Object> targets = parent.selectByQuery(query);
+            List<Object> targets = selectTarget(parent, query);//parent.selectByQuery(query);
             if (targets.isEmpty()) {
                 return parent;
             } else {
