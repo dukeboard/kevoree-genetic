@@ -4,8 +4,10 @@ import org.kevoree.ContainerRoot;
 import org.kevoree.genetic.framework.KevoreeCrossOverOperator;
 import org.kevoree.genetic.framework.KevoreeMutationOperator;
 import org.kevoree.genetic.framework.KevoreeOperator;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+
 import java.util.Arrays;
 
 /**
@@ -19,8 +21,10 @@ public class KevoreeVariationAdaptor implements Variation {
     private KevoreeMutationOperator mutator = null;
     private KevoreeCrossOverOperator cross = null;
     private int arity = 0;
+    private Problem problem = null;
 
-    public KevoreeVariationAdaptor(KevoreeOperator _operator) {
+    public KevoreeVariationAdaptor(KevoreeOperator _operator, Problem _problem) {
+        problem = _problem;
         if (_operator instanceof KevoreeMutationOperator) {
             mutator = (KevoreeMutationOperator) _operator;
             arity = 1;
@@ -43,10 +47,11 @@ public class KevoreeVariationAdaptor implements Variation {
             KevoreeVariable variable = (KevoreeVariable) parents[0].getVariable(0);
             ContainerRoot m = variable.getModel();
             ContainerRoot afterMutation = mutator.mutate(m);
-            Solution s = new Solution(parents[0].getNumberOfVariables(), parents[0].getNumberOfObjectives());
+            Solution s = problem.newSolution();
             s.setVariable(0, new KevoreeVariable(afterMutation));
+
             Solution[] result = new Solution[1];
-            result[0]=s;
+            result[0] = s;
             return result;
         }
         if (cross != null) {
@@ -55,9 +60,13 @@ public class KevoreeVariationAdaptor implements Variation {
             KevoreeVariable variable2 = (KevoreeVariable) parents[1].getVariable(0);
             ContainerRoot m2 = variable2.getModel();
             ContainerRoot afterMutation = cross.cross(m, m2);
-            Solution s = new Solution(parents[0].getNumberOfVariables(), parents[0].getNumberOfObjectives());
+
+            Solution s = problem.newSolution();
             s.setVariable(0, new KevoreeVariable(afterMutation));
-            return Arrays.asList(s).toArray(parents);
+
+            Solution[] result = new Solution[1];
+            result[0] = s;
+            return result;
         }
         return null;
     }

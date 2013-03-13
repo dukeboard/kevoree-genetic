@@ -9,9 +9,12 @@ import org.moeaframework.core.*;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
+import org.moeaframework.util.distributed.DistributedProblem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,7 +26,7 @@ public class KevoreeGeneticEngine {
 
     public enum KevoreeGeneticAlgorithms {NSGAII, MOEAD, GDE3}
 
-    private List<Variation> operators = new ArrayList<Variation>();
+    private List<KevoreeOperator> operators = new ArrayList<KevoreeOperator>();
 
     private List<KevoreeFitnessFunction> fitnesses = new ArrayList<KevoreeFitnessFunction>();
 
@@ -43,7 +46,7 @@ public class KevoreeGeneticEngine {
     }
 
     public KevoreeGeneticEngine addOperator(KevoreeOperator operator) {
-        operators.add(new KevoreeVariationAdaptor(operator));
+        operators.add(operator);
         return this;
     }
 
@@ -75,18 +78,49 @@ public class KevoreeGeneticEngine {
         return this;
     }
 
+    static final Integer nbCore = Runtime.getRuntime().availableProcessors();
+
+    private ExecutorService executor = null;
+
+    public ExecutorService getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(ExecutorService executor) {
+        this.executor = executor;
+    }
+
+    private boolean distributed = false;
+
+    public boolean isDistributed() {
+        return distributed;
+    }
+
+    public void setDistributed(boolean distributed) {
+        this.distributed = distributed;
+    }
+
     public List<KevoreeSolution> solve() throws Exception {
 
-        if(operators.isEmpty()){
-             throw new Exception("No Kevoree operator are added, please configure at least one");
+        if (operators.isEmpty()) {
+            throw new Exception("No Kevoree operator are added, please configure at least one");
         }
 
-        Integer generation = 0;
-        KevoreeProblem problem = new KevoreeProblem(fitnesses);
-
+        KevoreeProblem kprob = new KevoreeProblem(fitnesses);
+        Problem problem = kprob;
+        if (isDistributed()) {
+            if (executor == null) {
+                executor = Executors.newFixedThreadPool(nbCore);
+            }
+            problem = new DistributedProblem(kprob, executor);
+        }
+        RandomCompoundVariation variations = new RandomCompoundVariation();
+        for (KevoreeOperator operator : operators) {
+            variations.appendOperator(new KevoreeVariationAdaptor(operator, problem));
+        }
         Algorithm kalgo = null;
         if (this.algorithm.equals(KevoreeGeneticAlgorithms.NSGAII)) {
-            kalgo = new NSGAII(problem, new NondominatedSortingPopulation(), new EpsilonBoxDominanceArchive(0.5), new TournamentSelection(), new RandomCompoundVariation(operators), new KevoreeInitialization(populationFactory, problem));
+            kalgo = new NSGAII(problem, new NondominatedSortingPopulation(), new EpsilonBoxDominanceArchive(0.5), new TournamentSelection(), variations, new KevoreeInitialization(populationFactory, problem));
         }
         /*
         if(this.algorithm.equals(KevoreeGeneticAlgorithms.MOEAD)){
@@ -97,10 +131,10 @@ public class KevoreeGeneticEngine {
             kalgo = new GDE3(problem, new NondominatedSortingPopulation(), new ParetoDominanceComparator() , new DifferentialEvolutionSelection() , new RandomCompoundVariation(operators), new KevoreeInitialization(populationFactory, problem));
         }*/
 
+        Integer generation = 0;
         Long beginTimeMilli = System.currentTimeMillis();
         try {
             while (continueEngineComputation(kalgo, beginTimeMilli, generation)) {
-                //System.out.println("Generation #"+generation);
                 kalgo.step();
                 generation++;
             }
@@ -112,9 +146,14 @@ public class KevoreeGeneticEngine {
         Population pop = kalgo.getResult();
         for (Solution s : pop) {
             KevoreeVariable var = (KevoreeVariable) s.getVariable(0);
-            KevoreeSolution ksol = new KevoreeSolution(s, problem);
+            KevoreeSolution ksol = new KevoreeSolution(s, kprob);
             results.add(ksol);
         }
+        if (executor != null) {
+            executor.shutdownNow();
+            executor = null;
+        }
+
         return results;
     }
 

@@ -23,9 +23,4 @@ public class RandomCompoundVariation extends CompoundVariation {
         return operators.get(indice).evolve(parents);
     }
 
-    public RandomCompoundVariation(List<Variation> ops){
-         operators = ops;
-    }
-
-
 }

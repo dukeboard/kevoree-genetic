@@ -16,6 +16,18 @@ import java.util.List;
  * Time: 17:14
  */
 public class MiniCloudPopulationFactory implements KevoreePopulationFactory {
+
+    private Integer populationSize = 10;
+
+    public Integer getPopulationSize() {
+        return populationSize;
+    }
+
+    public MiniCloudPopulationFactory setPopulationSize(Integer populationSize) {
+        this.populationSize = populationSize;
+        return this;
+    }
+
     @Override
     public List<ContainerRoot> createPopulation() {
         ArrayList<ContainerRoot> population = new ArrayList<ContainerRoot>();
@@ -43,7 +55,7 @@ public class MiniCloudPopulationFactory implements KevoreePopulationFactory {
             rootModel.addNodes(n);
         }
         //Add to population
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < populationSize; i++) {
             population.add(cloner.cloneMutableOnly(rootModel, false));
         }
         return population;

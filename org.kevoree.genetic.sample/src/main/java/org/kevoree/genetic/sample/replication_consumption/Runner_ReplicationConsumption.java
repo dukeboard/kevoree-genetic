@@ -31,7 +31,8 @@ public class Runner_ReplicationConsumption implements KevoreeFitnessFunction {
                 .addOperator(new RemoveComponent().setSelectorQuery("nodes[{name = * }]/components[{name = *}]"))
                 .setPopulationFactory(new MiniCloudPopulationFactory());
 
-        engine.setMaxGeneration(3000);
+        engine.setMaxGeneration(1000);
+        //engine.setDistributed(true);
         //engine.setMaxTime(500l);
         //Solve and print solutions
         long currentTime = System.currentTimeMillis();

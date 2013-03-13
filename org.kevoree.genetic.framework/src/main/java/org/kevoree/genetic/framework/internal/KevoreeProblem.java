@@ -1,5 +1,6 @@
 package org.kevoree.genetic.framework.internal;
 
+import org.kevoree.ContainerRoot;
 import org.kevoree.KevoreeFactory;
 import org.kevoree.genetic.framework.KevoreeFitnessFunction;
 import org.kevoree.impl.DefaultKevoreeFactory;
@@ -43,7 +44,10 @@ public class KevoreeProblem extends AbstractProblem {
     @Override
     public Solution newSolution() {
         Solution solution = new Solution(1, numberOfObjectives);
-        solution.setVariable(0, new KevoreeVariable(factory.createContainerRoot()));
+        solution.setVariable(0, emptyKevVariable);
         return solution;
     }
+
+    static KevoreeVariable emptyKevVariable = new KevoreeVariable(null);
+
 }
