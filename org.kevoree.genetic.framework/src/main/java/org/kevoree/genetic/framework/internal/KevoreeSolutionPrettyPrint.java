@@ -26,7 +26,7 @@ public class KevoreeSolutionPrettyPrint {
             writer.print(solution.getResultFromFitness(name));
             isFirst = false;
         }
-        writer.print(" )");
+        writer.print(" ) / "+solution.getFitnessMean());
         writer.println();
     }
 
