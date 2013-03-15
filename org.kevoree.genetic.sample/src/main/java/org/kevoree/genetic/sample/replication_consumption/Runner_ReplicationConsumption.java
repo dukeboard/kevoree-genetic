@@ -28,7 +28,7 @@ public class Runner_ReplicationConsumption implements KevoreeFitnessFunction {
                 .addFitnessFuntion(new Runner_ReplicationConsumption())
                 .addFitnessFuntion(new ConsumptionFitness())
                 .addOperator(new AddComponent().setComponentTypeName("FakeConsole").setSelectorQuery("nodes[{components.size < " + bestReplicat + " }]"))
-                .addOperator(new RemoveComponent().setSelectorQuery("nodes[{name = * }]/components[{name = *}]"))
+                .addOperator(new RemoveComponent().setSelectorQuery("nodes[*]/components[*]"))
                 .setPopulationFactory(new MiniCloudPopulationFactory());
 
         engine.setMaxGeneration(1000);

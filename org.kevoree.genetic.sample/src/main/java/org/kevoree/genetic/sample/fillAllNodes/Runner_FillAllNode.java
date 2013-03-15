@@ -24,7 +24,7 @@ public class Runner_FillAllNode implements KevoreeFitnessFunction {
         KevoreeGeneticEngine engine = new KevoreeGeneticEngine()
                 .addFitnessFuntion(new Runner_FillAllNode())
                 .addOperator(new AddComponent().setComponentTypeName("FakeConsole").setSelectorQuery("nodes[{components.size < 4 }]"))
-                .addOperator(new RemoveComponent().setSelectorQuery("nodes[{name = * }]/components[{name = *}]"))
+                .addOperator(new RemoveComponent().setSelectorQuery("nodes[*]/components[*]"))
                 .setPopulationFactory(new MiniCloudPopulationFactory().setPopulationSize(100));
 
         engine.setMaxGeneration(200);
@@ -44,14 +44,14 @@ public class Runner_FillAllNode implements KevoreeFitnessFunction {
 
     @Override
     public double evaluate(ContainerRoot model) {
-        double res = 0;
+        /*double res = 0;
         for (ContainerNode n : model.getNodes()) {
             if (n.getComponents().isEmpty()) {
                 res++;
             }
         }
-        return res;
-        // return model.selectByQuery("nodes[{components.size = 0 }]").size();
+        return res; */
+       return model.selectByQuery("nodes[{components.size = 0 }]").size();
     }
 
     @Override

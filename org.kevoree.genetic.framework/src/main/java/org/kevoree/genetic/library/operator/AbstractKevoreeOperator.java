@@ -29,8 +29,9 @@ public abstract class AbstractKevoreeOperator implements KevoreeMutationOperator
         return successor;
     }
 
-    public void setSuccessor(KevoreeMutationOperator successor) {
+    public KevoreeMutationOperator setSuccessor(KevoreeMutationOperator successor) {
         this.successor = successor;
+        return this;
     }
 
     @Override
