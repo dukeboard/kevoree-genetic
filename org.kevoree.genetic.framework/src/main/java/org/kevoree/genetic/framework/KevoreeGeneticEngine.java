@@ -1,7 +1,9 @@
 package org.kevoree.genetic.framework;
 
+import com.sun.tools.corba.se.idl.constExpr.BooleanNot;
 import org.kevoree.ContainerRoot;
 import org.kevoree.genetic.framework.internal.*;
+import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.GDE3;
 import org.moeaframework.algorithm.MOEAD;
 import org.moeaframework.algorithm.NSGAII;
@@ -100,6 +102,18 @@ public class KevoreeGeneticEngine {
         this.distributed = distributed;
     }
 
+    private boolean monitored = false;
+
+    public boolean isMonitored() {
+        return monitored;
+    }
+
+    public void setMonitored(boolean monitored) {
+        this.monitored = monitored;
+    }
+
+    private Instrumenter instrumenter = null;
+
     public List<KevoreeSolution> solve() throws Exception {
 
         if (operators.isEmpty()) {
@@ -130,6 +144,12 @@ public class KevoreeGeneticEngine {
         if(this.algorithm.equals(KevoreeGeneticAlgorithms.GDE3)){
             kalgo = new GDE3(problem, new NondominatedSortingPopulation(), new ParetoDominanceComparator() , new DifferentialEvolutionSelection() , new RandomCompoundVariation(operators), new KevoreeInitialization(populationFactory, problem));
         }*/
+
+        if(isMonitored()){
+            //instrumenter = new Instrumenter().withProblem("org.moeaframework.problem.StandardProblems");
+            //instrumenter.attachAll();
+            //kalgo = instrumenter.instrument(kalgo);
+        }
 
         Integer generation = 0;
         Long beginTimeMilli = System.currentTimeMillis();

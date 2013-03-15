@@ -25,9 +25,12 @@ public class Runner_FillAllNode implements KevoreeFitnessFunction {
                 .addFitnessFuntion(new Runner_FillAllNode())
                 .addOperator(new AddComponent().setComponentTypeName("FakeConsole").setSelectorQuery("nodes[{components.size < 4 }]"))
                 .addOperator(new RemoveComponent().setSelectorQuery("nodes[{name = * }]/components[{name = *}]"))
-                .setPopulationFactory(new MiniCloudPopulationFactory().setPopulationSize(400));
+                .setPopulationFactory(new MiniCloudPopulationFactory().setPopulationSize(100));
 
         engine.setMaxGeneration(200);
+
+      //  engine.setMonitored(true);
+
        // engine.setDistributed(true);
         //engine.setMaxTime(500l);
         //Solve and print solutions

@@ -32,7 +32,9 @@ public class KevoreeSolutionPrettyPrint {
 
     public void structuralPrint(KevoreeSolution solution, PrintStream writer) {
         for (ContainerNode node : solution.getModel().getNodes()) {
-            printNode(node, writer, 1);
+            if(node.getHost() == null){
+                printNode(node, writer, 1);
+            }
         }
     }
 
@@ -44,7 +46,7 @@ public class KevoreeSolutionPrettyPrint {
         //print components
         printComponents(node, writer, tab);
         for (ContainerNode subNode : node.getHosts()) {
-            printNode(subNode, writer, tab++);
+            printNode(subNode, writer, tab+1);
         }
     }
 

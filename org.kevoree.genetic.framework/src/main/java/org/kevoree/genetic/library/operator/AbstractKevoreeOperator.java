@@ -23,11 +23,21 @@ public abstract class AbstractKevoreeOperator implements KevoreeMutationOperator
     private ModelCloner cloner = new ModelCloner();
     protected Random rand = new Random();
 
+    private KevoreeMutationOperator successor = null;
+
+    public KevoreeMutationOperator getSuccessor() {
+        return successor;
+    }
+
+    public void setSuccessor(KevoreeMutationOperator successor) {
+        this.successor = successor;
+    }
+
     @Override
     public ContainerRoot mutate(ContainerRoot parent) {
         String query = getSelectorQuery();
         if (query != null && !query.equals("")) {
-            List<Object> targets = selectTarget(parent, query);//parent.selectByQuery(query);
+            List<Object> targets = selectTarget(parent, query);
             if (targets.isEmpty()) {
                 return parent;
             } else {
@@ -38,14 +48,22 @@ public abstract class AbstractKevoreeOperator implements KevoreeMutationOperator
                     String equivalentObjectPath = ((KevoreeContainer) select).path();
                     Object equivalentObject = targetModel.findByPath(equivalentObjectPath);
                     applyMutation(equivalentObject, targetModel);
-                    return targetModel;
+                    if (successor != null) {
+                        return successor.mutate(targetModel);
+                    } else {
+                        return targetModel;
+                    }
                 } else {
                     for (Object o : selectTarget(targetModel, query)) {
                         String equivalentObjectPath = ((KevoreeContainer) o).path();
                         Object equivalentObject = targetModel.findByPath(equivalentObjectPath);
                         applyMutation(equivalentObject, targetModel);
                     }
-                    return targetModel;
+                    if (successor != null) {
+                        return successor.mutate(targetModel);
+                    } else {
+                        return targetModel;
+                    }
                 }
             }
         }
