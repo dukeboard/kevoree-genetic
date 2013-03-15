@@ -2,6 +2,7 @@ package org.kevoree.genetic.framework;
 
 import com.sun.tools.corba.se.idl.constExpr.BooleanNot;
 import org.kevoree.ContainerRoot;
+import org.kevoree.genetic.KevoreeEngineIntrument;
 import org.kevoree.genetic.framework.internal.*;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.GDE3;
@@ -112,7 +113,16 @@ public class KevoreeGeneticEngine {
         this.monitored = monitored;
     }
 
-    private Instrumenter instrumenter = null;
+    private KevoreeEngineIntrument instrument = null;
+
+    public KevoreeEngineIntrument getInstrument() {
+        return instrument;
+    }
+
+    public KevoreeGeneticEngine setInstrument(KevoreeEngineIntrument instrument) {
+        this.instrument = instrument;
+        return this;
+    }
 
     public List<KevoreeSolution> solve() throws Exception {
 
@@ -145,7 +155,7 @@ public class KevoreeGeneticEngine {
             kalgo = new GDE3(problem, new NondominatedSortingPopulation(), new ParetoDominanceComparator() , new DifferentialEvolutionSelection() , new RandomCompoundVariation(operators), new KevoreeInitialization(populationFactory, problem));
         }*/
 
-        if(isMonitored()){
+        if (isMonitored()) {
             //instrumenter = new Instrumenter().withProblem("org.moeaframework.problem.StandardProblems");
             //instrumenter.attachAll();
             //kalgo = instrumenter.instrument(kalgo);
@@ -157,11 +167,23 @@ public class KevoreeGeneticEngine {
             while (continueEngineComputation(kalgo, beginTimeMilli, generation)) {
                 kalgo.step();
                 generation++;
+                if (instrument != null) {
+                    instrument.processResult(buildPopulation(kalgo, kprob));
+                }
             }
         } finally {
             kalgo.terminate();
             problem.close();
         }
+        List<KevoreeSolution> results = buildPopulation(kalgo, kprob);
+        if (executor != null) {
+            executor.shutdownNow();
+            executor = null;
+        }
+        return results;
+    }
+
+    private List<KevoreeSolution> buildPopulation(Algorithm kalgo, KevoreeProblem kprob) {
         ArrayList<KevoreeSolution> results = new ArrayList<KevoreeSolution>();
         Population pop = kalgo.getResult();
         for (Solution s : pop) {
@@ -169,11 +191,6 @@ public class KevoreeGeneticEngine {
             KevoreeSolution ksol = new KevoreeSolution(s, kprob);
             results.add(ksol);
         }
-        if (executor != null) {
-            executor.shutdownNow();
-            executor = null;
-        }
-
         return results;
     }
 
