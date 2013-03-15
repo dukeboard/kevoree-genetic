@@ -17,7 +17,7 @@ import java.util.Set;
  * Date: 09/03/13
  * Time: 07:03
  */
-public class KevoreeSolution {
+public class KevoreeSolution implements Comparable {
 
     private ContainerRoot model;
     private HashMap<String, Double> results = new HashMap<String, Double>();
@@ -49,5 +49,36 @@ public class KevoreeSolution {
         printer.structuralPrint(this, writer);
     }
 
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof KevoreeSolution) {
+            KevoreeSolution remote = (KevoreeSolution) o;
+            if (remote.getFitnessNames().size() == getFitnessNames().size()) {
+                double currentMean = getFitnessMean();
+                double remoteMean = remote.getFitnessMean();
+                if (currentMean == remoteMean) {
+                    return 0;
+                } else {
+                    if (currentMean < remoteMean) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    public Double getFitnessMean() {
+        double value = 0d;
+        for (String fitName : getFitnessNames()) {
+            value = value + getResultFromFitness(fitName);
+        }
+        return value / results.size();
+    }
 
 }
