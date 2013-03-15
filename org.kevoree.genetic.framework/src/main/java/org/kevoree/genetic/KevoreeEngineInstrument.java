@@ -10,7 +10,7 @@ import java.util.List;
  * Date: 15/03/13
  * Time: 17:39
  */
-public interface KevoreeEngineIntrument {
+public interface KevoreeEngineInstrument {
 
     public void processResult(List<KevoreeSolution> solutions);
 

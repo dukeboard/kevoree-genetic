@@ -2,7 +2,7 @@ package org.kevoree.genetic.framework;
 
 import com.sun.tools.corba.se.idl.constExpr.BooleanNot;
 import org.kevoree.ContainerRoot;
-import org.kevoree.genetic.KevoreeEngineIntrument;
+import org.kevoree.genetic.KevoreeEngineInstrument;
 import org.kevoree.genetic.framework.internal.*;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.GDE3;
@@ -113,13 +113,13 @@ public class KevoreeGeneticEngine {
         this.monitored = monitored;
     }
 
-    private KevoreeEngineIntrument instrument = null;
+    private KevoreeEngineInstrument instrument = null;
 
-    public KevoreeEngineIntrument getInstrument() {
+    public KevoreeEngineInstrument getInstrument() {
         return instrument;
     }
 
-    public KevoreeGeneticEngine setInstrument(KevoreeEngineIntrument instrument) {
+    public KevoreeGeneticEngine setInstrument(KevoreeEngineInstrument instrument) {
         this.instrument = instrument;
         return this;
     }
