@@ -18,8 +18,9 @@ public class MoveNode extends AbstractKevoreeOperator {
         return targetNodesQuery;
     }
 
-    public void setTargetNodesQuery(String targetNodesQuery) {
+    public MoveNode setTargetNodesQuery(String targetNodesQuery) {
         this.targetNodesQuery = targetNodesQuery;
+        return this;
     }
 
     @Override

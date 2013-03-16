@@ -37,4 +37,9 @@ public class KevoreeCompositeFitnessFunction implements KevoreeFitnessFunction {
         }
         return name.toString();
     }
+
+    public List<KevoreeFitnessFunction> getFitnesses(){
+        return fitnesses;
+    }
+
 }
