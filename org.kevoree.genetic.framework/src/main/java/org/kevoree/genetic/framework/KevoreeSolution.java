@@ -26,7 +26,7 @@ public class KevoreeSolution implements Comparable {
         KevoreeVariable var = (KevoreeVariable) sol.getVariable(0);
         model = var.getModel();
         for (int i = 0; i < prob.getFitnesses().size(); i++) {
-            results.put(prob.getFitnesses().get(i).getName(), sol.getObjective(i));
+            results.put(prob.getFitnesses().get(i).getClass().getSimpleName(), sol.getObjective(i));
         }
     }
 

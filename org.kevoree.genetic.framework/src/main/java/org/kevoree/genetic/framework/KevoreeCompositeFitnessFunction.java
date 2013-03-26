@@ -29,15 +29,6 @@ public class KevoreeCompositeFitnessFunction implements KevoreeFitnessFunction {
         return value / fitnesses.size();
     }
 
-    @Override
-    public String getName() {
-        StringBuilder name = new StringBuilder();
-        for (KevoreeFitnessFunction fit : fitnesses) {
-            name.append("/" + fit.getName());
-        }
-        return name.toString();
-    }
-
     public List<KevoreeFitnessFunction> getFitnesses(){
         return fitnesses;
     }

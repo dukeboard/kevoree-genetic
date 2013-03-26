@@ -23,8 +23,4 @@ public class ConsumptionFitness implements KevoreeFitnessFunction {
         return res;
     }
 
-    @Override
-    public String getName() {
-        return "node_comsumption";
-    }
 }

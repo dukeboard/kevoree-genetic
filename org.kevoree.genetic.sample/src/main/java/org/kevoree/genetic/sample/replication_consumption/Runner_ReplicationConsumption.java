@@ -52,8 +52,4 @@ public class Runner_ReplicationConsumption implements KevoreeFitnessFunction {
         return res;
     }
 
-    @Override
-    public String getName() {
-        return "FillAllFitness";
-    }
 }

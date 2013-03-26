@@ -1,17 +1,10 @@
 package org.kevoree.genetic.framework;
 
-import com.sun.tools.corba.se.idl.constExpr.BooleanNot;
-import org.kevoree.ContainerRoot;
 import org.kevoree.genetic.KevoreeEngineInstrument;
 import org.kevoree.genetic.framework.internal.*;
-import org.moeaframework.Instrumenter;
-import org.moeaframework.algorithm.GDE3;
-import org.moeaframework.algorithm.MOEAD;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.*;
-import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.operator.TournamentSelection;
-import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.util.distributed.DistributedProblem;
 
 import java.util.ArrayList;
