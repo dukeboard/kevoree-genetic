@@ -6,7 +6,7 @@ import org.kevoree.genetic.framework.KevoreeFitnessFunction;
 import org.kevoree.genetic.framework.KevoreeGeneticEngine;
 import org.kevoree.genetic.framework.KevoreeSolution;
 import org.kevoree.genetic.library.operator.AddComponent;
-import org.kevoree.genetic.library.operator.RemoveComponent;
+import org.kevoree.genetic.library.operator.RemoveComponentOperator;
 import org.kevoree.genetic.sample.fillAllNodes.MiniCloudPopulationFactory;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class Runner_ReplicationConsumption implements KevoreeFitnessFunction {
                 .addFitnessFuntion(new Runner_ReplicationConsumption())
                 .addFitnessFuntion(new ConsumptionFitness())
                 .addOperator(new AddComponent().setComponentTypeName("FakeConsole").setSelectorQuery("nodes[{components.size < " + bestReplicat + " }]"))
-                .addOperator(new RemoveComponent().setSelectorQuery("nodes[*]/components[*]"))
+                .addOperator(new RemoveComponentOperator().setSelectorQuery("nodes[*]/components[*]"))
                 .setPopulationFactory(new MiniCloudPopulationFactory());
 
         engine.setMaxGeneration(1000);

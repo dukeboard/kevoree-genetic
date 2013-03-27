@@ -8,7 +8,7 @@ import org.kevoree.*;
  * Date: 12/03/13
  * Time: 13:48
  */
-public class RemoveComponent extends AbstractKevoreeOperator {
+public class RemoveComponentOperator extends AbstractKevoreeOperator {
     @Override
     protected void applyMutation(Object target, ContainerRoot root) {
         if (target instanceof ComponentInstance) {

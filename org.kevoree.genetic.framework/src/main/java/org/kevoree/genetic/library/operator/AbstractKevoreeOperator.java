@@ -45,14 +45,16 @@ public abstract class AbstractKevoreeOperator implements KevoreeMutationOperator
                 ContainerRoot targetModel = cloner.cloneMutableOnly(parent, false);
                 if (selectionStrategy.equals(TargetSelectionStrategy.random)) {
                     List<Object> elems = selectTarget(targetModel, query);
-                    Object select = elems.get(rand.nextInt(elems.size()));
-                    String equivalentObjectPath = ((KevoreeContainer) select).path();
-                    Object equivalentObject = targetModel.findByPath(equivalentObjectPath);
-                    applyMutation(equivalentObject, targetModel);
-                    if (successor != null) {
-                        return successor.mutate(targetModel);
-                    } else {
-                        return targetModel;
+                    if(!elems.isEmpty()){
+                        Object select = elems.get(rand.nextInt(elems.size()));
+                        String equivalentObjectPath = ((KevoreeContainer) select).path();
+                        Object equivalentObject = targetModel.findByPath(equivalentObjectPath);
+                        applyMutation(equivalentObject, targetModel);
+                        if (successor != null) {
+                            return successor.mutate(targetModel);
+                        } else {
+                            return targetModel;
+                        }
                     }
                 } else {
                     for (Object o : selectTarget(targetModel, query)) {
@@ -81,9 +83,7 @@ public abstract class AbstractKevoreeOperator implements KevoreeMutationOperator
         return selectorQuery;
     }
 
-    public enum TargetSelectionStrategy {random, all}
-
-    ;
+    public enum TargetSelectionStrategy {random, all};
 
     private TargetSelectionStrategy selectionStrategy = TargetSelectionStrategy.random;
 
@@ -91,8 +91,9 @@ public abstract class AbstractKevoreeOperator implements KevoreeMutationOperator
         return selectionStrategy;
     }
 
-    public void setSelectionStrategy(TargetSelectionStrategy selectionStrategy) {
+    public AbstractKevoreeOperator setSelectionStrategy(TargetSelectionStrategy selectionStrategy) {
         this.selectionStrategy = selectionStrategy;
+        return this;
     }
 
     public AbstractKevoreeOperator setSelectorQuery(String selectorQuery) {

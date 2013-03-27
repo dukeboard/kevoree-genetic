@@ -1,6 +1,8 @@
 package org.kevoree.genetic.library.operator;
 
-import org.kevoree.*;
+import org.kevoree.ComponentInstance;
+import org.kevoree.ContainerNode;
+import org.kevoree.ContainerRoot;
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
  * Date: 12/03/13
  * Time: 13:48
  */
-public class MoveNode extends AbstractKevoreeOperator {
+public class MoveComponentOperator extends AbstractKevoreeOperator {
 
     private String targetNodesQuery = null;
 
@@ -18,19 +20,18 @@ public class MoveNode extends AbstractKevoreeOperator {
         return targetNodesQuery;
     }
 
-    public MoveNode setTargetNodesQuery(String targetNodesQuery) {
+    public MoveComponentOperator setTargetNodesQuery(String targetNodesQuery) {
         this.targetNodesQuery = targetNodesQuery;
         return this;
     }
 
     @Override
     protected void applyMutation(Object target, ContainerRoot root) {
-        if (target instanceof ContainerNode) {
-            ContainerNode targetChildNode = (ContainerNode) target;
+        if (target instanceof ComponentInstance) {
+            ComponentInstance targetComponent = (ComponentInstance) target;
             List<Object> targets = root.selectByQuery(targetNodesQuery);
             ContainerNode targetParentNode = (ContainerNode) targets.get(rand.nextInt(targets.size()));
-            targetChildNode.getHost().removeHosts(targetChildNode);
-            targetParentNode.addHosts(targetChildNode);
+            targetParentNode.addComponents(targetComponent);
         }
     }
 }

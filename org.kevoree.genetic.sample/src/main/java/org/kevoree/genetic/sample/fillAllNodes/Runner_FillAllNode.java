@@ -1,12 +1,11 @@
 package org.kevoree.genetic.sample.fillAllNodes;
 
-import org.kevoree.ContainerNode;
 import org.kevoree.ContainerRoot;
 import org.kevoree.genetic.framework.KevoreeFitnessFunction;
 import org.kevoree.genetic.framework.KevoreeGeneticEngine;
 import org.kevoree.genetic.framework.KevoreeSolution;
 import org.kevoree.genetic.library.operator.AddComponent;
-import org.kevoree.genetic.library.operator.RemoveComponent;
+import org.kevoree.genetic.library.operator.RemoveComponentOperator;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class Runner_FillAllNode implements KevoreeFitnessFunction {
         KevoreeGeneticEngine engine = new KevoreeGeneticEngine()
                 .addFitnessFuntion(new Runner_FillAllNode())
                 .addOperator(new AddComponent().setComponentTypeName("FakeConsole").setSelectorQuery("nodes[{components.size < 4 }]"))
-                .addOperator(new RemoveComponent().setSelectorQuery("nodes[*]/components[*]"))
+                .addOperator(new RemoveComponentOperator().setSelectorQuery("nodes[*]/components[*]"))
                 .setPopulationFactory(new MiniCloudPopulationFactory().setPopulationSize(100));
 
         engine.setMaxGeneration(200);

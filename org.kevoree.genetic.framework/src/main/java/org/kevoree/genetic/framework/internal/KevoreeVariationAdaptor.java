@@ -8,8 +8,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 
-import java.util.Arrays;
-
 /**
  * Created with IntelliJ IDEA.
  * User: duke
@@ -42,31 +40,39 @@ public class KevoreeVariationAdaptor implements Variation {
 
     @Override
     public Solution[] evolve(Solution[] parents) {
-        if (mutator != null) {
 
-            KevoreeVariable variable = (KevoreeVariable) parents[0].getVariable(0);
-            ContainerRoot m = variable.getModel();
-            ContainerRoot afterMutation = mutator.mutate(m);
-            Solution s = problem.newSolution();
-            s.setVariable(0, new KevoreeVariable(afterMutation));
+        try {
+            if (mutator != null) {
 
-            Solution[] result = new Solution[1];
-            result[0] = s;
-            return result;
-        }
-        if (cross != null) {
-            KevoreeVariable variable = (KevoreeVariable) parents[0].getVariable(0);
-            ContainerRoot m = variable.getModel();
-            KevoreeVariable variable2 = (KevoreeVariable) parents[1].getVariable(0);
-            ContainerRoot m2 = variable2.getModel();
-            ContainerRoot afterMutation = cross.cross(m, m2);
+                KevoreeVariable variable = (KevoreeVariable) parents[0].getVariable(0);
+                ContainerRoot m = variable.getModel();
+                ContainerRoot afterMutation = mutator.mutate(m);
+                Solution s = problem.newSolution();
+                s.setVariable(0, new KevoreeVariable(afterMutation));
 
-            Solution s = problem.newSolution();
-            s.setVariable(0, new KevoreeVariable(afterMutation));
+                Solution[] result = new Solution[1];
+                result[0] = s;
+                return result;
+            }
+            if (cross != null) {
+                KevoreeVariable variable = (KevoreeVariable) parents[0].getVariable(0);
+                ContainerRoot m = variable.getModel();
+                KevoreeVariable variable2 = (KevoreeVariable) parents[1].getVariable(0);
+                ContainerRoot m2 = variable2.getModel();
+                ContainerRoot afterMutation = cross.cross(m, m2);
 
-            Solution[] result = new Solution[1];
-            result[0] = s;
-            return result;
+                Solution s = problem.newSolution();
+                s.setVariable(0, new KevoreeVariable(afterMutation));
+
+                Solution[] result = new Solution[1];
+                result[0] = s;
+                return result;
+            }
+        } catch (Exception e) {
+            if (mutator != null) {
+                System.out.println("Error while applying mutator : " + mutator.getClass().getSimpleName());
+            }
+            e.printStackTrace();
         }
         return null;
     }

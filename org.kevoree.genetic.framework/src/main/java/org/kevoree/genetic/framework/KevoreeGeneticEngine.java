@@ -117,6 +117,16 @@ public class KevoreeGeneticEngine {
         return this;
     }
 
+    private Double dominanceDelta = 10d;
+
+    public Double getDominanceDelta() {
+        return dominanceDelta;
+    }
+
+    public void setDominanceDelta(Double dominanceDelta) {
+        this.dominanceDelta = dominanceDelta;
+    }
+
     public List<KevoreeSolution> solve() throws Exception {
 
         if (operators.isEmpty()) {
@@ -137,7 +147,7 @@ public class KevoreeGeneticEngine {
         }
         Algorithm kalgo = null;
         if (this.algorithm.equals(KevoreeGeneticAlgorithms.NSGAII)) {
-            kalgo = new NSGAII(problem, new NondominatedSortingPopulation(), new EpsilonBoxDominanceArchive(0.5), new TournamentSelection(), variations, new KevoreeInitialization(populationFactory, problem));
+            kalgo = new NSGAII(problem, new NondominatedSortingPopulation(), new EpsilonBoxDominanceArchive(dominanceDelta), new TournamentSelection(), variations, new KevoreeInitialization(populationFactory, problem));
         }
         /*
         if(this.algorithm.equals(KevoreeGeneticAlgorithms.MOEAD)){

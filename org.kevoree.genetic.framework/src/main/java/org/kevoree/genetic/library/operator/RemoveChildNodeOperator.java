@@ -9,7 +9,7 @@ import org.kevoree.ContainerRoot;
  * Date: 12/03/13
  * Time: 19:33
  */
-public class RemoveChildNode extends AbstractKevoreeOperator {
+public class RemoveChildNodeOperator extends AbstractKevoreeOperator {
 
     @Override
     protected void applyMutation(Object target, ContainerRoot root) {
