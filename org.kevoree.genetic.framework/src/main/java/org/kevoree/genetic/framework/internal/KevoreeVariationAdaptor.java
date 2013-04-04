@@ -48,7 +48,7 @@ public class KevoreeVariationAdaptor implements Variation {
                 ContainerRoot m = variable.getModel();
                 ContainerRoot afterMutation = mutator.mutate(m);
                 Solution s = problem.newSolution();
-                s.setVariable(0, new KevoreeVariable(afterMutation));
+                s.setVariable(0, new KevoreeVariable(afterMutation).setOrigin(variable.getOrigin()));
 
                 Solution[] result = new Solution[1];
                 result[0] = s;
@@ -62,7 +62,7 @@ public class KevoreeVariationAdaptor implements Variation {
                 ContainerRoot afterMutation = cross.cross(m, m2);
 
                 Solution s = problem.newSolution();
-                s.setVariable(0, new KevoreeVariable(afterMutation));
+                s.setVariable(0, new KevoreeVariable(afterMutation).setOrigin(variable.getOrigin()));
 
                 Solution[] result = new Solution[1];
                 result[0] = s;

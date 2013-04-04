@@ -1,5 +1,7 @@
 package org.kevoree.genetic.framework;
 
+import org.kevoree.ContainerRoot;
+
 /**
  * Created with IntelliJ IDEA.
  * User: duke
@@ -8,6 +10,11 @@ package org.kevoree.genetic.framework;
  */
 public abstract class KevoreeOriginAwareFitnessFunction implements KevoreeFitnessFunction {
 
+    @Override
+    public double evaluate(ContainerRoot model) {
+        return 0;
+    }
 
+    public abstract double evaluate(ContainerRoot model,ContainerRoot origin);
 
 }

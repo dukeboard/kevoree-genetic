@@ -1,9 +1,9 @@
 package org.kevoree.genetic.library.operator;
 
 import org.kevoree.ContainerRoot;
-import org.kevoree.KevoreeContainer;
 import org.kevoree.KevoreeFactory;
 import org.kevoree.cloner.ModelCloner;
+import org.kevoree.container.KMFContainer;
 import org.kevoree.genetic.framework.KevoreeMutationOperator;
 import org.kevoree.impl.DefaultKevoreeFactory;
 
@@ -47,7 +47,7 @@ public abstract class AbstractKevoreeOperator implements KevoreeMutationOperator
                     List<Object> elems = selectTarget(targetModel, query);
                     if(!elems.isEmpty()){
                         Object select = elems.get(rand.nextInt(elems.size()));
-                        String equivalentObjectPath = ((KevoreeContainer) select).path();
+                        String equivalentObjectPath = ((KMFContainer) select).path();
                         Object equivalentObject = targetModel.findByPath(equivalentObjectPath);
                         applyMutation(equivalentObject, targetModel);
                         if (successor != null) {
@@ -58,7 +58,7 @@ public abstract class AbstractKevoreeOperator implements KevoreeMutationOperator
                     }
                 } else {
                     for (Object o : selectTarget(targetModel, query)) {
-                        String equivalentObjectPath = ((KevoreeContainer) o).path();
+                        String equivalentObjectPath = ((KMFContainer) o).path();
                         Object equivalentObject = targetModel.findByPath(equivalentObjectPath);
                         applyMutation(equivalentObject, targetModel);
                     }

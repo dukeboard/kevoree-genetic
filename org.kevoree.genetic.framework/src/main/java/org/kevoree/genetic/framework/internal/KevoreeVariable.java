@@ -15,13 +15,24 @@ public class KevoreeVariable implements Variable {
     private ContainerRoot model;
     private ModelCloner modelCloner = new ModelCloner();
 
+    private ContainerRoot origin = null;
+
+    public ContainerRoot getOrigin() {
+        return origin;
+    }
+
+    public KevoreeVariable setOrigin(ContainerRoot origin) {
+        this.origin = origin;
+        return this;
+    }
+
     public KevoreeVariable(ContainerRoot _model) {
         this.model = _model;
     }
 
     @Override
     public Variable copy() {
-        return new KevoreeVariable(modelCloner.cloneMutableOnly(model,true));
+        return new KevoreeVariable(modelCloner.cloneMutableOnly(model, true)).setOrigin(getOrigin());
     }
 
     public ContainerRoot getModel() {

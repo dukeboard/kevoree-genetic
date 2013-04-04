@@ -1,8 +1,8 @@
 package org.kevoree.genetic.framework.internal;
 
-import org.kevoree.ContainerRoot;
 import org.kevoree.KevoreeFactory;
 import org.kevoree.genetic.framework.KevoreeFitnessFunction;
+import org.kevoree.genetic.framework.KevoreeOriginAwareFitnessFunction;
 import org.kevoree.impl.DefaultKevoreeFactory;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
@@ -36,6 +36,16 @@ public class KevoreeProblem extends AbstractProblem {
     public void evaluate(Solution solution) {
         for (int i = 0; i < fitnesses.size(); i++) {
             KevoreeVariable var = (KevoreeVariable) solution.getVariable(0);
+
+            /*
+            double result;
+            KevoreeFitnessFunction fit = fitnesses.get(i);
+            if (fit instanceof KevoreeOriginAwareFitnessFunction) {
+                result = ((KevoreeOriginAwareFitnessFunction)fit).evaluate(var.getModel(),var.getOrigin());
+            } else {
+                result = fit.evaluate(var.getModel());
+            }
+            */
             double result = fitnesses.get(i).evaluate(var.getModel());
             solution.setObjective(i, result);
         }
