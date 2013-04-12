@@ -5,6 +5,7 @@ import org.kevoree.cloner.ModelCloner;
 import org.kevoree.genetic.framework.KevoreePopulationFactory;
 import org.kevoree.impl.DefaultKevoreeFactory;
 import org.kevoree.loader.ModelLoader;
+import org.kevoree.loader.XMIModelLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class MiniCloudPopulationFactory implements KevoreePopulationFactory {
     public List<ContainerRoot> createPopulation() {
         ArrayList<ContainerRoot> population = new ArrayList<ContainerRoot>();
         KevoreeFactory factory = new DefaultKevoreeFactory();
-        ModelLoader loader = new ModelLoader();
+        ModelLoader loader = new XMIModelLoader();
         ModelCloner cloner = new ModelCloner();
         //CReate init Model
         ContainerRoot rootModel = loader.loadModelFromStream(this.getClass().getClassLoader().getResourceAsStream("base.kev")).get(0);
