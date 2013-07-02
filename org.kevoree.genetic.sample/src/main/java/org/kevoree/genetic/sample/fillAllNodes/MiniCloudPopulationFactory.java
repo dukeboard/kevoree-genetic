@@ -35,8 +35,8 @@ public class MiniCloudPopulationFactory implements KevoreePopulationFactory {
         KevoreeFactory factory = new DefaultKevoreeFactory();
         ModelLoader loader = new XMIModelLoader();
         ModelCloner cloner = new ModelCloner();
-        //CReate init Model
-        ContainerRoot rootModel = loader.loadModelFromStream(this.getClass().getClassLoader().getResourceAsStream("base.kev")).get(0);
+        //Create init Model
+        ContainerRoot rootModel = (ContainerRoot) loader.loadModelFromStream(this.getClass().getClassLoader().getResourceAsStream("base.kev")).get(0);
 
         /* Fix Immutable */
         for (TypeDefinition td : rootModel.getTypeDefinitions()) {

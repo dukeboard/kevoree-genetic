@@ -10,7 +10,7 @@
         <artifactId>org.kevoree.genetic.root</artifactId>
         <groupId>org.kevoree.genetic</groupId>
         <version>2.0.0-SNAPSHOT</version>
-        <relativePath>../org.kevoree.genetic.root/pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <dependencies>

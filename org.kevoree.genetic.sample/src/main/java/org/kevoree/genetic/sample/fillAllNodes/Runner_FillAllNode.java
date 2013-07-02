@@ -26,7 +26,7 @@ public class Runner_FillAllNode implements KevoreeFitnessFunction {
                 .addOperator(new RemoveComponentOperator().setSelectorQuery("nodes[*]/components[*]"))
                 .setPopulationFactory(new MiniCloudPopulationFactory().setPopulationSize(100));
 
-        engine.setMaxGeneration(200);
+        engine.setMaxGeneration(100);
 
       //  engine.setMonitored(true);
 
