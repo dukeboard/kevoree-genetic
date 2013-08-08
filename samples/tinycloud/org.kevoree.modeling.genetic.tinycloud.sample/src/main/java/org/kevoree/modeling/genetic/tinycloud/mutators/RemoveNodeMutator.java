@@ -16,11 +16,10 @@ public class RemoveNodeMutator implements MutationOperator<Cloud> {
     private Random rand = new Random();
 
     @Override
-    public Cloud mutate(Cloud parent) {
+    public void mutate(Cloud parent) {
         if (!parent.getNodes().isEmpty()) {
             parent.removeNodes(parent.getNodes().get(rand.nextInt(parent.getNodes().size())));
         }
-        return parent;
     }
 
 }

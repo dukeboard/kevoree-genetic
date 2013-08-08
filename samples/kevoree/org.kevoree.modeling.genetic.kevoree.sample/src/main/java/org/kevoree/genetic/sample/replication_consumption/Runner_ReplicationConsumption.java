@@ -11,6 +11,8 @@ import org.kevoree.modeling.api.KMFContainer;
 import org.kevoree.modeling.genetic.api.FitnessFunction;
 import org.kevoree.modeling.genetic.api.ResolutionEngine;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,7 +43,7 @@ public class Runner_ReplicationConsumption implements FitnessFunction {
         List<KevoreeSolution> result = engine.solve();
         System.out.println("Find solutions in " + (System.currentTimeMillis() - currentTime) + " ms");
         for(KevoreeSolution sol : result){
-           sol.print(System.out);
+            sol.print(System.out, Arrays.asList("org.kevoree.ContainerRoot", "org.kevoree.ContainerNode", "org.kevoree.ComponentInstance"));
         }
     }
 

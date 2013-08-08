@@ -11,6 +11,6 @@ import org.kevoree.modeling.api.KMFContainer;
  */
 public interface MutationOperator<A extends KMFContainer> {
 
-    public A mutate(A parent);
+    public void mutate(A parent);
 
 }

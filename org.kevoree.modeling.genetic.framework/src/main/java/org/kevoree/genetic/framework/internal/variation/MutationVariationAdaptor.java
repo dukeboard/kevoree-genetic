@@ -1,6 +1,7 @@
 package org.kevoree.genetic.framework.internal.variation;
 
 import org.kevoree.genetic.framework.internal.KevoreeVariable;
+import org.kevoree.modeling.api.KMFContainer;
 import org.kevoree.modeling.genetic.api.MutationOperator;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
@@ -25,7 +26,8 @@ public class MutationVariationAdaptor implements Variation {
     public Solution[] evolve(Solution[] parents) {
         try {
             Solution clonedSolution = parents[0].copy();
-            operator.mutate(((KevoreeVariable) clonedSolution.getVariable(0)).getModel());
+            KevoreeVariable clonedVar = ((KevoreeVariable) clonedSolution.getVariable(0));
+            operator.mutate(clonedVar.getModel());
             Solution[] result = new Solution[1];
             result[0] = clonedSolution;
             return result;

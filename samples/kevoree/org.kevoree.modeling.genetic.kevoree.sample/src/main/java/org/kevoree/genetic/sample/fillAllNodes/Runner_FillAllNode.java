@@ -8,6 +8,7 @@ import org.kevoree.genetic.library.operator.RemoveComponentOperator;
 import org.kevoree.modeling.genetic.api.FitnessFunction;
 import org.kevoree.modeling.genetic.api.ResolutionEngine;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,7 +39,8 @@ public class Runner_FillAllNode implements FitnessFunction<ContainerRoot> {
         List<KevoreeSolution> result = engine.solve();
         System.out.println("Find solutions in " + (System.currentTimeMillis() - currentTime) + " ms");
         for(KevoreeSolution sol : result){
-            sol.print(System.out);
+            //Filter the PrettyPrint to only interesting elements
+            sol.print(System.out, Arrays.asList("org.kevoree.ContainerRoot", "org.kevoree.ContainerNode", "org.kevoree.ComponentInstance"));
         }
     }
 

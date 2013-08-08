@@ -36,46 +36,43 @@ public abstract class AbstractKevoreeOperator implements MutationOperator<Contai
     }
 
     @Override
-    public ContainerRoot mutate(ContainerRoot parent) {
+    public void mutate(ContainerRoot parent) {
         String query = getSelectorQuery();
         if (query != null && !query.equals("")) {
             List<Object> targets = selectTarget(parent, query);
             if (targets.isEmpty()) {
-                return parent;
+                return;
             } else {
-                ContainerRoot targetModel = cloner.cloneMutableOnly(parent, false);
                 if (selectionStrategy.equals(TargetSelectionStrategy.random)) {
-                    List<Object> elems = selectTarget(targetModel, query);
+                    List<Object> elems = selectTarget(parent, query);
                     if(!elems.isEmpty()){
                         Object select = elems.get(rand.nextInt(elems.size()));
                         String equivalentObjectPath = ((KMFContainer) select).path();
-                        Object equivalentObject = targetModel.findByPath(equivalentObjectPath);
-                        applyMutation(equivalentObject, targetModel);
+                        Object equivalentObject = parent.findByPath(equivalentObjectPath);
+                        applyMutation(equivalentObject, parent);
                         if (successor != null) {
-                            return successor.mutate(targetModel);
-                        } else {
-                            return targetModel;
+                            successor.mutate(parent);
                         }
+                        return;
                     }
                 } else {
-                    for (Object o : selectTarget(targetModel, query)) {
+                    for (Object o : selectTarget(parent, query)) {
                         String equivalentObjectPath = ((KMFContainer) o).path();
-                        Object equivalentObject = targetModel.findByPath(equivalentObjectPath);
-                        applyMutation(equivalentObject, targetModel);
+                        Object equivalentObject = parent.findByPath(equivalentObjectPath);
+                        applyMutation(equivalentObject, parent);
                     }
                     if (successor != null) {
-                        return successor.mutate(targetModel);
-                    } else {
-                        return targetModel;
+                        successor.mutate(parent);
                     }
+                    return;
                 }
             }
         }
-        return parent;
+        return;
     }
 
     protected List<Object> selectTarget(org.kevoree.modeling.api.KMFContainer root, String query) {
-        return ((org.kevoree.ContainerRoot)root).selectByQuery(query);
+        return (root).selectByQuery(query);
     }
 
     private String selectorQuery = null;

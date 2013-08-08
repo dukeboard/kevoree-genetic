@@ -19,10 +19,9 @@ public class AddNodeMutator implements MutationOperator<Cloud> {
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
 
     @Override
-    public Cloud mutate(Cloud parent) {
+    public void mutate(Cloud parent) {
         Node node = cloudfactory.createNode();
         node.setId("node_"+Math.abs(rand.nextInt()));
         parent.addNodes(node);
-        return parent;
     }
 }

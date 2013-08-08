@@ -55,7 +55,6 @@ public class KevoreeSolutionPrettyPrint {
             }
         }
 
-
         for (int i = 0; i < tab; i++) {
             writer.print('\t');
         }
