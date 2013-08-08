@@ -7,6 +7,7 @@ import org.kevoree.modeling.api.KMFContainer;
 import org.moeaframework.core.Solution;
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -40,11 +41,14 @@ public class KevoreeSolution implements Comparable {
         return results.get(name);
     }
 
-
     public void print(PrintStream writer) {
+          print(writer,null);
+    }
+
+    public void print(PrintStream writer, List<String> filters) {
         KevoreeSolutionPrettyPrint printer = new KevoreeSolutionPrettyPrint();
         printer.fitnessPrint(this, writer);
-        printer.structuralPrint(this, writer);
+        printer.structuralPrint(this, writer,filters);
     }
 
     @Override

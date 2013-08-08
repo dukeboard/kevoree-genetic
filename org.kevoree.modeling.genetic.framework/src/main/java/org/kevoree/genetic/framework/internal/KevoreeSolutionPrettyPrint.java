@@ -4,6 +4,8 @@ import org.kevoree.genetic.framework.KevoreeSolution;
 import org.kevoree.modeling.api.KMFContainer;
 
 import java.io.PrintStream;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,31 +32,38 @@ public class KevoreeSolutionPrettyPrint {
     }
 
     public void structuralPrint(KevoreeSolution solution, PrintStream writer) {
+        structuralPrint(solution, writer, null);
+    }
+
+    public void structuralPrint(KevoreeSolution solution, PrintStream writer, List<String> filters) {
+        if (filters != null) {
+            if (!filters.contains(solution.getModel().metaClassName())) {
+                return;
+            }
+        }
         System.out.println(solution.getModel().metaClassName() + "-" + solution.getModel().path());
         for (Object node : solution.getModel().containedElementsList()) {
-            printNode((KMFContainer) node, writer, 1);
+            printNode((KMFContainer) node, writer, 1, filters);
         }
     }
 
-    private void printNode(KMFContainer node, PrintStream writer, Integer tab) {
+    private void printNode(KMFContainer node, PrintStream writer, Integer tab, List<String> filters) {
+
+        if (filters != null) {
+            if (!filters.contains(node.metaClassName())) {
+                return;
+            }
+        }
+
+
         for (int i = 0; i < tab; i++) {
             writer.print('\t');
         }
         writer.println(node.metaClassName() + "-" + node.path());
         //print components
         for (Object subNode : node.containedElementsList()) {
-            printNode((KMFContainer) subNode, writer, tab + 1);
+            printNode((KMFContainer) subNode, writer, tab + 1,filters);
         }
     }
-      /*
-    private void printComponents(ContainerNode node, PrintStream writer, Integer tab) {
-        for (ComponentInstance ci : node.getComponents()) {
-            for (int i = 0; i < tab; i++) {
-                writer.print('\t');
-            }
-            writer.println(" - Component " + ci.getName() + " : " + ci.getTypeDefinition().getName());
-        }
-    }   */
-
 
 }
