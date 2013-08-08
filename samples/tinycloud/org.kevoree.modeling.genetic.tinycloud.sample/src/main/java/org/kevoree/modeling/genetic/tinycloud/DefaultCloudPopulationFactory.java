@@ -5,6 +5,7 @@ import org.cloud.impl.DefaultCloudFactory;
 import org.kevoree.modeling.api.ModelCloner;
 import org.kevoree.modeling.genetic.api.PopulationFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,8 +21,11 @@ public class DefaultCloudPopulationFactory implements PopulationFactory<Cloud> {
 
     @Override
     public List<Cloud> createPopulation() {
-        //TODO Apply randomly to create initial population
-        return Collections.singletonList(cloudfactory.createCloud());
+        ArrayList<Cloud> populations = new ArrayList<Cloud>();
+        for(int i=0;i<100;i++){
+            populations.add(cloudfactory.createCloud());
+        }
+        return populations;
     }
 
     @Override
