@@ -1,6 +1,6 @@
 package org.kevoree.genetic.framework.internal;
 
-import org.kevoree.genetic.framework.KevoreeFitnessFunction;
+import org.kevoree.modeling.genetic.api.FitnessFunction;
 import org.kevoree.modeling.api.ModelCloner;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
@@ -15,9 +15,9 @@ import java.util.List;
  */
 public class KevoreeProblem extends AbstractProblem {
 
-    private List<KevoreeFitnessFunction> fitnesses = new ArrayList<KevoreeFitnessFunction>();
+    private List<FitnessFunction> fitnesses = new ArrayList<FitnessFunction>();
 
-    public KevoreeProblem(List<KevoreeFitnessFunction> _fitnesses,ModelCloner cloner) {
+    public KevoreeProblem(List<FitnessFunction> _fitnesses,ModelCloner cloner) {
         // 1 variable = 1 Kevoree Variable
         // Number of Objectives = number of Objectives of the subproblem
         super(1, _fitnesses.size());
@@ -25,7 +25,7 @@ public class KevoreeProblem extends AbstractProblem {
         emptyKevVariable = new KevoreeVariable(null,cloner);
     }
 
-    public List<KevoreeFitnessFunction> getFitnesses() {
+    public List<FitnessFunction> getFitnesses() {
         return fitnesses;
     }
 

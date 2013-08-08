@@ -26,8 +26,7 @@ public class AddComponent extends AbstractKevoreeOperator {
     }
 
     @Override
-    protected void applyMutation(Object target, KMFContainer root_) {
-        ContainerRoot root = (ContainerRoot) root_;
+    protected void applyMutation(Object target, ContainerRoot root) {
         if (componentTypeName != null && target instanceof ContainerNode) {
             TypeDefinition td = root.findTypeDefinitionsByID(componentTypeName);
             if (td != null) {

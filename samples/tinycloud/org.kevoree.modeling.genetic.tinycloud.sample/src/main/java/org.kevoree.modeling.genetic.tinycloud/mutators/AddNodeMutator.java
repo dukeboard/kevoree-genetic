@@ -3,7 +3,8 @@ package org.kevoree.modeling.genetic.tinycloud.mutators;
 import org.cloud.Cloud;
 import org.cloud.Node;
 import org.cloud.impl.DefaultCloudFactory;
-import org.kevoree.genetic.framework.KevoreeMutationOperator;
+import org.kevoree.modeling.genetic.api.MutationOperator;
+
 import java.util.Random;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Random;
  * Date: 07/08/13
  * Time: 15:42
  */
-public class AddNodeMutator implements KevoreeMutationOperator<Cloud> {
+public class AddNodeMutator implements MutationOperator<Cloud> {
 
     private Random rand = new Random();
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();

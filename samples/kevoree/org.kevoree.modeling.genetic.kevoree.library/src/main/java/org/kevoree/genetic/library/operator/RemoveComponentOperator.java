@@ -11,10 +11,7 @@ import org.kevoree.modeling.api.KMFContainer;
  */
 public class RemoveComponentOperator extends AbstractKevoreeOperator {
     @Override
-    protected void applyMutation(Object target, KMFContainer root_) {
-
-        ContainerRoot root = (ContainerRoot) root_;
-
+    protected void applyMutation(Object target, ContainerRoot root) {
         if (target instanceof ComponentInstance) {
             ComponentInstance targetObject = (ComponentInstance) target;
             Object targetParent = targetObject.eContainer();

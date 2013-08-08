@@ -1,6 +1,6 @@
 package org.kevoree.genetic.framework.internal;
 
-import org.kevoree.genetic.framework.KevoreePopulationFactory;
+import org.kevoree.modeling.genetic.api.PopulationFactory;
 import org.kevoree.modeling.api.KMFContainer;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
@@ -16,10 +16,10 @@ import java.util.List;
  */
 public class KevoreeInitialization implements Initialization {
 
-    private KevoreePopulationFactory factory = null;
+    private PopulationFactory factory = null;
     private Problem problem = null;
 
-    public KevoreeInitialization(KevoreePopulationFactory _factory, Problem _problem) {
+    public KevoreeInitialization(PopulationFactory _factory, Problem _problem) {
         factory = _factory;
         problem = _problem;
     }

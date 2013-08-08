@@ -13,11 +13,11 @@ import org.kevoree.modeling.api.KMFContainer;
 public class RemoveChildNodeOperator extends AbstractKevoreeOperator {
 
     @Override
-    protected void applyMutation(Object target, KMFContainer root) {
-        if (target instanceof ContainerNode && root instanceof ContainerRoot ) {
+    protected void applyMutation(Object target, ContainerRoot root) {
+        if (target instanceof ContainerNode) {
             ContainerNode targetObject = (ContainerNode) target;
             targetObject.getHost().removeHosts(targetObject);
-            ((ContainerRoot)root).removeNodes(targetObject);
+            root.removeNodes(targetObject);
         }
     }
 

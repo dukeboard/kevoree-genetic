@@ -27,10 +27,7 @@ public class MoveComponentOperator extends AbstractKevoreeOperator {
     }
 
     @Override
-    protected void applyMutation(Object target, KMFContainer root_) {
-
-        ContainerRoot root = (ContainerRoot) root_;
-
+    protected void applyMutation(Object target, ContainerRoot root) {
         if (target instanceof ComponentInstance) {
             ComponentInstance targetComponent = (ComponentInstance) target;
             List<Object> targets = root.selectByQuery(targetNodesQuery);

@@ -2,9 +2,8 @@ package org.kevoree.modeling.genetic.tinycloud;
 
 import org.cloud.Cloud;
 import org.cloud.impl.DefaultCloudFactory;
-import org.kevoree.genetic.framework.KevoreePopulationFactory;
-import org.kevoree.modeling.api.KMFContainer;
 import org.kevoree.modeling.api.ModelCloner;
+import org.kevoree.modeling.genetic.api.PopulationFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
  * Date: 07/08/13
  * Time: 16:27
  */
-public class DefaultCloudPopulationFactory implements KevoreePopulationFactory<Cloud> {
+public class DefaultCloudPopulationFactory implements PopulationFactory<Cloud> {
 
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
 

@@ -2,13 +2,14 @@ package org.kevoree.genetic.sample.replication_consumption;
 
 import org.kevoree.ContainerNode;
 import org.kevoree.ContainerRoot;
-import org.kevoree.genetic.framework.KevoreeFitnessFunction;
-import org.kevoree.genetic.framework.KevoreeGeneticEngine;
+import org.kevoree.genetic.framework.GeneticEngine;
 import org.kevoree.genetic.framework.KevoreeSolution;
 import org.kevoree.genetic.library.operator.AddComponent;
 import org.kevoree.genetic.library.operator.RemoveComponentOperator;
 import org.kevoree.genetic.sample.fillAllNodes.MiniCloudPopulationFactory;
 import org.kevoree.modeling.api.KMFContainer;
+import org.kevoree.modeling.genetic.api.FitnessFunction;
+import org.kevoree.modeling.genetic.api.ResolutionEngine;
 
 import java.util.List;
 
@@ -18,14 +19,14 @@ import java.util.List;
  * Date: 12/02/13
  * Time: 17:51
  */
-public class Runner_ReplicationConsumption implements KevoreeFitnessFunction {
+public class Runner_ReplicationConsumption implements FitnessFunction {
 
     private static int bestReplicat = 4;
 
     public static void main(String[] args) throws Exception {
 
         //Init engine
-        KevoreeGeneticEngine engine = new KevoreeGeneticEngine()
+        ResolutionEngine engine = new GeneticEngine()
                 .addFitnessFuntion(new Runner_ReplicationConsumption())
                 .addFitnessFuntion(new ConsumptionFitness())
                 .addOperator(new AddComponent().setComponentTypeName("FakeConsole").setSelectorQuery("nodes[{components.size < " + bestReplicat + " }]"))

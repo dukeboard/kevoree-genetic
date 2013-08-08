@@ -1,4 +1,4 @@
-package org.kevoree.genetic.framework;
+package org.kevoree.modeling.genetic.api;
 
 
 import org.kevoree.modeling.api.KMFContainer;
@@ -9,7 +9,7 @@ import org.kevoree.modeling.api.KMFContainer;
  * Date: 12/02/13
  * Time: 15:26
  */
-public interface KevoreeMutationOperator<A extends KMFContainer> extends KevoreeOperator {
+public interface MutationOperator<A extends KMFContainer> {
 
     public A mutate(A parent);
 

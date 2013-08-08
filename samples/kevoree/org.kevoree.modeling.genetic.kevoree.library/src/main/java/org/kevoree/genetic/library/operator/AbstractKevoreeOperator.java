@@ -1,11 +1,12 @@
 package org.kevoree.genetic.library.operator;
 
+import org.kevoree.ContainerRoot;
 import org.kevoree.KevoreeFactory;
 import org.kevoree.cloner.DefaultModelCloner;
-import org.kevoree.genetic.framework.KevoreeMutationOperator;
 import org.kevoree.impl.DefaultKevoreeFactory;
 import org.kevoree.modeling.api.KMFContainer;
 import org.kevoree.modeling.api.ModelCloner;
+import org.kevoree.modeling.genetic.api.MutationOperator;
 
 import java.util.List;
 import java.util.Random;
@@ -16,33 +17,33 @@ import java.util.Random;
  * Date: 18/02/13
  * Time: 09:34
  */
-public abstract class AbstractKevoreeOperator implements KevoreeMutationOperator {
+public abstract class AbstractKevoreeOperator implements MutationOperator<ContainerRoot> {
 
-    protected abstract void applyMutation(Object target, org.kevoree.modeling.api.KMFContainer root);
+    protected abstract void applyMutation(Object target, ContainerRoot root);
 
     private ModelCloner cloner = new DefaultModelCloner();
     protected Random rand = new Random();
 
-    private KevoreeMutationOperator successor = null;
+    private MutationOperator<ContainerRoot> successor = null;
 
-    public KevoreeMutationOperator getSuccessor() {
+    public MutationOperator<ContainerRoot> getSuccessor() {
         return successor;
     }
 
-    public KevoreeMutationOperator setSuccessor(KevoreeMutationOperator successor) {
+    public MutationOperator<ContainerRoot> setSuccessor(MutationOperator<ContainerRoot> successor) {
         this.successor = successor;
         return this;
     }
 
     @Override
-    public org.kevoree.modeling.api.KMFContainer mutate(org.kevoree.modeling.api.KMFContainer parent) {
+    public ContainerRoot mutate(ContainerRoot parent) {
         String query = getSelectorQuery();
         if (query != null && !query.equals("")) {
             List<Object> targets = selectTarget(parent, query);
             if (targets.isEmpty()) {
                 return parent;
             } else {
-                org.kevoree.modeling.api.KMFContainer targetModel = cloner.cloneMutableOnly(parent, false);
+                ContainerRoot targetModel = cloner.cloneMutableOnly(parent, false);
                 if (selectionStrategy.equals(TargetSelectionStrategy.random)) {
                     List<Object> elems = selectTarget(targetModel, query);
                     if(!elems.isEmpty()){

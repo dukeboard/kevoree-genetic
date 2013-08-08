@@ -1,7 +1,7 @@
 package org.kevoree.modeling.genetic.tinycloud.fitnesses;
 
 import org.cloud.Cloud;
-import org.kevoree.genetic.framework.KevoreeFitnessFunction;
+import org.kevoree.modeling.genetic.api.FitnessFunction;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,13 +9,14 @@ import org.kevoree.genetic.framework.KevoreeFitnessFunction;
  * Date: 07/08/13
  * Time: 16:14
  */
-public class CloudConsumptionFitness implements KevoreeFitnessFunction<Cloud> {
+public class CloudConsumptionFitness implements FitnessFunction<Cloud> {
 
-    private int maxNode = 5;
+    private double maxNode = 5;
 
     @Override
     public double evaluate(Cloud model) {
-            return (maxNode - model.getNodes().size())/maxNode * 100;
+            double pres = (model.getNodes().size() / maxNode) * 100;
+            return pres;
     }
 
 }

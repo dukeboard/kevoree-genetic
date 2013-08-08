@@ -1,7 +1,7 @@
 package org.kevoree.modeling.genetic.tinycloud.mutators;
 
 import org.cloud.Cloud;
-import org.kevoree.genetic.framework.KevoreeMutationOperator;
+import org.kevoree.modeling.genetic.api.MutationOperator;
 
 import java.util.Random;
 
@@ -11,7 +11,7 @@ import java.util.Random;
  * Date: 07/08/13
  * Time: 16:02
  */
-public class RemoveNodeMutator implements KevoreeMutationOperator<Cloud> {
+public class RemoveNodeMutator implements MutationOperator<Cloud> {
 
     private Random rand = new Random();
 

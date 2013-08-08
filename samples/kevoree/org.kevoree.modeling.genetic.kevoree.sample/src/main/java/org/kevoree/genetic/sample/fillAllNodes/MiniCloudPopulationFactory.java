@@ -2,12 +2,12 @@ package org.kevoree.genetic.sample.fillAllNodes;
 
 import org.kevoree.*;
 import org.kevoree.cloner.DefaultModelCloner;
-import org.kevoree.genetic.framework.KevoreePopulationFactory;
 import org.kevoree.impl.DefaultKevoreeFactory;
 import org.kevoree.loader.XMIModelLoader;
 import org.kevoree.modeling.api.KMFContainer;
 import org.kevoree.modeling.api.ModelCloner;
 import org.kevoree.modeling.api.ModelLoader;
+import org.kevoree.modeling.genetic.api.PopulationFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
  * Date: 12/02/13
  * Time: 17:14
  */
-public class MiniCloudPopulationFactory implements KevoreePopulationFactory {
+public class MiniCloudPopulationFactory implements PopulationFactory<ContainerRoot> {
 
     private Integer populationSize = 10;
 
@@ -32,8 +32,8 @@ public class MiniCloudPopulationFactory implements KevoreePopulationFactory {
     }
 
     @Override
-    public List<KMFContainer> createPopulation() {
-        ArrayList<KMFContainer> population = new ArrayList<KMFContainer>();
+    public List<ContainerRoot> createPopulation() {
+        ArrayList<ContainerRoot> population = new ArrayList<ContainerRoot>();
         KevoreeFactory factory = new DefaultKevoreeFactory();
         ModelLoader loader = new XMIModelLoader();
         ModelCloner cloner = new DefaultModelCloner();

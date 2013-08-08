@@ -30,14 +30,12 @@ public class AddNodeOperator extends AbstractKevoreeOperator {
     }
 
     @Override
-    public KMFContainer mutate(KMFContainer parent) {
+    public ContainerRoot mutate(ContainerRoot parent) {
         return super.mutate(parent);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
-    protected void applyMutation(Object target, KMFContainer root_) {
-
-        ContainerRoot root = (ContainerRoot) root_;
+    protected void applyMutation(Object target, ContainerRoot root) {
 
         TypeDefinition nodeType = root.findTypeDefinitionsByID(nodeTypeName);
         if (nodeType == null) {

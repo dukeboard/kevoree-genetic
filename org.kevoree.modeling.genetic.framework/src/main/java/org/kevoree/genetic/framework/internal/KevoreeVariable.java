@@ -1,7 +1,11 @@
 package org.kevoree.genetic.framework.internal;
 
+import jet.runtime.typeinfo.JetValueParameter;
 import org.kevoree.modeling.api.KMFContainer;
 import org.kevoree.modeling.api.ModelCloner;
+import org.kevoree.modeling.api.events.ModelElementListener;
+import org.kevoree.modeling.api.events.ModelEvent;
+import org.kevoree.modeling.api.trace.TraceSequence;
 import org.moeaframework.core.Variable;
 
 /**
@@ -10,11 +14,11 @@ import org.moeaframework.core.Variable;
  * Date: 12/02/13
  * Time: 13:51
  */
-public class KevoreeVariable implements Variable {
+public class KevoreeVariable implements Variable, ModelElementListener {
 
     private KMFContainer model;
 
-    private ModelCloner modelCloner = null;//new ModelCloner();
+    private ModelCloner modelCloner = null;
 
     public ModelCloner getModelCloner() {
         return modelCloner;
@@ -24,6 +28,16 @@ public class KevoreeVariable implements Variable {
 
     public KMFContainer getOrigin() {
         return origin;
+    }
+
+    private TraceSequence traceSequence = null;
+
+    public TraceSequence getTraceSequence() {
+        return traceSequence;
+    }
+
+    public void setTraceSequence(TraceSequence traceSequence) {
+        this.traceSequence = traceSequence;
     }
 
     public KevoreeVariable setOrigin(KMFContainer origin) {
@@ -38,7 +52,11 @@ public class KevoreeVariable implements Variable {
 
     @Override
     public Variable copy() {
-        return new KevoreeVariable(modelCloner.cloneMutableOnly(model, true), modelCloner).setOrigin(getOrigin());
+        KevoreeVariable clonedVar = new KevoreeVariable(modelCloner.cloneMutableOnly(model, false), modelCloner);
+        clonedVar.setOrigin(getOrigin());
+        //TODO Trace sequence clone
+        clonedVar.getModel().addModelTreeListener(clonedVar);
+        return clonedVar;
     }
 
     public KMFContainer getModel() {
@@ -48,5 +66,10 @@ public class KevoreeVariable implements Variable {
     public void setModel(KMFContainer model) {
         this.model = model;
         model.setRecursiveReadOnly();
+    }
+
+    @Override
+    public void elementChanged(ModelEvent modelEvent) {
+        //TODO
     }
 }

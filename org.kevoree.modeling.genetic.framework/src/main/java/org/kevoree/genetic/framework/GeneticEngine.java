@@ -1,6 +1,11 @@
 package org.kevoree.genetic.framework;
 
 import org.kevoree.genetic.framework.internal.*;
+import org.kevoree.genetic.framework.internal.variation.MutationVariationAdaptor;
+import org.kevoree.modeling.genetic.api.FitnessFunction;
+import org.kevoree.modeling.genetic.api.MutationOperator;
+import org.kevoree.modeling.genetic.api.PopulationFactory;
+import org.kevoree.modeling.genetic.api.ResolutionEngine;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.*;
 import org.moeaframework.core.operator.TournamentSelection;
@@ -17,20 +22,17 @@ import java.util.concurrent.Executors;
  * Date: 12/02/13
  * Time: 17:41
  */
-public class KevoreeGeneticEngine {
+public class GeneticEngine implements ResolutionEngine {
 
-    public enum KevoreeGeneticAlgorithms {NSGAII, MOEAD, GDE3}
-
-    private List<KevoreeOperator> operators = new ArrayList<KevoreeOperator>();
-
-    private List<KevoreeFitnessFunction> fitnesses = new ArrayList<KevoreeFitnessFunction>();
-
-    private KevoreePopulationFactory populationFactory = null;
-
+    private List<MutationOperator> operators = new ArrayList<MutationOperator>();
+    private List<FitnessFunction> fitnesses = new ArrayList<FitnessFunction>();
+    private PopulationFactory populationFactory = null;
     private Integer maxGeneration = 100;
     private Long maxTime = -1l;
 
+
     private KevoreeGeneticAlgorithms algorithm = KevoreeGeneticAlgorithms.NSGAII;
+    public enum KevoreeGeneticAlgorithms {NSGAII, MOEAD, GDE3}
 
     public KevoreeGeneticAlgorithms getAlgorithm() {
         return algorithm;
@@ -40,17 +42,17 @@ public class KevoreeGeneticEngine {
         this.algorithm = algorithm;
     }
 
-    public KevoreeGeneticEngine addOperator(KevoreeOperator operator) {
+    public GeneticEngine addOperator(MutationOperator operator) {
         operators.add(operator);
         return this;
     }
 
-    public KevoreeGeneticEngine addFitnessFuntion(KevoreeFitnessFunction function) {
+    public GeneticEngine addFitnessFuntion(FitnessFunction function) {
         fitnesses.add(function);
         return this;
     }
 
-    public KevoreeGeneticEngine setPopulationFactory(KevoreePopulationFactory _populationFactory) {
+    public GeneticEngine setPopulationFactory(PopulationFactory _populationFactory) {
         populationFactory = _populationFactory;
         return this;
     }
@@ -59,7 +61,7 @@ public class KevoreeGeneticEngine {
         return maxGeneration;
     }
 
-    public KevoreeGeneticEngine setMaxGeneration(Integer maxGeneration) {
+    public GeneticEngine setMaxGeneration(Integer maxGeneration) {
         this.maxGeneration = maxGeneration;
         return this;
     }
@@ -68,7 +70,7 @@ public class KevoreeGeneticEngine {
         return maxTime;
     }
 
-    public KevoreeGeneticEngine setMaxTime(Long maxTime) {
+    public GeneticEngine setMaxTime(Long maxTime) {
         this.maxTime = maxTime;
         return this;
     }
@@ -137,8 +139,8 @@ public class KevoreeGeneticEngine {
             problem = new DistributedProblem(kprob, executor);
         }
         RandomCompoundVariation variations = new RandomCompoundVariation();
-        for (KevoreeOperator operator : operators) {
-            variations.appendOperator(new KevoreeVariationAdaptor(operator, problem));
+        for (MutationOperator operator : operators) {
+            variations.appendOperator(new MutationVariationAdaptor(operator));
         }
         Algorithm kalgo = null;
         if (this.algorithm.equals(KevoreeGeneticAlgorithms.NSGAII)) {
