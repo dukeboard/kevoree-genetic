@@ -30,8 +30,8 @@ public class AddNodeOperator extends AbstractKevoreeOperator {
     }
 
     @Override
-    public ContainerRoot mutate(ContainerRoot parent) {
-        return super.mutate(parent);    //To change body of overridden methods use File | Settings | File Templates.
+    public void mutate(ContainerRoot parent) {
+        mutate(parent);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
