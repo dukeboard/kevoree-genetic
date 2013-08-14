@@ -1,4 +1,4 @@
-package org.kevoree.genetic.sample.replication_consumption;
+package org.kevoree.modeling.optimization.genetic.sample.replication_consumption;
 
 import org.kevoree.ContainerNode;
 import org.kevoree.ContainerRoot;

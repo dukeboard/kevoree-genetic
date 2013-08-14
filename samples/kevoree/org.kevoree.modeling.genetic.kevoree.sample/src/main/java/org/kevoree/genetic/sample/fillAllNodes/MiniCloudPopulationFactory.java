@@ -1,4 +1,4 @@
-package org.kevoree.genetic.sample.fillAllNodes;
+package org.kevoree.modeling.optimization.genetic.sample.fillAllNodes;
 
 import org.kevoree.*;
 import org.kevoree.cloner.DefaultModelCloner;

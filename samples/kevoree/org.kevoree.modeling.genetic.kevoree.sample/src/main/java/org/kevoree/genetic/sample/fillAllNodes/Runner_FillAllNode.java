@@ -1,10 +1,10 @@
-package org.kevoree.genetic.sample.fillAllNodes;
+package org.kevoree.modeling.optimization.genetic.sample.fillAllNodes;
 
 import org.kevoree.ContainerRoot;
-import org.kevoree.genetic.framework.GeneticEngine;
-import org.kevoree.genetic.framework.KevoreeSolution;
-import org.kevoree.genetic.library.operator.AddComponent;
-import org.kevoree.genetic.library.operator.RemoveComponentOperator;
+import org.kevoree.modeling.optimization.genetic.framework.GeneticEngine;
+import org.kevoree.modeling.optimization.genetic.framework.KevoreeSolution;
+import org.kevoree.modeling.optimization.genetic.library.operator.AddComponent;
+import org.kevoree.modeling.optimization.genetic.library.operator.RemoveComponentOperator;
 import org.kevoree.modeling.genetic.api.FitnessFunction;
 import org.kevoree.modeling.genetic.api.ResolutionEngine;
 

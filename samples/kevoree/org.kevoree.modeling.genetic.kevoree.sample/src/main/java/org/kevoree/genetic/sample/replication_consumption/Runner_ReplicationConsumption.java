@@ -1,18 +1,17 @@
-package org.kevoree.genetic.sample.replication_consumption;
+package org.kevoree.modeling.optimization.genetic.sample.replication_consumption;
 
 import org.kevoree.ContainerNode;
 import org.kevoree.ContainerRoot;
-import org.kevoree.genetic.framework.GeneticEngine;
-import org.kevoree.genetic.framework.KevoreeSolution;
-import org.kevoree.genetic.library.operator.AddComponent;
-import org.kevoree.genetic.library.operator.RemoveComponentOperator;
-import org.kevoree.genetic.sample.fillAllNodes.MiniCloudPopulationFactory;
+import org.kevoree.modeling.optimization.genetic.framework.GeneticEngine;
+import org.kevoree.modeling.optimization.genetic.framework.KevoreeSolution;
+import org.kevoree.modeling.optimization.genetic.library.operator.AddComponent;
+import org.kevoree.modeling.optimization.genetic.library.operator.RemoveComponentOperator;
+import org.kevoree.modeling.optimization.genetic.sample.fillAllNodes.MiniCloudPopulationFactory;
 import org.kevoree.modeling.api.KMFContainer;
 import org.kevoree.modeling.genetic.api.FitnessFunction;
 import org.kevoree.modeling.genetic.api.ResolutionEngine;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**

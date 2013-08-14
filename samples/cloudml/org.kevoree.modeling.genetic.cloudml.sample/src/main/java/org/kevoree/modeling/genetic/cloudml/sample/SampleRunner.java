@@ -1,7 +1,7 @@
 package org.kevoree.modeling.genetic.cloudml.sample;
 
-import org.kevoree.genetic.framework.GeneticEngine;
-import org.kevoree.genetic.framework.KevoreeSolution;
+import org.kevoree.modeling.optimization.genetic.framework.GeneticEngine;
+import org.kevoree.modeling.optimization.genetic.framework.KevoreeSolution;
 import org.kevoree.modeling.genetic.api.ResolutionEngine;
 import org.kevoree.modeling.genetic.cloudml.sample.fitness.CloudConsumptionFitness;
 import org.kevoree.modeling.genetic.cloudml.sample.fitness.CloudRedondencyFitness;

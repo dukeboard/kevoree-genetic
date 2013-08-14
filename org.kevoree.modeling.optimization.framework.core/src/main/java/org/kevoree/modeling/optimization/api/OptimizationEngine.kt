@@ -1,0 +1,25 @@
+package org.kevoree.modeling.optimization.api;
+
+import org.kevoree.modeling.api.KMFContainer
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: duke
+ * Date: 13/08/13
+ * Time: 17:12
+ */
+public trait OptimizationEngine<A: KMFContainer> {
+
+    public fun addOperator(operator: MutationOperator<A>): OptimizationEngine<A>;
+
+    public fun addFitnessFuntion(function: FitnessFunction<A>): OptimizationEngine<A> ;
+
+    public fun setPopulationFactory(populationFactory: PopulationFactory<A>): OptimizationEngine<A>;
+
+    public fun setMaxGeneration(maxGeneration: Int): OptimizationEngine<A>;
+
+    public fun setMaxTime(maxTime: Long): OptimizationEngine<A>;
+
+    public fun solve(): List<Solution> ;
+
+}
