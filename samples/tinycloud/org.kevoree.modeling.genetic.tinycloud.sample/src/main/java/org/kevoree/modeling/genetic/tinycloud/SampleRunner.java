@@ -1,12 +1,11 @@
 package org.kevoree.modeling.genetic.tinycloud;
 
-import org.kevoree.modeling.optimization.genetic.framework.GeneticEngine;
-import org.kevoree.modeling.optimization.genetic.framework.KevoreeSolution;
-import org.kevoree.modeling.genetic.api.ResolutionEngine;
 import org.kevoree.modeling.genetic.tinycloud.fitnesses.CloudConsumptionFitness;
 import org.kevoree.modeling.genetic.tinycloud.fitnesses.CloudRedondencyFitness;
 import org.kevoree.modeling.genetic.tinycloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.tinycloud.mutators.RemoveNodeMutator;
+import org.kevoree.modeling.optimization.api.OptimizationEngine;
+import org.kevoree.modeling.optimization.api.Solution;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class SampleRunner {
 
     public static void main(String[] args) throws Exception {
 
-        ResolutionEngine engine = new GeneticEngine();
+        OptimizationEngine engine = new GeneticEngine();
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
         engine.addFitnessFuntion(new CloudConsumptionFitness());
@@ -30,8 +29,8 @@ public class SampleRunner {
         engine.setMaxGeneration(100);
         engine.setPopulationFactory(new DefaultCloudPopulationFactory());
 
-        List<KevoreeSolution> result = engine.solve();
-        for (KevoreeSolution sol : result) {
+        List<Solution> result = engine.solve();
+        for (Solution sol : result) {
             sol.print(System.out);
         }
 

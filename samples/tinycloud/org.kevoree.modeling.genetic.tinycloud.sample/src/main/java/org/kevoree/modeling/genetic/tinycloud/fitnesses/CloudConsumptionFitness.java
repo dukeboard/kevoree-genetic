@@ -1,7 +1,7 @@
 package org.kevoree.modeling.genetic.tinycloud.fitnesses;
 
 import org.cloud.Cloud;
-import org.kevoree.modeling.genetic.api.FitnessFunction;
+import org.kevoree.modeling.optimization.api.FitnessFunction;
 
 /**
  * Created with IntelliJ IDEA.

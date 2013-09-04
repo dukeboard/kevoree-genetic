@@ -4,6 +4,7 @@ import org.kevoree.modeling.optimization.api.OptimizationStep
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.Solution
 import org.kevoree.modeling.optimization.api.OptimizationEngine
+import java.util.ArrayList
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,12 +15,16 @@ import org.kevoree.modeling.optimization.api.OptimizationEngine
 
 public class AbstractOptimizationStep<A : KMFContainer> : OptimizationStep<A> {
 
-    private var engine : OptimizationEngine<A>? = null;
+    private var engine: OptimizationEngine<A>? = null;
 
-    private var solutions : List<Solution>? = null;
+    private var solutions: List<Solution>? = null;
 
     override fun getSolutions(): List<Solution> {
-        return solutions;
+        if(solutions != null){
+            return solutions!!
+        }                   else {
+            return ArrayList<Solution>()
+        }
     }
     override fun populateInitalSolutions(solutions: List<Solution>) {
         throw UnsupportedOperationException()
@@ -39,9 +44,6 @@ public class AbstractOptimizationStep<A : KMFContainer> : OptimizationStep<A> {
     override fun then(nextStep: OptimizationStep<A>) {
         throw UnsupportedOperationException()
     }
-
-
-
 
 
 }

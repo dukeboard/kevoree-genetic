@@ -3,7 +3,7 @@ package org.kevoree.modeling.genetic.tinycloud.mutators;
 import org.cloud.Cloud;
 import org.cloud.Node;
 import org.cloud.impl.DefaultCloudFactory;
-import org.kevoree.modeling.genetic.api.MutationOperator;
+import org.kevoree.modeling.optimization.api.MutationOperator;
 
 import java.util.Random;
 

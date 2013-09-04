@@ -3,10 +3,9 @@ package org.kevoree.modeling.genetic.tinycloud;
 import org.cloud.Cloud;
 import org.cloud.impl.DefaultCloudFactory;
 import org.kevoree.modeling.api.ModelCloner;
-import org.kevoree.modeling.genetic.api.PopulationFactory;
+import org.kevoree.modeling.optimization.api.PopulationFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
