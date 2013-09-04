@@ -151,14 +151,14 @@
         <module>samples/kevoree/org.kevoree.modeling.genetic.kevoree.model</module>
         <module>samples/kevoree/org.kevoree.modeling.genetic.kevoree.library</module>
         <module>samples/kevoree/org.kevoree.modeling.genetic.kevoree.sample</module>
-
+          -->
         <module>samples/tinycloud/org.kevoree.modeling.genetic.tinycloud.model</module>
         <module>samples/tinycloud/org.kevoree.modeling.genetic.tinycloud.sample</module>
 
+        <!--
         <module>samples/cloudml/org.kevoree.modeling.genetic.cloudml.model</module>
         <module>samples/cloudml/org.kevoree.modeling.genetic.cloudml.sample</module>
-        -->
-
+         -->
     </modules>
 
     <repositories>
