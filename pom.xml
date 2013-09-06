@@ -32,7 +32,7 @@
 
     <properties>
         <kevoree.version>${project.version}</kevoree.version>
-        <kotlin.version>0.5.998</kotlin.version>
+        <kotlin.version>0.6.69</kotlin.version>
         <kmf.version>1.5.2-SNAPSHOT</kmf.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -136,7 +136,6 @@
     </build>
 
     <modules>
-
         <module>org.kevoree.modeling.optimization.framework.core</module>
 
         <!-- Genetic Engine -->
@@ -146,34 +145,7 @@
         <module>org.kevoree.modeling.optimization.engine.greedy</module>
         <!-- FullSearchEngine -->
         <module>org.kevoree.modeling.optimization.engine.fullsearch</module>
-
-        <!--
-        <module>samples/kevoree/org.kevoree.modeling.genetic.kevoree.model</module>
-        <module>samples/kevoree/org.kevoree.modeling.genetic.kevoree.library</module>
-        <module>samples/kevoree/org.kevoree.modeling.genetic.kevoree.sample</module>
-          -->
-        <module>samples/tinycloud/org.kevoree.modeling.genetic.tinycloud.model</module>
-        <module>samples/tinycloud/org.kevoree.modeling.genetic.tinycloud.sample</module>
-
-        <!--
-        <module>samples/cloudml/org.kevoree.modeling.genetic.cloudml.model</module>
-        <module>samples/cloudml/org.kevoree.modeling.genetic.cloudml.sample</module>
-         -->
     </modules>
-
-    <repositories>
-        <repository>
-            <id>repo.kevoree</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>plugin.kevoree</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <distributionManagement>
         <repository>

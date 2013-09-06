@@ -1,6 +1,7 @@
 package org.kevoree.modeling.optimization.api;
 
-import org.kevoree.modeling.api.KMFContainer;
+import org.kevoree.modeling.api.KMFContainer
+import org.kevoree.modeling.api.trace.TraceSequence
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,6 +11,14 @@ import org.kevoree.modeling.api.KMFContainer;
  */
 public trait Solution {
 
-    public fun getModel(): KMFContainer;
+    val model: KMFContainer
+
+    val origin: KMFContainer?
+
+    val traceSequence: TraceSequence?
+
+    public fun getScoreForFitness(fitnessName: String): Double?
+
+    public fun getFitnesses(): Set<String>
 
 }

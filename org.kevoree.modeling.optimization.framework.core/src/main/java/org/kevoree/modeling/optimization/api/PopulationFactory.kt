@@ -2,6 +2,7 @@ package org.kevoree.modeling.optimization.api;
 
 import org.kevoree.modeling.api.KMFContainer;
 import org.kevoree.modeling.api.ModelCloner;
+import org.kevoree.modeling.api.compare.ModelCompare
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,5 +15,7 @@ public trait PopulationFactory<A : KMFContainer> {
     public fun createPopulation() : List<A>;
 
     public fun getCloner() : ModelCloner;
+
+    public fun getModelCompare() : ModelCompare
 
 }
