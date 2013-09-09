@@ -7,6 +7,7 @@ import org.kevoree.modeling.optimization.api.FitnessFunction
 import org.kevoree.modeling.optimization.api.PopulationFactory
 import org.kevoree.modeling.optimization.api.Solution
 import java.util.ArrayList
+import org.kevoree.modeling.optimization.framework.DefaultSolution
 
 /**
  * Created by duke on 14/08/13.
@@ -44,7 +45,8 @@ public class GreedyEngine<A: KMFContainer>: OptimizationEngine<A> {
 
         var model = _populationFactory!!.createPopulation().get(0);
 
-
+        var solutions = ArrayList<Solution>()
+        return solutions;
     }
 
 

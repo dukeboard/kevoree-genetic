@@ -5,7 +5,7 @@ import org.kevoree.modeling.api.trace.ModelAddTrace;
 import org.kevoree.modeling.api.trace.ModelRemoveTrace;
 import org.kevoree.modeling.api.trace.ModelTrace;
 import org.kevoree.modeling.api.trace.TraceSequence;
-import org.kevoree.modeling.optimization.api.FitnessFunctionOriginAware;
+import org.kevoree.modeling.optimization.api.FitnessFunction;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +14,7 @@ import org.kevoree.modeling.optimization.api.FitnessFunctionOriginAware;
  * Time: 17:52
  */
 
-public class CloudAdaptationCostFitness implements FitnessFunctionOriginAware<Cloud> {
+public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
 
     @Override
     public boolean originAware(){

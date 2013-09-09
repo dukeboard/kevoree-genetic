@@ -7,7 +7,8 @@ import org.kevoree.loader.XMIModelLoader;
 import org.kevoree.modeling.api.KMFContainer;
 import org.kevoree.modeling.api.ModelCloner;
 import org.kevoree.modeling.api.ModelLoader;
-import org.kevoree.modeling.genetic.api.PopulationFactory;
+import org.kevoree.modeling.api.compare.ModelCompare;
+import org.kevoree.modeling.optimization.api.PopulationFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,4 +69,12 @@ public class MiniCloudPopulationFactory implements PopulationFactory<ContainerRo
     public org.kevoree.modeling.api.ModelCloner getCloner() {
         return new org.kevoree.cloner.DefaultModelCloner();
     }
+
+    @Override
+    public ModelCompare getModelCompare() {
+        return new org.kevoree.compare.DefaultModelCompare();
+    }
+
 }
+
+

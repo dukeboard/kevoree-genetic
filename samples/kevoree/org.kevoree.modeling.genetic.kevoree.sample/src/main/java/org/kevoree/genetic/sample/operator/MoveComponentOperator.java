@@ -1,4 +1,4 @@
-package org.kevoree.modeling.optimization.genetic.library.operator;
+package org.kevoree.genetic.sample.operator;
 
 import org.kevoree.ComponentInstance;
 import org.kevoree.ContainerNode;

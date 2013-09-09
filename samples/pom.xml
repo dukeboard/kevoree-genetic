@@ -9,12 +9,14 @@
     <packaging>pom</packaging>
 
     <properties>
-        <kmf.version>1.5.2-SNAPSHOT</kmf.version>
+        <kmf.version>1.5.4</kmf.version>
     </properties>
 
     <modules>
         <module>tinycloud/org.kevoree.modeling.genetic.tinycloud.model</module>
         <module>tinycloud/org.kevoree.modeling.genetic.tinycloud.sample</module>
+        <module>kevoree/org.kevoree.modeling.genetic.kevoree.model</module>
+        <module>kevoree/org.kevoree.modeling.genetic.kevoree.sample</module>
     </modules>
 
     <build>

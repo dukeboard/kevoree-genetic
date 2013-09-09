@@ -1,4 +1,4 @@
-package org.kevoree.modeling.optimization.genetic.library.operator;
+package org.kevoree.genetic.sample.operator;
 
 import org.kevoree.ContainerRoot;
 import org.kevoree.KevoreeFactory;
@@ -6,7 +6,7 @@ import org.kevoree.cloner.DefaultModelCloner;
 import org.kevoree.impl.DefaultKevoreeFactory;
 import org.kevoree.modeling.api.KMFContainer;
 import org.kevoree.modeling.api.ModelCloner;
-import org.kevoree.modeling.genetic.api.MutationOperator;
+import org.kevoree.modeling.optimization.api.MutationOperator;
 
 import java.util.List;
 import java.util.Random;
@@ -71,7 +71,7 @@ public abstract class AbstractKevoreeOperator implements MutationOperator<Contai
         return;
     }
 
-    protected List<Object> selectTarget(org.kevoree.modeling.api.KMFContainer root, String query) {
+    protected List<Object> selectTarget(KMFContainer root, String query) {
         return (root).selectByQuery(query);
     }
 
