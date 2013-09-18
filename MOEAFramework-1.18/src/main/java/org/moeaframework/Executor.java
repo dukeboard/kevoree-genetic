@@ -32,7 +32,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.TypedProperties;
-import org.moeaframework.util.distributed.DistributedProblem;
 import org.moeaframework.util.io.FileUtils;
 
 /**
@@ -92,13 +91,7 @@ public class Executor extends ProblemBuilder {
 	 * if the default algorithm factory should be used.
 	 */
 	private AlgorithmFactory algorithmFactory;
-	
-	/**
-	 * The instrumenter used to record information about the runtime behavior
-	 * of algorithms executed by this executor; or {@code null} if no 
-	 * instrumentation is used.
-	 */
-	private Instrumenter instrumenter;
+
 	
 	/**
 	 * Constructs a new executor initialized with default settings.
@@ -109,19 +102,7 @@ public class Executor extends ProblemBuilder {
 		properties = new TypedProperties();
 		numberOfThreads = 1;
 	}
-	
-	/**
-	 * Sets the instrumenter used to record information about the runtime
-	 * behavior of algorithms executed by this executor.
-	 * 
-	 * @param instrumenter the instrumeter
-	 * @return a reference to this executor
-	 */
-	public Executor withInstrumenter(Instrumenter instrumenter) {
-		this.instrumenter = instrumenter;
-		
-		return this;
-	}
+
 	
 	/**
 	 * Sets the algorithm factory used by this executor.
@@ -567,13 +548,7 @@ public class Executor extends ProblemBuilder {
 			problem = getProblemInstance();
 			
 			try {
-				if (executorService != null) {
-					problem = new DistributedProblem(problem, executorService);
-				} else if (numberOfThreads > 1) {
-					executor = Executors.newFixedThreadPool(numberOfThreads);
-					problem = new DistributedProblem(problem, executor);
-				}
-				
+
 				NondominatedPopulation result = newArchive();
 				
 				try {
@@ -595,10 +570,7 @@ public class Executor extends ProblemBuilder {
 								checkpointFile,
 								checkpointFrequency);
 					}
-					
-					if (instrumenter != null) {
-						algorithm = instrumenter.instrument(algorithm);
-					}
+
 
 					while (!algorithm.isTerminated() && 
 							(algorithm.getNumberOfEvaluations() < maxEvaluations)) {

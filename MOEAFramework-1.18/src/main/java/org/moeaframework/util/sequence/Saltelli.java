@@ -17,8 +17,6 @@
  */
 package org.moeaframework.util.sequence;
 
-import org.moeaframework.analysis.sensitivity.SobolAnalysis;
-
 /**
  * Extension of Sobol's sequence for generating the samples for Saltelli's
  * version of Sobol' global variance decomposition. This approach allows
