@@ -139,7 +139,6 @@
         <module>org.kevoree.modeling.optimization.framework.core</module>
 
         <!-- Genetic Engine -->
-        <module>MOEAFramework-1.18</module>
         <module>org.kevoree.modeling.optimization.engine.genetic</module>
         <!-- Greedy Engine -->
         <module>org.kevoree.modeling.optimization.engine.greedy</module>
