@@ -1,18 +1,18 @@
-/* Copyright 2009-2012 David Hadka
- * 
+/* Copyright 2009-2013 David Hadka
+ *
  * This file is part of the MOEA Framework.
- * 
+ *
  * The MOEA Framework is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation, either version 3 of the License, or (at your 
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
- * The MOEA Framework is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
  * License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.moeaframework.algorithm.pisa;
@@ -109,37 +109,6 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	 * The variation operator.
 	 */
 	private final Variation variation;
-	
-	/**
-	 * Constructs an adapter for a PISA selector.
-	 * 
-	 * @param filePrefix the file prefix used when creating the PISA
-	 *        communication files
-	 * @param selector the {@link ProcessBuilder} to start the selector process
-	 * @param problem the problem being solved
-	 * @param variation the variation operator
-	 * @param alpha the population size
-	 * @param mu the number of parents
-	 * @param lambda the number of offspring
-	 * @deprecated Will be removed in version 2.0; use the 
-	 *             {@link #PISAAlgorithm(String, Problem, Variation,
-	 *             Properties)} constructor instead
-	 */
-	@Deprecated
-	public PISAAlgorithm(String filePrefix, ProcessBuilder selector,
-			Problem problem, Variation variation, int alpha, int mu, 
-			int lambda) {
-		super(problem);
-		this.filePrefix = filePrefix;
-		this.selector = selector;
-		this.variation = variation;
-		this.alpha = alpha;
-		this.mu = mu;
-		this.lambda = lambda;
-
-		state = new State(new File(filePrefix + "sta"));
-		solutions = new HashMap<Integer, Solution>();
-	}
 
 	/**
 	 * Constructs an adapter for a PISA selector.

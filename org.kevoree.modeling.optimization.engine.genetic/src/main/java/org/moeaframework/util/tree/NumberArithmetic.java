@@ -1,22 +1,23 @@
-/* Copyright 2009-2012 David Hadka
- * 
+/* Copyright 2009-2013 David Hadka
+ *
  * This file is part of the MOEA Framework.
- * 
+ *
  * The MOEA Framework is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation, either version 3 of the License, or (at your 
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
- * The MOEA Framework is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
  * License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.moeaframework.util.tree;
 
+import org.apache.commons.math3.util.FastMath;
 import org.moeaframework.core.Settings;
 
 /**
@@ -476,6 +477,39 @@ public class NumberArithmetic {
 	 */
 	public static Number tanh(Number a) {
 		return Math.tanh(a.doubleValue());
+	}
+	
+	/**
+	 * Returns the hyperbolic arc sine of the number.
+	 * 
+	 * @param a the number
+	 * @return the hyperbolic arc sine of the number
+	 * @see FastMath#asinh(double)
+	 */
+	public static Number asinh(Number a) {
+		return FastMath.asinh(a.doubleValue());
+	}
+	
+	/**
+	 * Returns the hyperbolic arc cosine of the number.
+	 * 
+	 * @param a the number
+	 * @return the hyperbolic arc cosine of the number
+	 * @see FastMath#acosh(double)
+	 */
+	public static Number acosh(Number a) {
+		return FastMath.acosh(a.doubleValue());
+	}
+	
+	/**
+	 * Returns the hyperbolic arc tangent of the number.
+	 * 
+	 * @param a the number
+	 * @return the hyperbolic arc tangent of the number
+	 * @see FastMath#atanh(double)
+	 */
+	public static Number atanh(Number a) {
+		return FastMath.atanh(a.doubleValue());
 	}
 	
 	/**

@@ -1,18 +1,18 @@
-/* Copyright 2009-2012 David Hadka
- * 
+/* Copyright 2009-2013 David Hadka
+ *
  * This file is part of the MOEA Framework.
- * 
+ *
  * The MOEA Framework is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation, either version 3 of the License, or (at your 
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
- * The MOEA Framework is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
  * License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.moeaframework.core;
@@ -22,13 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A solution to a problem, storing the decision variables, objectives,
- * constraints and attributes. Attributes are arbitrary {@code (key, value)}
- * pairs; they are instance-specific and are not carried over in the copy
- * constructor.
+ * A solution to an optimization problem, storing the decision variables,
+ * objectives, constraints and attributes. Attributes are arbitrary {@code
+ * (key, value)} pairs; they are instance-specific and are not carried over in
+ * the copy constructor.
  * <p>
  * Solutions should only be constructed in {@link Problem#newSolution()} or 
- * cloned from an existing solution with {@link #copy()}.
+ * cloned from an existing solution with {@link #copy()}.  This ensures the
+ * solutions and configured correctly for the given optimization problem.
  */
 public class Solution implements Serializable {
 

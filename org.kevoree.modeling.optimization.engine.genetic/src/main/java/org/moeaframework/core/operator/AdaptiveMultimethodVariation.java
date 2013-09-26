@@ -1,18 +1,18 @@
-/* Copyright 2009-2012 David Hadka
- * 
+/* Copyright 2009-2013 David Hadka
+ *
  * This file is part of the MOEA Framework.
- * 
+ *
  * The MOEA Framework is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation, either version 3 of the License, or (at your 
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
- * The MOEA Framework is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
  * License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.moeaframework.core.operator;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.math.stat.StatUtils;
+import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
@@ -224,15 +224,13 @@ public class AdaptiveMultimethodVariation implements Variation {
 		return arity;
 	}
 
-	/**
-	 * Procedure for adjusting an array of probabilities to ensure the
-	 * probabilities are at least {@code minimum}.
-	 * 
-	 * @deprecated not used by this class
-	 * @param probabilities the array of probabilities
-	 * @param minimum the minimum probability
-	 */
-//	@Deprecated
+//	/**
+//	 * Procedure for adjusting an array of probabilities to ensure the
+//	 * probabilities are at least {@code minimum}.
+//	 * 
+//	 * @param probabilities the array of probabilities
+//	 * @param minimum the minimum probability
+//	 */
 //	public static void correctProbabilities(double[] probabilities,
 //			double minimum) {
 //		double diff = 0.0;

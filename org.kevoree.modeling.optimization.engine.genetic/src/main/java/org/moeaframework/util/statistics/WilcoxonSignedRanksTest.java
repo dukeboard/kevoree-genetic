@@ -1,18 +1,18 @@
-/* Copyright 2009-2012 David Hadka
- * 
+/* Copyright 2009-2013 David Hadka
+ *
  * This file is part of the MOEA Framework.
- * 
+ *
  * The MOEA Framework is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation, either version 3 of the License, or (at your 
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
- * The MOEA Framework is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
  * License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.moeaframework.util.statistics;
@@ -20,9 +20,7 @@ package org.moeaframework.util.statistics;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.NormalDistribution;
-import org.apache.commons.math.distribution.NormalDistributionImpl;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.moeaframework.core.Settings;
 
 /**
@@ -124,8 +122,19 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * When the samples from both populations are less than 20, only alpha
+	 * values of 0.05 and 0.01 are valid. This is because a table is used to
+	 * accurately determine the critical values. When more than 20 samples are
+	 * available, the normal approximation is used allowing any value for alpha.
+	 * 
+	 * @throws IllegalArgumentException if an insufficient sampling size is
+	 *         provided, or if an invalid alpha value is provided
+	 */
 	@Override
-	public boolean test(double alpha) throws MathException {
+	public boolean test(double alpha) {
 		double Rpos = 0.0;
 		double Rneg = 0.0;
 
@@ -149,7 +158,7 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 			return T <= getCriticalTValueFromTable(n, alpha);
 		} else {
 			double z = 0.0;
-			NormalDistribution dist = new NormalDistributionImpl();
+			NormalDistribution dist = new NormalDistribution();
 
 			if (Settings.isContinuityCorrection()) {
 				z = (Math.abs(T - n * (n + 1) / 4.0) - 0.5)
@@ -164,8 +173,18 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 		}
 	}
 
-	private static int getCriticalTValueFromTable(int n, double alpha)
-			throws MathException {
+	/**
+	 * Returns the critical T value from the lookup tables.
+	 * 
+	 * @param n1 the number of samples from the first group
+	 * @param n2 the number of samples from the second group
+	 * @param alpha the prespecified level of confidence; only values of 0.05
+	 *        and 0.01 are permitted
+	 * @return the critical U value from the lookup tables
+	 * @throws IllegalArgumentException if an insufficient sampling size is
+	 *         provided, or if an invalid alpha value is provided
+	 */
+	private static int getCriticalTValueFromTable(int n, double alpha) {
 		if ((n < 6) || (n > 50)) {
 			throw new IllegalArgumentException("only valid for 6 <= n <= 50");
 		}
@@ -187,11 +206,19 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 		return value;
 	}
 
+	/**
+	 * Table of critical T values for alpha=0.05.  Entries of -1 indicate an
+	 * insufficient sampling size.
+	 */
 	private static final int[] TABLE_5 = new int[] { 0, 2, 3, 5, 8, 10, 13, 17,
 			21, 25, 29, 34, 40, 46, 52, 58, 65, 73, 81, 89, 98, 107, 116, 126,
 			137, 147, 159, 170, 182, 195, 208, 221, 235, 249, 264, 279, 294,
 			310, 327, 343, 361, 378, 396, 415, 434 };
 
+	/**
+	 * Table of critical T values for alpha=0.01.  Entries of -1 indicate an
+	 * insufficient sampling size.
+	 */
 	private static final int[] TABLE_1 = new int[] { -1, -1, 0, 1, 3, 5, 7, 9,
 			12, 15, 19, 23, 27, 32, 37, 42, 48, 54, 61, 68, 75, 83, 91, 100,
 			109, 118, 128, 138, 148, 159, 171, 182, 194, 207, 220, 233, 247,

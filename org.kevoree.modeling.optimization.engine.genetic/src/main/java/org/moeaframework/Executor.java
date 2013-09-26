@@ -1,18 +1,18 @@
-/* Copyright 2009-2012 David Hadka
- * 
+/* Copyright 2009-2013 David Hadka
+ *
  * This file is part of the MOEA Framework.
- * 
+ *
  * The MOEA Framework is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation, either version 3 of the License, or (at your 
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
- * The MOEA Framework is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
  * License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.moeaframework;
@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.moeaframework.algorithm.Checkpoints;
 import org.moeaframework.core.Algorithm;
@@ -32,7 +33,10 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.distributed.DistributedProblem;
 import org.moeaframework.util.io.FileUtils;
+import org.moeaframework.util.progress.ProgressHelper;
+import org.moeaframework.util.progress.ProgressListener;
 
 /**
  * Configures and executes algorithms while hiding the underlying boilerplate 
@@ -91,7 +95,25 @@ public class Executor extends ProblemBuilder {
 	 * if the default algorithm factory should be used.
 	 */
 	private AlgorithmFactory algorithmFactory;
-
+	
+	/**
+	 * The instrumenter used to record information about the runtime behavior
+	 * of algorithms executed by this executor; or {@code null} if no 
+	 * instrumentation is used.
+	 */
+	private Instrumenter instrumenter;
+	
+	/**
+	 * Manages reporting progress, elapsed time, adn time remaining to
+	 * {@link ProgressListener}s.
+	 */
+	private ProgressHelper progress;
+	
+	/**
+	 * Indicates that this executor should stop processing and return any
+	 * results collected thus far.
+	 */
+	private AtomicBoolean isCanceled;
 	
 	/**
 	 * Constructs a new executor initialized with default settings.
@@ -99,10 +121,55 @@ public class Executor extends ProblemBuilder {
 	public Executor() {
 		super();
 		
+		isCanceled = new AtomicBoolean();
+		progress = new ProgressHelper(this);
 		properties = new TypedProperties();
 		numberOfThreads = 1;
 	}
-
+	
+	/**
+	 * Informs this executor to stop processing and returns any results
+	 * collected thus far.  This method is thread-safe.
+	 */
+	public void cancel() {
+		isCanceled.set(true);
+	}
+	
+	/**
+	 * Returns {@code true} if the canceled flag is set; {@code false}
+	 * otherwise.  After canceling a run, the flag will remain set to
+	 * {@code true} until another run is started.  This method is thread-safe.
+	 * 
+	 * @return {@code true} if the canceled flag is set; {@code false}
+	 *         otherwise
+	 */
+	public boolean isCanceled() {
+		return isCanceled.get();
+	}
+	
+	/**
+	 * Sets the instrumenter used to record information about the runtime
+	 * behavior of algorithms executed by this executor.
+	 * 
+	 * @param instrumenter the instrumeter
+	 * @return a reference to this executor
+	 */
+	public Executor withInstrumenter(Instrumenter instrumenter) {
+		this.instrumenter = instrumenter;
+		
+		return this;
+	}
+	
+	/**
+	 * Returns the instrumenter used by this executor; or {@code null} if no
+	 * instrumenter has been assigned.
+	 * 
+	 * @return the instrumenter used by this executor; or {@code null} if no
+	 *         instrumenter has been assigned
+	 */
+	public Instrumenter getInstrumenter() {
+		return instrumenter;
+	}
 	
 	/**
 	 * Sets the algorithm factory used by this executor.
@@ -501,35 +568,79 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
+	 * Adds the given progress listener to receive periodic progress reports.
+	 * 
+	 * @param listener the progress listener to add
+	 * @return a reference to this executor
+	 */
+	public Executor withProgressListener(ProgressListener listener) {
+		progress.addProgressListener(listener);
+		
+		return this;
+	}
+	
+	/**
 	 * Runs this executor with its configured settings multiple times,
-	 * returning the individual end-of-run approximation sets.
+	 * returning the individual end-of-run approximation sets.  If the run
+	 * is canceled, the list contains any complete seeds that finished prior
+	 * to cancellation.
 	 * 
 	 * @param numberOfSeeds the number of seeds to run
 	 * @return the individual end-of-run approximation sets
 	 */
 	public List<NondominatedPopulation> runSeeds(int numberOfSeeds) {
+		isCanceled.set(false);
+		
 		if ((checkpointFile != null) && (numberOfSeeds > 1)) {
 			System.err.println(
 					"checkpoints not supported when running multiple seeds");
 			checkpointFile = null;
 		}
 		
+		int maxEvaluations = properties.getInt("maxEvaluations", 25000);
+		
 		List<NondominatedPopulation> results =
 				new ArrayList<NondominatedPopulation>();
 		
-		for (int i=0; i<numberOfSeeds; i++) {
-			results.add(run());
+		progress.start(numberOfSeeds, maxEvaluations);
+		
+		for (int i = 0; i < numberOfSeeds && !isCanceled.get(); i++) {
+			NondominatedPopulation result = runSingleSeed(i+1, numberOfSeeds,
+					maxEvaluations);
+			
+			if (result != null) {
+				results.add(result);
+				progress.nextSeed();
+			}
 		}
 		
+		progress.stop();
+		
 		return results;
+	}
+	
+	/**
+	 * Runs this executor with its configured settings.
+	 * 
+	 * @return the end-of-run approximation set; or {@code null} if canceled
+	 */
+	public NondominatedPopulation run() {
+		isCanceled.set(false);
+		return runSingleSeed(1, 1, properties.getInt("maxEvaluations", 25000));
 	}
 
 	/**
 	 * Runs this executor with its configured settings.
 	 * 
-	 * @return the end-of-run approximation set
+	 * @param seed the current seed being run, such that
+	 *        {@code 1 <= seed <= numberOfSeeds}
+	 * @param numberOfSeeds to total number of seeds being run
+	 * @param maxEvaluations to maximum number of objective function
+	 *        evaluations per seed
+	 * @return the end-of-run approximation set; or {@code null} if canceled
 	 */
-	public NondominatedPopulation run() {
+	protected NondominatedPopulation runSingleSeed(int seed, int numberOfSeeds,
+			int maxEvaluations) {
 		if (algorithmName == null) {
 			throw new IllegalArgumentException("no algorithm specified");
 		}
@@ -537,8 +648,6 @@ public class Executor extends ProblemBuilder {
 		if ((problemName == null) && (problemClass == null)) {
 			throw new IllegalArgumentException("no problem specified");
 		}
-		
-		int maxEvaluations = properties.getInt("maxEvaluations", 25000);
 		
 		Problem problem = null;
 		Algorithm algorithm = null;
@@ -548,7 +657,13 @@ public class Executor extends ProblemBuilder {
 			problem = getProblemInstance();
 			
 			try {
-
+				if (executorService != null) {
+					problem = new DistributedProblem(problem, executorService);
+				} else if (numberOfThreads > 1) {
+					executor = Executors.newFixedThreadPool(numberOfThreads);
+					problem = new DistributedProblem(problem, executor);
+				}
+				
 				NondominatedPopulation result = newArchive();
 				
 				try {
@@ -570,11 +685,20 @@ public class Executor extends ProblemBuilder {
 								checkpointFile,
 								checkpointFrequency);
 					}
+					
+					if (instrumenter != null) {
+						algorithm = instrumenter.instrument(algorithm);
+					}
 
-
-					while (!algorithm.isTerminated() && 
+					while (!algorithm.isTerminated() &&
 							(algorithm.getNumberOfEvaluations() < maxEvaluations)) {
+						// stop and return null if canceled and not yet complete
+						if (isCanceled.get()) {
+							return null;
+						}
+						
 						algorithm.step();
+						progress.setCurrentNFE(algorithm.getNumberOfEvaluations());
 					}
 
 					result.addAll(algorithm.getResult());

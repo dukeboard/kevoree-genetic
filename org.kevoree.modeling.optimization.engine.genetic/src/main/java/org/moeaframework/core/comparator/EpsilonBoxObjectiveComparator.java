@@ -1,18 +1,18 @@
-/* Copyright 2009-2012 David Hadka
- * 
+/* Copyright 2009-2013 David Hadka
+ *
  * This file is part of the MOEA Framework.
- * 
+ *
  * The MOEA Framework is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation, either version 3 of the License, or (at your 
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
- * The MOEA Framework is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
  * License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.moeaframework.core.comparator;
@@ -140,9 +140,8 @@ Serializable {
 
 		for (int i = 0; i < solution1.getNumberOfObjectives(); i++) {
 			double epsilon = getEpsilon(i);
-
-			int index1 = (int)Math.floor(solution1.getObjective(i) / epsilon);
-			int index2 = (int)Math.floor(solution2.getObjective(i) / epsilon);
+			double index1 = Math.floor(solution1.getObjective(i) / epsilon);
+			double index2 = Math.floor(solution2.getObjective(i) / epsilon);
 
 			if (index1 < index2) {
 				dominate1 = true;
@@ -167,20 +166,14 @@ Serializable {
 
 			for (int i = 0; i < solution1.getNumberOfObjectives(); i++) {
 				double epsilon = getEpsilon(i);
-
-				int index1 = (int)Math.floor(solution1.getObjective(i)
-						/ epsilon);
-				int index2 = (int)Math.floor(solution2.getObjective(i)
-						/ epsilon);
+				double index1 = Math.floor(solution1.getObjective(i) / epsilon);
+				double index2 = Math.floor(solution2.getObjective(i) / epsilon);
 
 				dist1 += Math.pow(solution1.getObjective(i) - index1 * epsilon,
 						2.0);
 				dist2 += Math.pow(solution2.getObjective(i) - index2 * epsilon,
 						2.0);
 			}
-
-			dist1 = Math.sqrt(dist1);
-			dist2 = Math.sqrt(dist2);
 
 			if (dist1 < dist2) {
 				return -1;

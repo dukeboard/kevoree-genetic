@@ -1,18 +1,18 @@
-/* Copyright 2009-2012 David Hadka
- * 
+/* Copyright 2009-2013 David Hadka
+ *
  * This file is part of the MOEA Framework.
- * 
+ *
  * The MOEA Framework is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation, either version 3 of the License, or (at your 
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
- * The MOEA Framework is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
  * License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.moeaframework.core;
@@ -123,66 +123,6 @@ public class Settings {
 	 * The property key for the poll rate.
 	 */
 	public static final String KEY_PISA_POLL = KEY_PISA_PREFIX + "poll";
-	
-	/**
-	 * The prefix for PBS property keys.
-	 * 
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static final String KEY_PBS_PREFIX = KEY_PREFIX + "util.pbs.";
-	
-	/**
-	 * The property key for the PBS qsub command.
-	 * 
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static final String KEY_PBS_QSUB = KEY_PBS_PREFIX + "qsub";
-	
-	/**
-	 * The property key for the PBS script format.
-	 * 
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static final String KEY_PBS_SCRIPT = KEY_PBS_PREFIX + "script";
-	
-	/**
-	 * The property key for the PBS qstat command.
-	 * 
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static final String KEY_PBS_QSTAT = KEY_PBS_PREFIX + "qstat";
-	
-	/**
-	 * The property key for the PBS qdel command.
-	 * 
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static final String KEY_PBS_QDEL = KEY_PBS_PREFIX + "qdel";
-
-	/**
-	 * The property key for the regular expression for identifying queued PBS
-	 * jobs.
-	 * 
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static final String KEY_PBS_QUEUED_REGEX = KEY_PBS_PREFIX + 
-			"queued_regex";
-	
-	/**
-	 * The property key for the regular expression for extracting the PBS job
-	 * id from the qstat command.
-	 * 
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static final String KEY_PBS_JOBID_REGEX = KEY_PBS_PREFIX + 
-			"jobid_regex";
 	
 	/**
 	 * The property key for the file protection mode.
@@ -454,99 +394,6 @@ public class Settings {
 				".parameter." + parameterName, null);
 	}
 
-	/**
-	 * Returns the command used for submitting PBS jobs.  The job script is 
-	 * submitted by generating the script using {@link #getPBSScript()} and 
-	 * piping the result to this command.
-	 * 
-	 * @return the command used for submitting PBS jobs
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static String getPBSQsubCommand() {
-		return PROPERTIES.getString(KEY_PBS_QSUB, "qsub");
-	}
-	
-	/**
-	 * Returns the PBS script format.  The following variable substitutions are
-	 * provided:
-	 * <ul>
-	 *   <li>{0} job name
-	 *   <li>{1} number of nodes
-	 *   <li>{2} walltime hours
-	 *   <li>{3} commands
-	 * </ul>
-	 *   
-	 * @return the PBS script format
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static String getPBSScript() {
-		return PROPERTIES.getString(KEY_PBS_SCRIPT, 
-				"#PBS -N {0}\r\n" +
-				"#PBS -l nodes={1}\r\n" +
-				"#PBS -l walltime={2}:00:00\r\n" +
-				"#PBS -o output/{0}\r\n" +
-				"#PBS -e error/{0}\r\n" +
-				"{3}");
-	}
-	
-	/**
-	 * Returns the command used for retrieving PBS jobs for the current user.  
-	 * The following variable substitutions are provided:
-	 * <ul>
-	 *   <li>{0} user id
-	 * </ul>
-	 *   
-	 * @return the command used for retrieving PBS jobs for the current user
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static String getPBSQstatCommand() {
-		return PROPERTIES.getString(KEY_PBS_QSTAT, "qstat -u {0}");
-	}
-
-	/**
-	 * Returns the command used for killing PBS jobs.  The following variable 
-	 * substitutions are provided:
-	 * <ul>
-	 *   <li>{0} job id
-	 * </ul>
-	 *   
-	 * @return the command used for killing PBS jobs
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static String getPBSQdelCommand() {
-		return PROPERTIES.getString(KEY_PBS_QDEL, "qdel {0}");
-	}
-	
-	/**
-	 * Returns the regular expression for detecting if a job is queued.  This 
-	 * regular expression is applied to each output line from qstat.
-	 * 
-	 * @return the regular expression for detecting if a job is queued
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static String getPBSQueuedRegex() {
-		return PROPERTIES.getString(KEY_PBS_QUEUED_REGEX, "^.* Q   -- $");
-	}
-	
-	/**
-	 * Returns the regular expression for extracting the job id.  This regular 
-	 * expression is applied to each output line from qstat, and should contain
-	 * a single captured group containing the job id.  This regular expression
-	 * should fail to match any line that does not contain a valid job id.
-	 * 
-	 * @return the regular expression for extracting the job id
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static String getPBSJobIdRegex() {
-		return PROPERTIES.getString(KEY_PBS_JOBID_REGEX, "(\\d+)\\..*");
-	}
-
 	
 	/**
 	 * Returns the file protection file name format.  The following variable 
@@ -588,12 +435,12 @@ public class Settings {
 				"LZ1", "LZ2", "LZ3", "LZ4", "LZ5", "LZ6", "LZ7", "LZ8", "LZ9",
 				"WFG1_2", "WFG2_2", "WFG3_2", "WFG4_2", "WFG5_2", "WFG6_2", "WFG7_2", "WFG8_2", "WFG9_2",
 				"ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT5", "ZDT6",
-				/*"Belegundu", "Binh", "Binh2", "Binh3", "Binh4", "Fonseca", 
+				"Belegundu", "Binh", "Binh2", "Binh3", "Binh4", "Fonseca", 
 				"Fonseca2", "Jimenez", "Kita", "Kursawe", "Laumanns", "Lis", 
 				"Murata", "Obayashi", "OKA1", "OKA2", "Osyczka", "Osyczka2", 
 				"Poloni", "Quagliarella", "Rendon", "Rendon2", "Schaffer", 
 				"Schaffer2", "Srinivas", "Tamaki", "Tanaka", "Viennet", 
-				"Viennet2", "Viennet3", "Viennet4"*/});
+				"Viennet2", "Viennet3", "Viennet4"});
 	}
 	
 	/**

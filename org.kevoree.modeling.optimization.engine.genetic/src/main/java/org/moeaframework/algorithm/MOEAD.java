@@ -1,18 +1,18 @@
-/* Copyright 2009-2012 David Hadka
- * 
+/* Copyright 2009-2013 David Hadka
+ *
  * This file is part of the MOEA Framework.
- * 
+ *
  * The MOEA Framework is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation, either version 3 of the License, or (at your 
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
- * The MOEA Framework is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
  * License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.moeaframework.algorithm;
@@ -25,8 +25,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.math.stat.StatUtils;
-import org.apache.commons.math.util.MathUtils;
+import org.apache.commons.math3.stat.StatUtils;
+import org.apache.commons.math3.util.MathArrays;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -207,9 +207,9 @@ public class MOEAD extends AbstractAlgorithm {
 
 		@Override
 		public int compare(Individual o1, Individual o2) {
-			double d1 = MathUtils.distance(
+			double d1 = MathArrays.distance(
 					individual.getWeights(), o1.getWeights());
-			double d2 = MathUtils.distance(
+			double d2 = MathArrays.distance(
 					individual.getWeights(), o2.getWeights());
 
 			return Double.compare(d1, d2);
@@ -417,7 +417,7 @@ public class MOEAD extends AbstractAlgorithm {
 				double d = Double.POSITIVE_INFINITY;
 
 				for (int j = 0; j < population.size(); j++) {
-					d = Math.min(d, MathUtils.distance(weights.get(i),
+					d = Math.min(d, MathArrays.distance(weights.get(i),
 							population.get(j).getWeights()));
 				}
 
