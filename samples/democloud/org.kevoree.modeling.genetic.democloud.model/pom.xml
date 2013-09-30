@@ -37,6 +37,7 @@
                         <id>ModelGen</id>
                         <goals>
                             <goal>generate</goal>
+
                         </goals>
                         <configuration>
                             <ecore>democloud.ecore</ecore>

@@ -1,4 +1,4 @@
-package org.kevoree.modeling.genetic.tinycloud.fitnesses;
+package org.kevoree.modeling.genetic.democloud.fitnesses;
 
 import org.cloud.Cloud;
 import org.kevoree.modeling.api.trace.TraceSequence;

@@ -1,9 +1,10 @@
-package org.kevoree.modeling.genetic.tinycloud;
+package org.kevoree.modeling.genetic.democloud;
 
 import org.cloud.Cloud;
-import org.kevoree.modeling.genetic.tinycloud.fitnesses.CloudAdaptationCostFitness;
-import org.kevoree.modeling.genetic.tinycloud.fitnesses.CloudConsumptionFitness;
-import org.kevoree.modeling.genetic.tinycloud.fitnesses.CloudRedondencyFitness;
+
+import org.kevoree.modeling.genetic.democloud.fitnesses.CloudAdaptationCostFitness;
+import org.kevoree.modeling.genetic.democloud.fitnesses.CloudConsumptionFitness;
+import org.kevoree.modeling.genetic.democloud.fitnesses.CloudRedondencyFitness;
 import org.kevoree.modeling.genetic.tinycloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.tinycloud.mutators.RemoveNodeMutator;
 import org.kevoree.modeling.optimization.api.OptimizationEngine;

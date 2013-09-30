@@ -1,4 +1,4 @@
-package org.kevoree.modeling.genetic.tinycloud;
+package org.kevoree.modeling.genetic.democloud;
 
 import org.cloud.Cloud;
 import org.cloud.compare.DefaultModelCompare;
