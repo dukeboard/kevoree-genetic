@@ -34,13 +34,13 @@ import org.moeaframework.core.comparator.CrowdingComparator
 
 class GeneticEngine<A : KMFContainer> : OptimizationEngine<A> {
 
-    var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>();
-    var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>();
-    var _populationFactory: PopulationFactory<A>? = null;
-    var _maxGeneration = 100;
-    var _maxTime: Long = -1.toLong();
-    var _algorithm: GeneticAlgorithm = GeneticAlgorithm.EpsilonNSGII
-    var _dominanceEpsilon = 10.0;
+    private var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>();
+    private var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>();
+    private var _populationFactory: PopulationFactory<A>? = null;
+    private var _maxGeneration = 100;
+    private var _maxTime: Long = -1.toLong();
+    private var _algorithm: GeneticAlgorithm = GeneticAlgorithm.EpsilonNSGII
+    private var _dominanceEpsilon = 10.0;
 
     public fun setAlgorithm(alg: GeneticAlgorithm) {
         _algorithm = alg;
