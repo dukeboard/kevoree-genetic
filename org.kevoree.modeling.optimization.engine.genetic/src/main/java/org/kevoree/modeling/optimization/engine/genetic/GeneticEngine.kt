@@ -99,6 +99,11 @@ class GeneticEngine<A : KMFContainer> : OptimizationEngine<A> {
             GeneticAlgorithm.EpsilonNSGII -> {
                 //don't do nothing -> default case
             }
+            GeneticAlgorithm.NSGII -> {
+                val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), CrowdingComparator()));
+                kalgo = NSGAII(problem, NondominatedSortingPopulation(), null, selection, variations, ModelInitialization(_populationFactory!!, problem, originAware));
+                //don't do nothing -> default case
+            }
             GeneticAlgorithm.EpsilonMOEA -> {
                 kalgo = EpsilonMOEA(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(_populationFactory!!, problem, originAware));
             }

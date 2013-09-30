@@ -8,6 +8,7 @@ package org.kevoree.modeling.optimization.engine.genetic
  */
 
 public enum class GeneticAlgorithm {
+    NSGII
     EpsilonNSGII
     EpsilonCrowdingNSGII
     EpsilonMOEA
