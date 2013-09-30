@@ -1,7 +1,7 @@
 package org.kevoree.modeling.genetic.democloud.mutators;
 
 import org.cloud.Cloud;
-import org.cloud.Node;
+import org.cloud.VirtualNode;
 import org.cloud.impl.DefaultCloudFactory;
 import org.kevoree.modeling.optimization.api.MutationOperator;
 
@@ -20,7 +20,7 @@ public class AddNodeMutator implements MutationOperator<Cloud> {
 
     @Override
     public void mutate(Cloud parent) {
-        Node node = cloudfactory.createNode();
+        VirtualNode node = cloudfactory.createVirtualNode();
         node.setId("node_"+Math.abs(rand.nextInt()));
         parent.addNodes(node);
     }
