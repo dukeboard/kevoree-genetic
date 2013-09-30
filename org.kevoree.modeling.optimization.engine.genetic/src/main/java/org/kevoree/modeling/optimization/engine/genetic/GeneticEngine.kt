@@ -18,6 +18,12 @@ import org.kevoree.modeling.optimization.framework.DefaultSolution
 import org.kevoree.modeling.optimization.engine.genetic.impl.ModelVariable
 import org.kevoree.modeling.optimization.engine.genetic.impl.RandomCompoundVariation
 import org.kevoree.modeling.optimization.engine.genetic.impl.MutationVariationAdaptor
+import org.moeaframework.algorithm.EpsilonMOEA
+import org.moeaframework.algorithm.RandomSearch
+import org.moeaframework.core.NondominatedPopulation
+import org.moeaframework.core.comparator.ChainedComparator
+import org.moeaframework.core.comparator.ParetoDominanceComparator
+import org.moeaframework.core.comparator.CrowdingComparator
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,6 +39,16 @@ class GeneticEngine<A : KMFContainer> : OptimizationEngine<A> {
     var _populationFactory: PopulationFactory<A>? = null;
     var _maxGeneration = 100;
     var _maxTime: Long = -1.toLong();
+    var _algorithm: GeneticAlgorithm = GeneticAlgorithm.EpsilonNSGII
+    var _dominanceEpsilon = 10.0;
+
+    public fun setAlgorithm(alg: GeneticAlgorithm) {
+        _algorithm = alg;
+    }
+
+    public fun setEpsilonDominance(dd: Double) {
+        _dominanceEpsilon = dd
+    }
 
     public override fun addOperator(operator: MutationOperator<A>): OptimizationEngine<A> {
         _operators.add(operator);
@@ -72,14 +88,32 @@ class GeneticEngine<A : KMFContainer> : OptimizationEngine<A> {
             }
         }
 
-        val problem = ModelOptimizationProblem(_fitnesses, _populationFactory!!.getCloner(),_populationFactory!!.getModelCompare());
+        val problem = ModelOptimizationProblem(_fitnesses, _populationFactory!!.getCloner(), _populationFactory!!.getModelCompare());
         val variations = RandomCompoundVariation();
         for (operator in _operators){
             variations.appendOperator(MutationVariationAdaptor(operator));
         }
 
+        var kalgo: Algorithm = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(_populationFactory!!, problem, originAware));
+        when(_algorithm){
+            GeneticAlgorithm.EpsilonNSGII -> {
+                //don't do nothing -> default case
+            }
+            GeneticAlgorithm.EpsilonMOEA -> {
+                kalgo = EpsilonMOEA(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(_populationFactory!!, problem, originAware));
+            }
+            GeneticAlgorithm.EpsilonRandom -> {
+                kalgo = RandomSearch(problem, ModelInitialization(_populationFactory!!, problem, originAware), NondominatedPopulation());
+            }
+            GeneticAlgorithm.EpsilonCrowdingNSGII -> {
+                val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), CrowdingComparator()));
+                kalgo = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), selection, variations, ModelInitialization(_populationFactory!!, problem, originAware));
+            }
+        //newSMSEMOA
+            else -> {
+            }
+        }
 
-        val kalgo = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(10.0), TournamentSelection(), variations, ModelInitialization(_populationFactory!!, problem, originAware));
         var generation = 0;
         var beginTimeMilli = System.currentTimeMillis();
         try {
@@ -114,9 +148,9 @@ class GeneticEngine<A : KMFContainer> : OptimizationEngine<A> {
         val population = algo.getResult();
         for (solution in population?.iterator()) {
             var loopvar = solution.getVariable(0) as ModelVariable;
-            var modelSolution = DefaultSolution(loopvar.model!!,loopvar.origin,loopvar.traceSequence);
+            var modelSolution = DefaultSolution(loopvar.model!!, loopvar.origin, loopvar.traceSequence);
             for(fitness in _fitnesses){
-                modelSolution.results.put(fitness.javaClass.getSimpleName(),fitness.evaluate(loopvar.model as A,loopvar.origin as A,loopvar.traceSequence))
+                modelSolution.results.put(fitness.javaClass.getSimpleName(), fitness.evaluate(loopvar.model as A, loopvar.origin as A, loopvar.traceSequence))
             }
             results.add(modelSolution);
         }
