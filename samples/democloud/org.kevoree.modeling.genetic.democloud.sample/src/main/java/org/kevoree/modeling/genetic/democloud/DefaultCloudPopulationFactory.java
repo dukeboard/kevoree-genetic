@@ -1,11 +1,16 @@
 package org.kevoree.modeling.genetic.democloud;
 
+
+
+
 import org.cloud.Cloud;
 import org.cloud.compare.DefaultModelCompare;
 import org.cloud.impl.DefaultCloudFactory;
+
 import org.kevoree.modeling.api.ModelCloner;
 import org.kevoree.modeling.api.compare.ModelCompare;
 import org.kevoree.modeling.optimization.api.PopulationFactory;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +34,7 @@ public class DefaultCloudPopulationFactory implements PopulationFactory<Cloud> {
 
     @Override
     public List<Cloud> createPopulation() {
-        ArrayList<Cloud> populations = new ArrayList<Cloud>();
+        ArrayList<Cloud> populations =  new ArrayList<Cloud>();
         for (int i = 0; i < size; i++) {
             populations.add(cloudfactory.createCloud());
         }
