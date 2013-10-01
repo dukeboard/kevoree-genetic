@@ -23,7 +23,7 @@ public class AddNodeMutator implements MutationOperator<Cloud> {
     @Override
     public void mutate(Cloud parent) {
         VirtualNode node = cloudfactory.createAmazon();
-        node.setId("node_"+Math.abs(rand.nextInt()));
-        parent.addNodes(node);
+       // node.setId("node_"+Math.abs(rand.nextInt()));
+       // parent.addNodes(node);
     }
 }

@@ -20,10 +20,12 @@ public class CloneNodeMutator implements MutationOperator<Cloud> {
     private Random rand = new Random();
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
 
+
     @Override
-    public void mutate(Cloud parent, VirtualNode node) {
+    public void mutate(Cloud parent) {
+
         VirtualNode nodeclone = cloudfactory.createVirtualNode();
-        nodeclone.setId(node.getId());
+        //nodeclone.setId(node.getId());
         parent.addNodes(nodeclone);
     }
 }

@@ -34,8 +34,9 @@ public class CloudConsumptionFitness implements FitnessFunction<Cloud> {
         if ((node instanceof  Amazon) || (node instanceof  Rackspace)  )
 
         {
-         pres=pres + node.getPricePerHour();
-         System.out.println(node.getId());
+
+         System.out.println("test"+node.getId());
+            pres=pres + node.getPricePerHour();
 
         }
 

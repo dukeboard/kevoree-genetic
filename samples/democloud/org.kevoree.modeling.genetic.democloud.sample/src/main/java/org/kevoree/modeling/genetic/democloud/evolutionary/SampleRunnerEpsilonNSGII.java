@@ -4,6 +4,7 @@ import org.cloud.Cloud;
 import org.kevoree.modeling.genetic.democloud.DefaultCloudPopulationFactory;
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudAdaptationCostFitness;
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudConsumptionFitness;
+import org.kevoree.modeling.genetic.democloud.fitnesses.CloudLatencyFitness;
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudRedondencyFitness;
 import org.kevoree.modeling.genetic.democloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.RemoveNodeMutator;
@@ -29,8 +30,9 @@ public class SampleRunnerEpsilonNSGII {
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
         engine.addFitnessFuntion(new CloudConsumptionFitness());
-      //  engine.addFitnessFuntion(new CloudRedondencyFitness());
-     //   engine.addFitnessFuntion(new CloudAdaptationCostFitness());
+        engine.addFitnessFuntion(new CloudLatencyFitness());
+        //engine.addFitnessFuntion(new CloudRedondencyFitness());
+        //engine.addFitnessFuntion(new CloudAdaptationCostFitness());
 
         engine.setMaxGeneration(100);
         engine.setPopulationFactory(new DefaultCloudPopulationFactory().setSize(10));
