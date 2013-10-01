@@ -1,8 +1,6 @@
 package org.kevoree.modeling.genetic.democloud.fitnesses;
 
-import org.cloud.Cloud;
-import org.cloud.Software;
-import org.cloud.VirtualNode;
+import org.cloud.*;
 import org.kevoree.modeling.api.trace.TraceSequence;
 import org.kevoree.modeling.optimization.api.FitnessFunction;
 
@@ -14,7 +12,7 @@ import org.kevoree.modeling.optimization.api.FitnessFunction;
  */
 public class CloudLatencyFitness implements FitnessFunction<Cloud> {
 
-    private double maxNode = 10;
+    //private double maxNode = 10;
 
     @Override
     public boolean originAware() {
@@ -27,16 +25,22 @@ public class CloudLatencyFitness implements FitnessFunction<Cloud> {
         double latency = 0;
 
 
-        for (int i=0 ;i<model.getNodes().size();i++)
+        for(VirtualNode node : model.getNodes())
+
         {
-            //select your node by ID
-            VirtualNode ec2node = model.findNodesByID("EC2_"+i);
-            Software soft = ec2node.findSoftwaresByID("web")  ;
-            latency = latency+ soft.getLatency();
+
+            for(Software soft : node.getSoftwares())
+
+            {
+                latency=latency + soft.getLatency();
+                System.out.println(latency);
+
+
+            }
         }
 
 
-        return (latency / maxNode) * 100;
+        return (latency / model.getNodes().size()) * 100;
     }
 
 }

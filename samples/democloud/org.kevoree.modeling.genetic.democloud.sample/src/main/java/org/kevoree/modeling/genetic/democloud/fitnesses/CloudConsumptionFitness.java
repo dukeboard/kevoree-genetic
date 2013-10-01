@@ -1,5 +1,7 @@
 package org.kevoree.modeling.genetic.democloud.fitnesses;
 
+import org.cloud.Amazon;
+import org.cloud.Rackspace;
 import org.cloud.Cloud;
 import org.cloud.VirtualNode;
 import org.kevoree.modeling.api.trace.TraceSequence;
@@ -13,7 +15,7 @@ import org.kevoree.modeling.optimization.api.FitnessFunction;
  */
 public class CloudConsumptionFitness implements FitnessFunction<Cloud> {
 
-    private double maxNode = 10;
+
 
     @Override
     public boolean originAware() {
@@ -23,21 +25,23 @@ public class CloudConsumptionFitness implements FitnessFunction<Cloud> {
     @Override
     public double evaluate(Cloud model, Cloud origin, TraceSequence traceSequence) {
 
-        double pres = 0;
+       double pres = 0;
 
+       for(VirtualNode node : model.getNodes())
 
-        for (int i=0 ;i<model.getNodes().size();i++)
         {
-        VirtualNode ec2node = model.findNodesByID("EC2_"+i);
-        pres =  pres + ec2node.getPricePerHour();
-        System.out.println(pres);
 
-        VirtualNode rackspace = model.findNodesByID("Rack_"+i);
-        pres   =  pres + rackspace.getPricePerHour();
+        if ((node instanceof  Amazon) || (node instanceof  Rackspace)  )
+
+        {
+         pres=pres + node.getPricePerHour();
+         System.out.println(node.getId());
+
         }
 
-
-        return (pres / maxNode) * 100;
     }
+
+        return (pres / model.getNodes().size()) * 100;
+}
 
 }

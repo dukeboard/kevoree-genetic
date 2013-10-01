@@ -47,23 +47,20 @@ public class CloudPopulationFactory implements PopulationFactory<Cloud> {
             VirtualNode myRackspacenode = cloudfactory.createRackspace();
 
 
-            myAmazonEC2node.setId("EC2_"+j);
-            myAmazonEC2node.setPricePerHour(10.0);
-            cloud.addNodes(myAmazonEC2node);
-
-            myRackspacenode.setId("Rack_"+j);
-            myRackspacenode.setPricePerHour(5.0);
-            cloud.addNodes(myRackspacenode);
-
-
-
             Software web = cloudfactory.createSoftware();
             web.setName("web");
             web.setLatency(100.0);
 
 
+            myAmazonEC2node.setId("EC2_"+j);
+            myAmazonEC2node.setPricePerHour(10.0);
             myAmazonEC2node.addSoftwares(web);
+            cloud.addNodes(myAmazonEC2node);
+
+            myRackspacenode.setId("Rack_"+j);
+            myRackspacenode.setPricePerHour(5.0);
             myRackspacenode.addSoftwares(web);
+            cloud.addNodes(myRackspacenode);
 
 
             }
