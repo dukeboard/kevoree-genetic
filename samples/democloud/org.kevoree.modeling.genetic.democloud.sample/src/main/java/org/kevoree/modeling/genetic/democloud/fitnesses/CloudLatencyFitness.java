@@ -19,6 +19,7 @@ public class CloudLatencyFitness implements FitnessFunction<Cloud> {
         return false;
     }
 
+
     @Override
     public double evaluate(Cloud model, Cloud origin, TraceSequence traceSequence) {
 

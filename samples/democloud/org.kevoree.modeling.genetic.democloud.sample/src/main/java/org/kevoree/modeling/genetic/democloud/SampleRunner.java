@@ -38,7 +38,7 @@ public class SampleRunner {
         List<Solution> result = engine.solve();
         SolutionPrinter printer = new SolutionPrinter();
         for (Solution sol : result) {
-            printer.print(sol, System.out);
+        printer.print(sol, System.out);
         }
 
     }

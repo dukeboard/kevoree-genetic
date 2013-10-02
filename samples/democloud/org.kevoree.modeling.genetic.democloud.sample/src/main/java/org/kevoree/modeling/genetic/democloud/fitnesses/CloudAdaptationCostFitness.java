@@ -21,7 +21,6 @@ public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
         return true;
     }
 
-
     @Override
     public double evaluate(Cloud cloud, Cloud origin, TraceSequence traceSequence) {
         double result = 0;

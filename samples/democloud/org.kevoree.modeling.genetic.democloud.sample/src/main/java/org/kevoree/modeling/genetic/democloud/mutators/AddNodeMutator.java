@@ -2,7 +2,6 @@ package org.kevoree.modeling.genetic.democloud.mutators;
 
 import org.cloud.Cloud;
 import org.cloud.VirtualNode;
-
 import org.cloud.impl.DefaultCloudFactory;
 import org.kevoree.modeling.optimization.api.MutationOperator;
 import org.kevoree.modeling.genetic.democloud.CloudPopulationFactory;
@@ -21,9 +20,13 @@ public class AddNodeMutator implements MutationOperator<Cloud> {
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
 
     @Override
+
     public void mutate(Cloud parent) {
         VirtualNode node = cloudfactory.createAmazon();
-       // node.setId("node_"+Math.abs(rand.nextInt()));
-       // parent.addNodes(node);
+        node.setId("node_"+Math.abs(rand.nextInt()));
+        node.setPricePerHour(10.0);
+        parent.addNodes(node);
+
+
     }
 }

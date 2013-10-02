@@ -42,7 +42,6 @@ public class CloudPopulationFactory implements PopulationFactory<Cloud> {
 
 
             for (int j = 0; j < 5; j++) {
-
             VirtualNode myAmazonEC2node = cloudfactory.createAmazon();
             VirtualNode myRackspacenode = cloudfactory.createRackspace();
 
@@ -61,16 +60,12 @@ public class CloudPopulationFactory implements PopulationFactory<Cloud> {
             myRackspacenode.setPricePerHour(5.0);
             myRackspacenode.addSoftwares(web);
             cloud.addNodes(myRackspacenode);
-
-
             }
-            populations.add(cloud);
 
+            populations.add(cloud);
         }
         return populations;
     }
-
-
 
 
     @Override
