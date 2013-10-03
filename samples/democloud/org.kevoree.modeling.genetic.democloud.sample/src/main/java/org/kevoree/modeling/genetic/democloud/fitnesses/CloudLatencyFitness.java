@@ -3,12 +3,12 @@ package org.kevoree.modeling.genetic.democloud.fitnesses;
 import org.cloud.*;
 import org.kevoree.modeling.api.trace.TraceSequence;
 import org.kevoree.modeling.optimization.api.FitnessFunction;
-
 /**
  * Created with IntelliJ IDEA.
- * User: duke
- * Date: 07/08/13
- * Time: 16:14
+ * User: donia.elkateb
+ * Date: 10/2/13
+ * Time: 9:27 AM
+ * To change this template use File | Settings | File Templates.
  */
 public class CloudLatencyFitness implements FitnessFunction<Cloud> {
 

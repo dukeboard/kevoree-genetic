@@ -4,7 +4,7 @@ import org.cloud.Cloud;
 
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudAdaptationCostFitness;
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudConsumptionFitness;
-import org.kevoree.modeling.genetic.democloud.fitnesses.CloudRedondencyFitness;
+import org.kevoree.modeling.genetic.democloud.fitnesses.CloudRedundancyFitness;
 import org.kevoree.modeling.genetic.democloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.RemoveNodeMutator;
 import org.kevoree.modeling.optimization.api.OptimizationEngine;
@@ -29,7 +29,7 @@ public class SampleRunner {
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
         engine.addFitnessFuntion(new CloudConsumptionFitness());
-        engine.addFitnessFuntion(new CloudRedondencyFitness());
+        engine.addFitnessFuntion(new CloudRedundancyFitness());
         engine.addFitnessFuntion(new CloudAdaptationCostFitness());
 
         engine.setMaxGeneration(100);

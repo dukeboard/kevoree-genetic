@@ -13,7 +13,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         iD="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pricePerHour" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
-        defaultValueLiteral="10"/>
+        defaultValueLiteral="10.0"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Software">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
@@ -29,5 +29,13 @@
   <eClassifiers xsi:type="ecore:EClass" name="SLARequirement"/>
   <eClassifiers xsi:type="ecore:EClass" name="MaxPrice" eSuperTypes="#//SLARequirement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxPricePerHour" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Redunduncy" eSuperTypes="#//SLARequirement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="duplicataPerComponent"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="requiredDuplicataPerComponent"/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
 </ecore:EPackage>

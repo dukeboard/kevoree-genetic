@@ -26,10 +26,10 @@ public class SampleRunnerEpsilonMOEA {
 
         GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
         engine.addOperator(new AddNodeMutator());
-        engine.addOperator(new RemoveNodeMutator());
+        //engine.addOperator(new RemoveNodeMutator());
         engine.addFitnessFuntion(new CloudCostFitness());
         engine.addFitnessFuntion(new CloudLatencyFitness());
-        //engine.addFitnessFuntion(new CloudRedondencyFitness());
+        engine.addFitnessFuntion(new CloudRedundancyFitness());
         //engine.addFitnessFuntion(new CloudAdaptationCostFitness());
 
         engine.setMaxGeneration(100);

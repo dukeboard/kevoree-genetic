@@ -22,7 +22,7 @@ public class RemoveSoftwareMutator implements MutationOperator<Cloud> {
     public void mutate(Cloud parent) {
 
 
-        VirtualNode ec2node = parent.findNodesByID("EC2_"+rand.nextInt(5));
+        VirtualNode ec2node =parent.getNodes().get(rand.nextInt(parent.getNodes().size()));
         ec2node.removeAllSoftwares();
 
 

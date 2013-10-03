@@ -11,9 +11,10 @@ import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
- * User: duke
- * Date: 07/08/13
- * Time: 15:42
+ * User: donia.elkateb
+ * Date: 10/2/13
+ * Time: 9:27 AM
+ * To change this template use File | Settings | File Templates.
  */
 public class AddSoftwareMutator implements MutationOperator<Cloud> {
 
@@ -29,7 +30,7 @@ public class AddSoftwareMutator implements MutationOperator<Cloud> {
         web.setLatency(100.0);
 
 
-        VirtualNode ec2node = parent.findNodesByID("EC2_"+rand.nextInt(5));
+        VirtualNode ec2node =parent.getNodes().get(rand.nextInt(parent.getNodes().size()));
         ec2node.addSoftwares(web);
 
 

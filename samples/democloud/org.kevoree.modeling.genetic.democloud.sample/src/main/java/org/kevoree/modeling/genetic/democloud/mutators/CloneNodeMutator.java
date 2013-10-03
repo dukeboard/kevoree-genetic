@@ -4,7 +4,9 @@ import org.cloud.Cloud;
 import org.cloud.Software;
 import org.cloud.VirtualNode;
 
+import org.cloud.cloner.DefaultModelCloner;
 import org.cloud.impl.DefaultCloudFactory;
+import org.kevoree.modeling.api.ModelCloner;
 import org.kevoree.modeling.optimization.api.MutationOperator;
 import org.kevoree.modeling.genetic.democloud.CloudPopulationFactory;
 
@@ -12,26 +14,30 @@ import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
- * User: duke
- * Date: 07/08/13
- * Time: 15:42
+ * User: donia.elkateb
+ * Date: 10/2/13
+ * Time: 9:27 AM
+ * To change this template use File | Settings | File Templates.
  */
 public class CloneNodeMutator implements MutationOperator<Cloud> {
 
 
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
-
-
-
+    private ModelCloner cloner = new DefaultModelCloner();
+    private Random rand = new Random();
 
     @Override
     public void mutate(Cloud parent) {
 
-        VirtualNode nodeclone = cloudfactory.createVirtualNode();
 
-        VirtualNode ec2node = parent.findNodesByID("EC2_0");
-        nodeclone.setId(ec2node.getId());
+       //locate a node
 
-        parent.addNodes(nodeclone);
+        VirtualNode ec2node = parent.findNodesByID("EC2_"+rand.nextInt(parent.getNodes().size()));
+
+        VirtualNode clonedNode= cloner.clone(ec2node);
+
+        clonedNode.setId("EC2_"+rand.nextInt(parent.getNodes().size()));
+
+        parent.addNodes(clonedNode);
     }
 }

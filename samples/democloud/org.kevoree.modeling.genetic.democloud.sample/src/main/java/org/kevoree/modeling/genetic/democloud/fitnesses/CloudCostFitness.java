@@ -9,9 +9,10 @@ import org.kevoree.modeling.optimization.api.FitnessFunction;
 
 /**
  * Created with IntelliJ IDEA.
- * User: duke
- * Date: 07/08/13
- * Time: 16:14
+ * User: donia.elkateb
+ * Date: 10/2/13
+ * Time: 9:27 AM
+ * To change this template use File | Settings | File Templates.
  */
 public class CloudCostFitness implements FitnessFunction<Cloud> {
 
@@ -40,7 +41,7 @@ public class CloudCostFitness implements FitnessFunction<Cloud> {
 
         }
 
-        return (pres / model.getNodes().size()) * 100;
+        return ((pres / model.getNodes().size())) * 100;
     }
 
 }
