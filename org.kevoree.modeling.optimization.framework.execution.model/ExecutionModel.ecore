@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="KevoreeOptimization" nsURI="http://KevoreeOptimization" nsPrefix="">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="ExecutionModel" nsURI="http://org.kevoree.optimization.framework.execution.model"
+    nsPrefix="">
   <eClassifiers xsi:type="ecore:EClass" name="ExecutionModel">
     <eStructuralFeatures xsi:type="ecore:EReference" name="runs" upperBound="-1" eType="#//Run"
         containment="true"/>
@@ -16,20 +17,21 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Step" eSuperTypes="#//MetricContainer">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="scores" upperBound="-1"
-        eType="#//Score" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="generationNumber" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endTime" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startTime" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="solutions" upperBound="-1"
+        eType="#//Solution"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Metric" abstract="true" interface="true">
     <eOperations name="update">
-      <eParameters name="score" eType="#//Score"/>
+      <eParameters name="score" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Score">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
@@ -43,5 +45,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Min" eSuperTypes="#//Metric"/>
   <eClassifiers xsi:type="ecore:EClass" name="Max" eSuperTypes="#//Metric"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Mean" eSuperTypes="#//Metric"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Mean" eSuperTypes="#//Metric">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Solution">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="scores" upperBound="-1"
+        eType="#//Score" containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>

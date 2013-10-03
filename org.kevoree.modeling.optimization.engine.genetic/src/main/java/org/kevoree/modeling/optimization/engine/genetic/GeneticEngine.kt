@@ -1,6 +1,5 @@
 package org.kevoree.modeling.optimization.engine.genetic
 
-import org.kevoree.modeling.optimization.api.OptimizationEngine
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.MutationOperator
 import org.kevoree.modeling.optimization.api.FitnessFunction
@@ -24,6 +23,13 @@ import org.moeaframework.core.NondominatedPopulation
 import org.moeaframework.core.comparator.ChainedComparator
 import org.moeaframework.core.comparator.ParetoDominanceComparator
 import org.moeaframework.core.comparator.CrowdingComparator
+import org.kevoree.modeling.optimization.framework.AbstractOptimizationEngine
+import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
+import org.kevoree.modeling.optimization.executionmodel.impl.DefaultExecutionModelFactory
+import org.kevoree.modeling.optimization.executionmodel.Run
+import java.util.Date
+import org.kevoree.modeling.optimization.framework.FitnessMetric
+import org.kevoree.modeling.optimization.executionmodel.Metric
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,15 +38,20 @@ import org.moeaframework.core.comparator.CrowdingComparator
  * Time: 15:36
  */
 
-class GeneticEngine<A : KMFContainer> : OptimizationEngine<A> {
+class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
+    override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
+    override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
+    override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
+    override var _populationFactory: PopulationFactory<A>? = null
+    override var _maxGeneration: Int = 100
+    override var _maxTime: Long = -1.toLong()
+    override var _executionModel: ExecutionModel? = null
+    override var _executionModelFactory: DefaultExecutionModelFactory? = null
 
-    private var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>();
-    private var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>();
-    private var _populationFactory: PopulationFactory<A>? = null;
-    private var _maxGeneration = 100;
-    private var _maxTime: Long = -1.toLong();
     private var _algorithm: GeneticAlgorithm = GeneticAlgorithm.EpsilonNSGII
-    private var _dominanceEpsilon = 10.0;
+    private var _dominanceEpsilon = 5.0;
+
+    private var currentRun: Run? = null;
 
     public fun setAlgorithm(alg: GeneticAlgorithm) {
         _algorithm = alg;
@@ -50,26 +61,6 @@ class GeneticEngine<A : KMFContainer> : OptimizationEngine<A> {
         _dominanceEpsilon = dd
     }
 
-    public override fun addOperator(operator: MutationOperator<A>): OptimizationEngine<A> {
-        _operators.add(operator);
-        return this;
-    }
-    public override fun addFitnessFuntion(function: FitnessFunction<A>): OptimizationEngine<A> {
-        _fitnesses.add(function);
-        return this;
-    }
-    public override fun setPopulationFactory(populationFactory: PopulationFactory<A>): OptimizationEngine<A> {
-        _populationFactory = populationFactory;
-        return this;
-    }
-    public override fun setMaxGeneration(maxGeneration: Int): OptimizationEngine<A> {
-        _maxGeneration = maxGeneration;
-        return this;
-    }
-    public override fun setMaxTime(maxTime: Long): OptimizationEngine<A> {
-        _maxTime = maxTime;
-        return this;
-    }
     public override fun solve(): List<Solution> {
         if (_operators.isEmpty()) {
             throw Exception("No operators are configured, please configure at least one");
@@ -80,7 +71,19 @@ class GeneticEngine<A : KMFContainer> : OptimizationEngine<A> {
         if(_populationFactory == null){
             throw Exception("No population factory are configured, please configure at least one");
         }
-
+        if(_executionModel != null){
+            //create RUN
+            currentRun = _executionModelFactory!!.createRun();
+            currentRun!!.algName = _algorithm.name();
+            _executionModel!!.addRuns(currentRun!!);
+            currentRun!!.startTime = Date().getTime();
+            //init run metrics
+            for(loopFitnessMetric in _metricsName){
+                val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
+                metric.name = loopFitnessMetric.fitnessName
+                currentRun!!.addMetrics(metric)
+            }
+        }
         var originAware = false
         for(fitness in _fitnesses){
             if(fitness.originAware()){
@@ -114,7 +117,6 @@ class GeneticEngine<A : KMFContainer> : OptimizationEngine<A> {
                 val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), CrowdingComparator()));
                 kalgo = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), selection, variations, ModelInitialization(_populationFactory!!, problem, originAware));
             }
-        //newSMSEMOA
             else -> {
             }
         }
@@ -122,15 +124,59 @@ class GeneticEngine<A : KMFContainer> : OptimizationEngine<A> {
         var generation = 0;
         var beginTimeMilli = System.currentTimeMillis();
         try {
+            val date = Date()
+            var previousTime: Long? = null
             while (continueEngineComputation(kalgo, beginTimeMilli, generation)) {
+                previousTime = date.getTime()
                 kalgo.step();
+                if(_executionModel != null){
+                    //update the execution model
+                    val newStep = _executionModelFactory!!.createStep()
+                    newStep.startTime = previousTime
+                    newStep.endTime = date.getTime()
+                    newStep.generationNumber = generation
+                    //copy all metrics registered
+                    //init run metrics
+                    for(loopFitnessMetric in _metricsName){
+                        val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
+                        metric.name = loopFitnessMetric.fitnessName
+                        newStep.addMetrics(metric)
+                    }
+                    val population = kalgo.getResult();
+                    for (solution in population?.iterator()) {
+                        for(i in 0..solution.getNumberOfObjectives()-1){
+                            val fitnessName = problem.fitnessFromIndice.get(i).javaClass.getCanonicalName()
+                            val value = solution.getObjective(i);
+                            //update all metrics from the current run
+                            for(metric in currentRun!!.metrics){
+                                if(metric.name == fitnessName){
+                                    metric.update(value)
+                                }
+                            }
+                            //update all metrics from the current step
+                            for(metric in newStep.metrics){
+                                if(metric.name == fitnessName){
+                                    metric.update(value)
+                                }
+                            }
+                            //TODO optimize resolution
+                        }
+                    }
+                    currentRun!!.addSteps(newStep)
+                }
                 generation++;
             }
         } finally {
             kalgo.terminate();
             problem.close();
         }
-        return buildPopulation(kalgo)
+
+        if(_executionModel != null){
+            //create RUN
+            currentRun!!.endTime = Date().getTime();
+        }
+
+        return buildPopulation(kalgo,problem)
     }
 
     private fun continueEngineComputation(alg: Algorithm, beginTimeMilli: Long, nbGeneration: Int): Boolean {
@@ -148,14 +194,14 @@ class GeneticEngine<A : KMFContainer> : OptimizationEngine<A> {
         return true;
     }
 
-    private fun buildPopulation(algo: Algorithm): List<Solution> {
+    private fun buildPopulation(algo: Algorithm, problem : ModelOptimizationProblem<A>): List<Solution> {
         val results = ArrayList<Solution>();
         val population = algo.getResult();
         for (solution in population?.iterator()) {
             var loopvar = solution.getVariable(0) as ModelVariable;
             var modelSolution = DefaultSolution(loopvar.model!!, loopvar.origin, loopvar.traceSequence);
             for(fitness in _fitnesses){
-                modelSolution.results.put(fitness.javaClass.getSimpleName(), fitness.evaluate(loopvar.model as A, loopvar.origin as A, loopvar.traceSequence))
+                modelSolution.results.put(fitness.javaClass.getSimpleName(), solution.getObjective(problem.indiceFromFitness.get(fitness)!!))
             }
             results.add(modelSolution);
         }

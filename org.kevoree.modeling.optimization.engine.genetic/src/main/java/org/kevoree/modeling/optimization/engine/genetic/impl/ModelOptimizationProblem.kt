@@ -8,6 +8,7 @@ import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.engine.genetic.impl.ModelVariable
 import org.kevoree.modeling.api.compare.ModelCompare
 import org.kevoree.modeling.api.trace.Event2Trace
+import java.util.HashMap
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,10 +18,18 @@ import org.kevoree.modeling.api.trace.Event2Trace
  */
 public class ModelOptimizationProblem<A : KMFContainer>(val fitnesses: List<FitnessFunction<A>>, val cloner: ModelCloner, val modelCompare: ModelCompare) : AbstractProblem(1, fitnesses.size) {
 
-    var emptyKevVariable: ModelVariable? = null
+    var emptyKevVariable: ModelVariable? = null;
+    val fitnessFromIndice = HashMap<Int,FitnessFunction<A>>();
+    val indiceFromFitness = HashMap<FitnessFunction<A>,Int>();
 
     {
         emptyKevVariable = ModelVariable(null, null, cloner, null, modelCompare, Event2Trace(modelCompare));
+        var i = 0;
+        for(fitness in fitnesses){
+            fitnessFromIndice.put(i,fitness)
+            indiceFromFitness.put(fitness,i)
+            i++;
+        }
     }
 
     public override fun evaluate(solution: Solution?) {

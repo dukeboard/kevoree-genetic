@@ -9,39 +9,25 @@ import org.kevoree.modeling.optimization.api.Solution
 import java.util.ArrayList
 import org.kevoree.modeling.optimization.framework.DefaultSolution
 import org.kevoree.modeling.api.trace.TraceSequence
+import org.kevoree.modeling.optimization.executionmodel.impl.DefaultExecutionModelFactory
+import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
+import org.kevoree.modeling.optimization.framework.AbstractOptimizationEngine
+import org.kevoree.modeling.optimization.framework.FitnessMetric
 
 /**
  * Created by duke on 14/08/13.
  */
 
-public class FullSearchEngine<A : KMFContainer> : OptimizationEngine<A> {
+public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
 
-    var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>();
-    var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>();
-    var _populationFactory: PopulationFactory<A>? = null;
-    var _maxGeneration = 100;
-    var _maxTime: Long = -1.toLong();
-
-    public override fun addOperator(operator: MutationOperator<A>): OptimizationEngine<A> {
-        _operators.add(operator);
-        return this;
-    }
-    public override fun addFitnessFuntion(function: FitnessFunction<A>): OptimizationEngine<A> {
-        _fitnesses.add(function);
-        return this;
-    }
-    public override fun setPopulationFactory(populationFactory: PopulationFactory<A>): OptimizationEngine<A> {
-        _populationFactory = populationFactory;
-        return this;
-    }
-    public override fun setMaxGeneration(maxGeneration: Int): OptimizationEngine<A> {
-        _maxGeneration = maxGeneration;
-        return this;
-    }
-    public override fun setMaxTime(maxTime: Long): OptimizationEngine<A> {
-        _maxTime = maxTime;
-        return this;
-    }
+    override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
+    override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
+    override var _populationFactory: PopulationFactory<A>? = null
+    override var _maxGeneration: Int = 100
+    override var _maxTime: Long = -1.toLong()
+    override var _executionModel: ExecutionModel? = null
+    override var _executionModelFactory: DefaultExecutionModelFactory? = null
+    override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
 
     public override fun solve(): List<Solution> {
         if (_operators.isEmpty()) {

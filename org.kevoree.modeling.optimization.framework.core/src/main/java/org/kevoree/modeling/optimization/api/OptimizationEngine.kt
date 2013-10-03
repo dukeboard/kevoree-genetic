@@ -1,6 +1,7 @@
 package org.kevoree.modeling.optimization.api;
 
 import org.kevoree.modeling.api.KMFContainer
+import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,16 +11,22 @@ import org.kevoree.modeling.api.KMFContainer
  */
 public trait OptimizationEngine<A: KMFContainer> {
 
-    public fun addOperator(operator: MutationOperator<A>): OptimizationEngine<A>;
+    public fun addOperator(operator: MutationOperator<A>): OptimizationEngine<A>
 
-    public fun addFitnessFuntion(function: FitnessFunction<A>): OptimizationEngine<A> ;
+    public fun addFitnessFuntion(function: FitnessFunction<A>): OptimizationEngine<A>
 
-    public fun setPopulationFactory(populationFactory: PopulationFactory<A>): OptimizationEngine<A>;
+    public fun setPopulationFactory(populationFactory: PopulationFactory<A>): OptimizationEngine<A>
 
-    public fun setMaxGeneration(maxGeneration: Int): OptimizationEngine<A>;
+    public fun setMaxGeneration(maxGeneration: Int): OptimizationEngine<A>
 
-    public fun setMaxTime(maxTime: Long): OptimizationEngine<A>;
+    public fun setMaxTime(maxTime: Long): OptimizationEngine<A>
 
-    public fun solve(): List<Solution> ;
+    public fun solve(): List<Solution>
+
+    public fun getExecutionModel() : ExecutionModel?
+
+    public fun activateExecutionModel()
+
+    public fun addMetric(fitness : FitnessFunction<A>, metric : Metrics)
 
 }
