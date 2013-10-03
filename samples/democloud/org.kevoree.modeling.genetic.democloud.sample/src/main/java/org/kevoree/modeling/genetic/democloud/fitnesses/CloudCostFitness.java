@@ -44,7 +44,7 @@ public class CloudCostFitness implements FitnessFunction<Cloud> {
 
         }
 
-        return ((pres / model.getNodes().size())) * 100;
+        return ((pres / (model.getNodes().size()*10))) * 100;
     }
 
 }

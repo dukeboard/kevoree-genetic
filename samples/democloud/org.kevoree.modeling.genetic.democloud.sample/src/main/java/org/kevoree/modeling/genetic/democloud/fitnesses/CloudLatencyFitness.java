@@ -41,7 +41,7 @@ public class CloudLatencyFitness implements FitnessFunction<Cloud> {
         }
 
 
-        return (latency / model.getNodes().size()) * 100;
+        return (latency / (model.getNodes().size()*110)) * 100;
     }
 
 }
