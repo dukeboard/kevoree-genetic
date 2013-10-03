@@ -26,6 +26,9 @@ public class CloudCostFitness implements FitnessFunction<Cloud> {
 
         double pres = 0;
 
+
+
+
         for(VirtualNode node : model.getNodes())
 
         {

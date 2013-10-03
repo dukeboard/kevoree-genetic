@@ -47,10 +47,6 @@ public class SampleRunnerNSGII {
         engine.setMaxGeneration(100);
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
 
-
-
-
-
         engine.setAlgorithm(GeneticAlgorithm.NSGII);
 
         List<Solution> result = engine.solve();

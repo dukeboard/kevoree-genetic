@@ -56,6 +56,7 @@ public class CloudPopulationFactory implements PopulationFactory<Cloud> {
             myAmazonEC2node.addSoftwares(web);
             cloud.addNodes(myAmazonEC2node);
 
+
             myRackspacenode.setId("Rack_"+j);
             myRackspacenode.setPricePerHour(5.0);
             myRackspacenode.addSoftwares(web);
