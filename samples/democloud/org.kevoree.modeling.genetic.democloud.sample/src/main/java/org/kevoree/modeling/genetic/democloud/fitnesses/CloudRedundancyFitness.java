@@ -29,7 +29,7 @@ public class CloudRedundancyFitness implements FitnessFunction<Cloud> {
     @Override
     public double evaluate(Cloud model, Cloud origin, TraceSequence traceSequence)
     {
-        int size =0;
+        int size =1;
 
         Requirements redundancy  =new Requirements();
         double count =redundancy.Redunduncy(model) ;
@@ -39,7 +39,7 @@ public class CloudRedundancyFitness implements FitnessFunction<Cloud> {
         for(VirtualNode vnode : model.getNodes())
         {
             size = size + vnode.getSoftwares().size();
-            System.out.println("redunduncy is"+ size )  ;
+
         }
 
 

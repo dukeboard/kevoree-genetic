@@ -9,6 +9,8 @@ import org.kevoree.modeling.genetic.democloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.RemoveNodeMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.RemoveSoftwareMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.CloneNodeMutator;
+import org.kevoree.modeling.genetic.democloud.mutators.SmartMutator.RemoveSmartMutator;
+import org.kevoree.modeling.genetic.democloud.mutators.SmartMutator.AddSmartMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.AddSoftwareMutator;
 import org.kevoree.modeling.optimization.api.Solution;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticAlgorithm;
@@ -36,6 +38,8 @@ public class SampleRunnerNSGII {
         engine.addOperator(new CloneNodeMutator());
         engine.addOperator(new RemoveSoftwareMutator());
 
+        engine.addOperator(new AddSmartMutator());
+        engine.addOperator(new RemoveSmartMutator());
 
 
         engine.addFitnessFuntion(new CloudCostFitness());
