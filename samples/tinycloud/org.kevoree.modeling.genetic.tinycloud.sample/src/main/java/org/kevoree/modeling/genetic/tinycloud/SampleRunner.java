@@ -28,9 +28,6 @@ public class SampleRunner {
 
         OptimizationEngine<Cloud> engine = new GeneticEngine<Cloud>();
 
-        engine.activateExecutionModel();
-
-
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
         engine.addFitnessFuntion(new CloudConsumptionFitness());
