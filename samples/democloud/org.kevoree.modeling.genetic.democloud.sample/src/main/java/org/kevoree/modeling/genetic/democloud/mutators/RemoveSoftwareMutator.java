@@ -23,6 +23,8 @@ public class RemoveSoftwareMutator implements MutationOperator<Cloud> {
 
 
         VirtualNode ec2node =parent.getNodes().get(rand.nextInt(parent.getNodes().size()));
+
+        if (ec2node!=null)
         ec2node.removeAllSoftwares();
 
 

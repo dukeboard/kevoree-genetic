@@ -22,15 +22,15 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Rackspace" eSuperTypes="#//VirtualNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="Amazon" eSuperTypes="#//VirtualNode"/>
-  <eClassifiers xsi:type="ecore:EClass" name="RequiredLatency" eSuperTypes="#//SLARequirement">
+  <eClassifiers xsi:type="ecore:EClass" name="LatencyRequirement" eSuperTypes="#//SLARequirement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="softwareName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="requiredLatency" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SLARequirement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="MaxPrice" eSuperTypes="#//SLARequirement">
+  <eClassifiers xsi:type="ecore:EClass" name="CostRequirement" eSuperTypes="#//SLARequirement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxPricePerHour" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Redunduncy" eSuperTypes="#//SLARequirement">
+  <eClassifiers xsi:type="ecore:EClass" name="RedunduncyRequirement" eSuperTypes="#//SLARequirement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="duplicataPerComponent"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

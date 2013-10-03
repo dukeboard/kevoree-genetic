@@ -2,6 +2,7 @@ package org.kevoree.modeling.genetic.democloud;
 
 import org.cloud.Cloud;
 import org.cloud.Redunduncy;
+import org.cloud.RedunduncyRequirement;
 import org.cloud.SLARequirement;
 import org.cloud.impl.DefaultCloudFactory;
 
@@ -20,7 +21,7 @@ public class Requirements {
     public double Redunduncy(Cloud parent)
     {
 
-        Redunduncy sla    =    cloudfactory.createRedunduncy();
+        RedunduncyRequirement sla    =    cloudfactory.createRedunduncyRequirement();
         sla.setDuplicataPerComponent(3.0);
         return sla.getDuplicataPerComponent();
 

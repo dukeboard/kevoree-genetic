@@ -34,10 +34,22 @@ public class CloneNodeMutator implements MutationOperator<Cloud> {
 
         VirtualNode ec2node = parent.findNodesByID("EC2_"+rand.nextInt(parent.getNodes().size()));
 
+        if (ec2node!=null)
+
+        {
+
+       // System.out.println("Clone"+ec2node.getId());
+
+
         VirtualNode clonedNode= cloner.clone(ec2node);
 
-        clonedNode.setId("EC2_"+rand.nextInt(parent.getNodes().size()));
+
+        clonedNode.setId("EC2_"+parent.getNodes().size());
 
         parent.addNodes(clonedNode);
+
+       // System.out.println("cloned"+clonedNode.getId());
+
     }
+}
 }

@@ -100,11 +100,11 @@
     <children xmi:type="notation:Node" xmi:id="_U-YikCm0EeOMBvNIxZAioQ" type="4001"/>
     <children xmi:type="notation:Node" xmi:id="_U-YikSm0EeOMBvNIxZAioQ" type="5001">
       <children xmi:type="notation:Node" xmi:id="_yRcM8Cm0EeOMBvNIxZAioQ" type="2001">
-        <element xmi:type="ecore:EAttribute" href="democloud.ecore#//RequiredLatency/softwareName"/>
+        <element xmi:type="ecore:EAttribute" href="democloud.ecore#//LatencyRequirement/softwareName"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_yRcM8Sm0EeOMBvNIxZAioQ"/>
       </children>
       <children xmi:type="notation:Node" xmi:id="_1LProCm0EeOMBvNIxZAioQ" type="2001">
-        <element xmi:type="ecore:EAttribute" href="democloud.ecore#//RequiredLatency/requiredLatency"/>
+        <element xmi:type="ecore:EAttribute" href="democloud.ecore#//LatencyRequirement/requiredLatency"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_1LProSm0EeOMBvNIxZAioQ"/>
       </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_U-Yikim0EeOMBvNIxZAioQ"/>
@@ -117,7 +117,7 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_U-YimCm0EeOMBvNIxZAioQ"/>
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_U-X7gSm0EeOMBvNIxZAioQ" fontColor="4210752" fontName="Lucida Grande" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
-    <element xmi:type="ecore:EClass" href="democloud.ecore#//RequiredLatency"/>
+    <element xmi:type="ecore:EClass" href="democloud.ecore#//LatencyRequirement"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_U-X7gim0EeOMBvNIxZAioQ" x="9" y="387"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_sYpNkCm0EeOMBvNIxZAioQ" type="1001">
@@ -140,7 +140,7 @@
     <children xmi:type="notation:Node" xmi:id="_3mzIECm0EeOMBvNIxZAioQ" type="4001"/>
     <children xmi:type="notation:Node" xmi:id="_3mzIESm0EeOMBvNIxZAioQ" type="5001">
       <children xmi:type="notation:Node" xmi:id="_u6FFACmzEeOMBvNIxZAioQ" type="2001">
-        <element xmi:type="ecore:EAttribute" href="democloud.ecore#//MaxPrice/maxPricePerHour"/>
+        <element xmi:type="ecore:EAttribute" href="democloud.ecore#//CostRequirement/maxPricePerHour"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_u6FFASmzEeOMBvNIxZAioQ"/>
       </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_3mzIEim0EeOMBvNIxZAioQ"/>
@@ -153,14 +153,14 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_3mzIGCm0EeOMBvNIxZAioQ"/>
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_3myhASm0EeOMBvNIxZAioQ" fontColor="4210752" fontName="Lucida Grande" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
-    <element xmi:type="ecore:EClass" href="democloud.ecore#//MaxPrice"/>
+    <element xmi:type="ecore:EClass" href="democloud.ecore#//CostRequirement"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3myhAim0EeOMBvNIxZAioQ" x="585" y="414"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_HrBZcCwBEeOMBvNIxZAioQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_HrDOoCwBEeOMBvNIxZAioQ" type="4001"/>
     <children xmi:type="notation:Node" xmi:id="_HrDOoSwBEeOMBvNIxZAioQ" type="5001">
       <children xmi:type="notation:Node" xmi:id="_X4uXICwBEeOMBvNIxZAioQ" type="2001">
-        <element xmi:type="ecore:EAttribute" href="democloud.ecore#//Redunduncy/duplicataPerComponent"/>
+        <element xmi:type="ecore:EAttribute" href="democloud.ecore#//RedunduncyRequirement/duplicataPerComponent"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_X4uXISwBEeOMBvNIxZAioQ"/>
       </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_HrDOoiwBEeOMBvNIxZAioQ"/>
@@ -173,7 +173,7 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_HrDOqCwBEeOMBvNIxZAioQ"/>
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_HrBZcSwBEeOMBvNIxZAioQ" fontColor="4210752" fontName="Lucida Grande" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
-    <element xmi:type="ecore:EClass" href="democloud.ecore#//Redunduncy"/>
+    <element xmi:type="ecore:EClass" href="democloud.ecore#//RedunduncyRequirement"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HrBZciwBEeOMBvNIxZAioQ" x="603" y="207"/>
   </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_uac0oCmxEeOMBvNIxZAioQ"/>

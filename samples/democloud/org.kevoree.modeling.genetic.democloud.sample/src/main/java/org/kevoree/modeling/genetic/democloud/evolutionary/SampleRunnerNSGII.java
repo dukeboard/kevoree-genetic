@@ -33,8 +33,7 @@ public class SampleRunnerNSGII {
         engine.addOperator(new RemoveNodeMutator());
         engine.addOperator(new AddSoftwareMutator());
 
-        //engine.addOperator(new CloneNodeMutator());
-
+        engine.addOperator(new CloneNodeMutator());
         engine.addOperator(new RemoveSoftwareMutator());
 
 

@@ -43,7 +43,6 @@ public class CloudPopulationFactory implements PopulationFactory<Cloud> {
             VirtualNode myAmazonEC2node = cloudfactory.createAmazon();
             VirtualNode myRackspacenode = cloudfactory.createRackspace();
 
-
             Software web = cloudfactory.createSoftware();
             web.setName("web");
             web.setLatency(100.0);
