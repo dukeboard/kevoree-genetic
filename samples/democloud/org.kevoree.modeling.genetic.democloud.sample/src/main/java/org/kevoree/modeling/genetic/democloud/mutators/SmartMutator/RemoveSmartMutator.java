@@ -27,18 +27,18 @@ public class RemoveSmartMutator implements MutationOperator<Cloud> {
     public void mutate(Cloud parent) {
 
 
-        int componentnumber =0;
+        int cnumber =0;
 
         VirtualNode smallestvm = parent.getNodes().get(rand.nextInt(parent.getNodes().size())) ;
         int min   =   smallestvm.getSoftwares().size();
 
         for (VirtualNode vmnode :parent.getNodes())
         {
-            componentnumber = vmnode.getSoftwares().size();
+            cnumber = vmnode.getSoftwares().size();
 
-            if (min > componentnumber)
+            if (min > cnumber)
             {
-                min =   componentnumber;
+                min =   cnumber;
                 smallestvm   =   vmnode;
             }
 
