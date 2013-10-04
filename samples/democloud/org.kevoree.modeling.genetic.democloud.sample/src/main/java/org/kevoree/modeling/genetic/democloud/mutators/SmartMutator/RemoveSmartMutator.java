@@ -45,6 +45,8 @@ public class RemoveSmartMutator implements MutationOperator<Cloud> {
         }
 
 
+
+
         smallestvm.removeAllSoftwares();
 
 
