@@ -5,8 +5,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="ExecutionModel">
     <eStructuralFeatures xsi:type="ecore:EReference" name="runs" upperBound="-1" eType="#//Run"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fitnesses" upperBound="-1"
+        eType="#//Fitness" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Run" eSuperTypes="#//MetricContainer">
+  <eClassifiers xsi:type="ecore:EClass" name="Run">
     <eStructuralFeatures xsi:type="ecore:EReference" name="steps" upperBound="-1"
         eType="#//Step" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startTime" lowerBound="1"
@@ -16,7 +18,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="algName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Step" eSuperTypes="#//MetricContainer">
+  <eClassifiers xsi:type="ecore:EClass" name="Step">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="generationNumber" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endTime" lowerBound="1"
@@ -25,13 +27,12 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="solutions" upperBound="-1"
         eType="#//Solution"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metrics" upperBound="-1"
+        eType="#//Metric" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Metric" abstract="true" interface="true">
-    <eOperations name="update">
-      <eParameters name="score" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-    </eOperations>
+    <eOperations name="update"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Score">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
@@ -39,17 +40,22 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Hypervolume" eSuperTypes="#//Metric"/>
-  <eClassifiers xsi:type="ecore:EClass" name="MetricContainer" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="metrics" upperBound="-1"
-        eType="#//Metric" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Min" eSuperTypes="#//Metric"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Max" eSuperTypes="#//Metric"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Mean" eSuperTypes="#//Metric">
+  <eClassifiers xsi:type="ecore:EClass" name="Min" eSuperTypes="#//FitnessMetric"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Max" eSuperTypes="#//FitnessMetric"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Mean" eSuperTypes="#//FitnessMetric">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Solution">
     <eStructuralFeatures xsi:type="ecore:EReference" name="scores" upperBound="-1"
         eType="#//Score" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Fitness">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FitnessMetric" abstract="true" interface="true"
+      eSuperTypes="#//Metric">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fitness" lowerBound="1"
+        eType="#//Fitness"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ParetoMean" eSuperTypes="#//Metric"/>
 </ecore:EPackage>

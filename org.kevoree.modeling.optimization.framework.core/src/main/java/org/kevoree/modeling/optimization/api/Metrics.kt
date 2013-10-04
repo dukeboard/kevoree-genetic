@@ -7,9 +7,12 @@ package org.kevoree.modeling.optimization.api
  * Time: 15:37
  */
 
-public enum class Metrics {
+public enum class ParetoMetrics {
+    Hypervolume
+    Mean
+}
+public enum class ParetoFitnessMetrics {
     Max
     Min
     Mean
-    Hypervolume
 }

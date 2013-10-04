@@ -7,7 +7,8 @@ import org.kevoree.modeling.optimization.api.MutationOperator
 import org.kevoree.modeling.optimization.api.FitnessFunction
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
 import org.kevoree.modeling.optimization.executionmodel.impl.DefaultExecutionModelFactory
-import org.kevoree.modeling.optimization.api.Metrics
+import org.kevoree.modeling.optimization.api.ParetoMetrics
+import org.kevoree.modeling.optimization.api.ParetoFitnessMetrics
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,23 +60,33 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
 
     var _metricsName: MutableList<FitnessMetric>
 
-    public override fun addMetric(fitness: FitnessFunction<A>, metric: Metrics) {
+    public override fun addFitnessMetric(fitness: FitnessFunction<A>, metric: ParetoFitnessMetrics) {
         activateExecutionModel() //if at least one metric is added, initiate the ExecutionModel
         when(metric){
-            Metrics.Max -> {
+            ParetoFitnessMetrics.Max -> {
                 _metricsName.add(FitnessMetric(fitness.javaClass.getCanonicalName()!!, "org.kevoree.modeling.optimization.executionmodel.Max"));
             }
-            Metrics.Min -> {
+            ParetoFitnessMetrics.Min -> {
                 _metricsName.add(FitnessMetric(fitness.javaClass.getCanonicalName()!!, "org.kevoree.modeling.optimization.executionmodel.Min"));
             }
-            Metrics.Mean -> {
+            ParetoFitnessMetrics.Mean -> {
                 _metricsName.add(FitnessMetric(fitness.javaClass.getCanonicalName()!!, "org.kevoree.modeling.optimization.executionmodel.Mean"));
             }
-            Metrics.Hypervolume -> {
-                _metricsName.add(FitnessMetric(fitness.javaClass.getCanonicalName()!!, "org.kevoree.modeling.optimization.executionmodel.Hypervolume"));
+            else -> {
+            }
+        }
+    }
+
+    public override fun addParetoMetric(fitness: FitnessFunction<A>, metric: ParetoMetrics) {
+        activateExecutionModel() //if at least one metric is added, initiate the ExecutionModel
+        when(metric){
+            ParetoMetrics.Hypervolume -> {
+                _metricsName.add(FitnessMetric(null, "org.kevoree.modeling.optimization.executionmodel.Hypervolume"));
+            }
+            ParetoMetrics.Mean -> {
+                _metricsName.add(FitnessMetric(fitness.javaClass.getCanonicalName()!!, "org.kevoree.modeling.optimization.executionmodel.Mean"));
             }
             else -> {
-
             }
         }
     }

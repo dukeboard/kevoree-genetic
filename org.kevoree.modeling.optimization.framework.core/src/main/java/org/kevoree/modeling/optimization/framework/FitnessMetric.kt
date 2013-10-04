@@ -7,4 +7,4 @@ package org.kevoree.modeling.optimization.framework
  * Time: 15:58
  */
 
-public data class FitnessMetric(val fitnessName : String, val metricClassName : String)
+public data class FitnessMetric(val fitnessName : String?, val metricClassName : String)
