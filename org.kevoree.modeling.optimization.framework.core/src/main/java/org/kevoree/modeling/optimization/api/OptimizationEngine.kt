@@ -29,6 +29,6 @@ public trait OptimizationEngine<A: KMFContainer> {
 
     public fun addFitnessMetric(fitness : FitnessFunction<A>, metric : ParetoFitnessMetrics)
 
-    public fun addParetoMetric(fitness : FitnessFunction<A>, metric : ParetoMetrics)
+    public fun addParetoMetric(metric : ParetoMetrics)
 
 }

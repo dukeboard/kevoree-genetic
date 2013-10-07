@@ -6,13 +6,16 @@ import org.kevoree.modeling.genetic.tinycloud.fitnesses.CloudConsumptionFitness;
 import org.kevoree.modeling.genetic.tinycloud.fitnesses.CloudRedondencyFitness;
 import org.kevoree.modeling.genetic.tinycloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.tinycloud.mutators.RemoveNodeMutator;
-import org.kevoree.modeling.optimization.api.Metrics;
 import org.kevoree.modeling.optimization.api.OptimizationEngine;
+import org.kevoree.modeling.optimization.api.ParetoFitnessMetrics;
+import org.kevoree.modeling.optimization.api.ParetoMetrics;
 import org.kevoree.modeling.optimization.api.Solution;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
 import org.kevoree.modeling.optimization.executionmodel.serializer.JSONModelSerializer;
 import org.kevoree.modeling.optimization.framework.SolutionPrinter;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 /**
@@ -34,8 +37,9 @@ public class SampleRunner {
         engine.addFitnessFuntion(new CloudRedondencyFitness());
         engine.addFitnessFuntion(new CloudAdaptationCostFitness());
 
-        engine.addMetric(new CloudRedondencyFitness(), Metrics.Min);
-        engine.addMetric(new CloudRedondencyFitness(), Metrics.Max);
+        engine.addFitnessMetric(new CloudRedondencyFitness(), ParetoFitnessMetrics.Min);
+        engine.addFitnessMetric(new CloudRedondencyFitness(), ParetoFitnessMetrics.Max);
+        engine.addParetoMetric(ParetoMetrics.Mean);
 
         engine.setMaxGeneration(100);
         engine.setPopulationFactory(new DefaultCloudPopulationFactory().setSize(10));
@@ -47,7 +51,15 @@ public class SampleRunner {
         }
 
         JSONModelSerializer saver = new JSONModelSerializer();
-        saver.serialize(engine.getExecutionModel(),System.out);
+
+        File temp = File.createTempFile("temporaryOutput",".json");
+        FileOutputStream fou = new FileOutputStream(temp);
+        saver.serializeToStream(engine.getExecutionModel(),fou);
+
+        fou.close();
+
+        System.out.println(temp.getAbsolutePath());
+
 
 
     }

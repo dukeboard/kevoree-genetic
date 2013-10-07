@@ -9,9 +9,12 @@ public aspect trait GeneratedAspect_Max : org.kevoree.modeling.optimization.exec
         }
         var currentStep: Step = eContainer() as Step
         for(solution in currentStep.solutions){
-            var currentSolutionScore = solution.findScoresByID(fitness!!.name!!)!!.value!!
-            if(currentSolutionScore > value!!){
-                value = currentSolutionScore
+            for(score in solution.scores){
+                if(score.fitness == fitness){
+                    if(score.value!! > value!!){
+                        value = score.value!!
+                    }
+                }
             }
         }
     }

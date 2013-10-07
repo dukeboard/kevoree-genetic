@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <kmf.version>1.5.4</kmf.version>
+        <kmf.version>1.6.0</kmf.version>
     </properties>
 
     <modules>

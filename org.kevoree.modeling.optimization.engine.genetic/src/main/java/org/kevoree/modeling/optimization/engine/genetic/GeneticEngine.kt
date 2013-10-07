@@ -77,17 +77,16 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             currentRun!!.algName = _algorithm.name();
             _executionModel!!.addRuns(currentRun!!);
             currentRun!!.startTime = Date().getTime();
-            //init run metrics
-            for(loopFitnessMetric in _metricsName){
-                val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
-                metric.name = loopFitnessMetric.fitnessName
-                currentRun!!.addMetrics(metric)
-            }
         }
         var originAware = false
         for(fitness in _fitnesses){
             if(fitness.originAware()){
                 originAware = true
+            }
+            if(_executionModel!=null &&_executionModel!!.findFitnessByID(fitness.javaClass.getCanonicalName()) == null){
+                val newFitness = _executionModelFactory!!.createFitness()
+                newFitness.name = fitness.javaClass.getCanonicalName()
+                _executionModel!!.addFitness(newFitness)
             }
         }
 
@@ -98,7 +97,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         }
 
         var kalgo: Algorithm = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(_populationFactory!!, problem, originAware));
-        when(_algorithm){
+        when(_algorithm) {
             GeneticAlgorithm.EpsilonNSGII -> {
                 //don't do nothing -> default case
             }
@@ -135,34 +134,31 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                     newStep.startTime = previousTime
                     newStep.endTime = date.getTime()
                     newStep.generationNumber = generation
-                    //copy all metrics registered
-                    //init run metrics
-                    for(loopFitnessMetric in _metricsName){
-                        val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
-                        metric.name = loopFitnessMetric.fitnessName
-                        newStep.addMetrics(metric)
-                    }
+                    currentRun!!.addSteps(newStep)
+                    //build solution model
                     val population = kalgo.getResult();
                     for (solution in population?.iterator()) {
+                        val modelSolution = _executionModelFactory!!.createSolution()
+                        newStep.addSolutions(modelSolution)
                         for(i in 0..solution.getNumberOfObjectives()-1){
                             val fitnessName = problem.fitnessFromIndice.get(i).javaClass.getCanonicalName()
                             val value = solution.getObjective(i);
-                            //update all metrics from the current run
-                            for(metric in currentRun!!.metrics){
-                                if(metric.name == fitnessName){
-                                    metric.update(value)
-                                }
-                            }
-                            //update all metrics from the current step
-                            for(metric in newStep.metrics){
-                                if(metric.name == fitnessName){
-                                    metric.update(value)
-                                }
-                            }
-                            //TODO optimize resolution
+                            val newScore = _executionModelFactory!!.createScore()
+                            newScore.fitness = _executionModel!!.findFitnessByID(fitnessName)
+                            newScore.value = value
+                            modelSolution.addScores(newScore)
                         }
                     }
-                    currentRun!!.addSteps(newStep)
+                    //add metric and call update
+                    for(loopFitnessMetric in _metricsName){
+                        val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
+                        if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
+                            val fitMet = metric as org.kevoree.modeling.optimization.executionmodel.FitnessMetric
+                            fitMet.fitness = _executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName)
+                        }
+                        newStep.addMetrics(metric) //add before update ! mandatory !
+                        metric.update()
+                    }
                 }
                 generation++;
             }
@@ -176,7 +172,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             currentRun!!.endTime = Date().getTime();
         }
 
-        return buildPopulation(kalgo,problem)
+        return buildPopulation(kalgo, problem)
     }
 
     private fun continueEngineComputation(alg: Algorithm, beginTimeMilli: Long, nbGeneration: Int): Boolean {
@@ -194,7 +190,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         return true;
     }
 
-    private fun buildPopulation(algo: Algorithm, problem : ModelOptimizationProblem<A>): List<Solution> {
+    private fun buildPopulation(algo: Algorithm, problem: ModelOptimizationProblem<A>): List<Solution> {
         val results = ArrayList<Solution>();
         val population = algo.getResult();
         for (solution in population?.iterator()) {

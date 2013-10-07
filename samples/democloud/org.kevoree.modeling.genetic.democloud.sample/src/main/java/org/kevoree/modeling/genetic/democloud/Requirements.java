@@ -1,9 +1,7 @@
 package org.kevoree.modeling.genetic.democloud;
 
 import org.cloud.Cloud;
-import org.cloud.Redunduncy;
 import org.cloud.RedunduncyRequirement;
-import org.cloud.SLARequirement;
 import org.cloud.impl.DefaultCloudFactory;
 
 /**

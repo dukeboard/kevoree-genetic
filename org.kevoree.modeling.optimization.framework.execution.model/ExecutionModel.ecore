@@ -5,7 +5,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ExecutionModel">
     <eStructuralFeatures xsi:type="ecore:EReference" name="runs" upperBound="-1" eType="#//Run"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="fitnesses" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fitness" upperBound="-1"
         eType="#//Fitness" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Run">
@@ -26,7 +26,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startTime" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="solutions" upperBound="-1"
-        eType="#//Solution"/>
+        eType="#//Solution" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="metrics" upperBound="-1"
         eType="#//Metric" containment="true"/>
   </eClassifiers>
@@ -35,9 +35,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Score">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        iD="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fitness" lowerBound="1"
+        eType="#//Fitness"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Hypervolume" eSuperTypes="#//Metric"/>
   <eClassifiers xsi:type="ecore:EClass" name="Min" eSuperTypes="#//FitnessMetric"/>
@@ -50,7 +50,8 @@
         eType="#//Score" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Fitness">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FitnessMetric" abstract="true" interface="true"
       eSuperTypes="#//Metric">

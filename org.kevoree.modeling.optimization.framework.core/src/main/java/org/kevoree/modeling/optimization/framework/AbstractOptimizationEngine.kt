@@ -77,14 +77,14 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
         }
     }
 
-    public override fun addParetoMetric(fitness: FitnessFunction<A>, metric: ParetoMetrics) {
+    public override fun addParetoMetric(metric: ParetoMetrics) {
         activateExecutionModel() //if at least one metric is added, initiate the ExecutionModel
         when(metric){
             ParetoMetrics.Hypervolume -> {
                 _metricsName.add(FitnessMetric(null, "org.kevoree.modeling.optimization.executionmodel.Hypervolume"));
             }
             ParetoMetrics.Mean -> {
-                _metricsName.add(FitnessMetric(fitness.javaClass.getCanonicalName()!!, "org.kevoree.modeling.optimization.executionmodel.Mean"));
+                _metricsName.add(FitnessMetric(null, "org.kevoree.modeling.optimization.executionmodel.ParetoMean"));
             }
             else -> {
             }
