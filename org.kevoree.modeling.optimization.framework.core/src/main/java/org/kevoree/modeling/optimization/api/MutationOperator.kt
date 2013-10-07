@@ -9,6 +9,7 @@ import org.kevoree.modeling.api.KMFContainer;
  * Date: 12/02/13
  * Time: 15:26
  */
+
 public trait MutationOperator<A : KMFContainer> {
 
     public fun mutate(parent : A);
