@@ -11,8 +11,10 @@ import org.kevoree.modeling.optimization.api.ParetoFitnessMetrics;
 import org.kevoree.modeling.optimization.api.ParetoMetrics;
 import org.kevoree.modeling.optimization.api.Solution;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
+import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
 import org.kevoree.modeling.optimization.executionmodel.serializer.JSONModelSerializer;
 import org.kevoree.modeling.optimization.framework.SolutionPrinter;
+import org.kevoree.modeling.optimization.util.ExecutionModelExporter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,15 +52,21 @@ public class SampleRunner {
             printer.print(sol, System.out);
         }
 
-        JSONModelSerializer saver = new JSONModelSerializer();
 
+        ExecutionModel model = engine.getExecutionModel();
+
+        ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
+
+        /*
+        JSONModelSerializer saver = new JSONModelSerializer();
         File temp = File.createTempFile("temporaryOutput",".json");
         FileOutputStream fou = new FileOutputStream(temp);
         saver.serializeToStream(engine.getExecutionModel(),fou);
 
         fou.close();
-
         System.out.println(temp.getAbsolutePath());
+            */
+
 
 
 
