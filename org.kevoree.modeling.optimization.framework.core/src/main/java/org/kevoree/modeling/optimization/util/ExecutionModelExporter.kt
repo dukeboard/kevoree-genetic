@@ -4,6 +4,11 @@ import java.io.PrintWriter
 import java.io.File
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
 import java.io.FileOutputStream
+import org.kevoree.modeling.optimization.executionmodel.Run
+import java.util.ArrayList
+import java.util.Collections
+import java.util.Comparator
+import org.kevoree.modeling.optimization.executionmodel.Step
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,12 +22,21 @@ object ExecutionModelExporter {
     val fieldSeperator = ","
     val lineSeparator = "\n"
 
-    fun exportMetrics(model: ExecutionModel, outdir: File) {
+    private fun sortedStep(run: Run): List<Step> {
+        val steps = ArrayList<Step>(run.steps.size())
+        steps.addAll(run.steps)
+        Collections.sort(steps, object : Comparator<Step> {
+            override fun compare(o1: Step, o2: Step): Int {
+                return o1.generationNumber!!.compareTo(o2.generationNumber!!)
+            }
+        })
+        return steps
+    }
 
+    fun exportMetrics(model: ExecutionModel, outdir: File) {
         if(!(outdir.exists() && outdir.isDirectory()) ){
             outdir.mkdirs()
         }
-
         for(run in model.runs){
             if(run.steps.size() > 0){
                 val file = File(outdir, "Run_metrics_" + run.algName + "_" + run.startTime + "_" + run.endTime + ".csv")
@@ -48,7 +62,7 @@ object ExecutionModelExporter {
                 }
                 writer.append(lineSeparator)
                 //print metrics values
-                for(step in run.steps){
+                for(step in sortedStep(run)){
                     writer.append(step.generationNumber.toString())
                     writer.append(fieldSeperator)
                     writer.append(step.startTime.toString())
@@ -95,7 +109,7 @@ object ExecutionModelExporter {
 
                 writer.append(lineSeparator)
                 //print metrics values
-                for(step in run.steps){
+                for(step in sortedStep(run)){
                     var i = 0;
                     for(solution in step.solutions){
                         writer.append(step.generationNumber.toString())
