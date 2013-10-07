@@ -29,11 +29,12 @@ public class RulesFitnessFunction<A : KMFContainer> : FitnessFunction<A> {
     override fun evaluate(model: A, origin: A?, traceSeq: TraceSequence?): Double {
         var nbViolatedRules = 0
         for(rule in rules){
-           if(!rule.check(model)){
-               nbViolatedRules++
-           }
+            if(!rule.check(model)){
+                nbViolatedRules++
+            }
         }
-        return nbViolatedRules.toDouble() //TODO % based
+        val pres = ( (rules.size() - nbViolatedRules) / rules.size()) * 100;
+        return 100 - Math.min(Math.max(0.toDouble(), pres.toDouble()), 100.toDouble())
     }
 
 }
