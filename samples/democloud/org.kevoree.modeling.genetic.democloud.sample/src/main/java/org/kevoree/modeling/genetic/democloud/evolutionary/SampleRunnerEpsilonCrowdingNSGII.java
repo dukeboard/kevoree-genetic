@@ -4,6 +4,8 @@ import org.cloud.Cloud;
 import org.kevoree.modeling.genetic.democloud.DefaultCloudPopulationFactory;
 import org.kevoree.modeling.genetic.democloud.fitnesses.*;
 import org.kevoree.modeling.genetic.democloud.mutators.*;
+import org.kevoree.modeling.genetic.democloud.mutators.SmartMutator.AddSmartMutator;
+import org.kevoree.modeling.genetic.democloud.mutators.SmartMutator.RemoveSmartMutator;
 import org.kevoree.modeling.optimization.api.Solution;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticAlgorithm;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
@@ -31,6 +33,9 @@ public class SampleRunnerEpsilonCrowdingNSGII {
 
         engine.addOperator(new CloneNodeMutator());
         engine.addOperator(new RemoveSoftwareMutator());
+
+        engine.addOperator(new AddSmartMutator());
+        engine.addOperator(new RemoveSmartMutator());
 
 
         engine.addFitnessFuntion(new CloudCostFitness());

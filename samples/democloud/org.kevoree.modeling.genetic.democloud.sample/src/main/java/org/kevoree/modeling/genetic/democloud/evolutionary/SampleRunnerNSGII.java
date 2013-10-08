@@ -16,8 +16,15 @@ import org.kevoree.modeling.optimization.api.Solution;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticAlgorithm;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
 import org.kevoree.modeling.optimization.framework.SolutionPrinter;
-
+import org.kevoree.modeling.optimization.api.ParetoFitnessMetrics;
+import org.kevoree.modeling.optimization.api.ParetoMetrics;
+import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
+import org.kevoree.modeling.optimization.util.ExecutionModelExporter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
+
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,12 +52,17 @@ public class SampleRunnerNSGII {
         engine.addFitnessFuntion(new CloudCostFitness());
         engine.addFitnessFuntion(new CloudLatencyFitness());
         engine.addFitnessFuntion(new CloudRedundancyFitness());
-        //engine.addFitnessFuntion(new CloudAdaptationCostFitness());
+
+
+
+        engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.Min);
+        engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.Max);
+        engine.addParetoMetric(ParetoMetrics.Mean);
 
         engine.setMaxGeneration(100);
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
 
-        engine.setAlgorithm(GeneticAlgorithm.NSGII);
+        engine.setAlgorithm(GeneticAlgorithm.NSGAII);
 
         List<Solution> result = engine.solve();
         SolutionPrinter printer = new SolutionPrinter();
@@ -58,5 +70,16 @@ public class SampleRunnerNSGII {
         printer.print(sol, System.out);
         }
 
+        ExecutionModel model = engine.getExecutionModel();
+
+        ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
     }
+
+
 }
+
+
+////
+
+
+

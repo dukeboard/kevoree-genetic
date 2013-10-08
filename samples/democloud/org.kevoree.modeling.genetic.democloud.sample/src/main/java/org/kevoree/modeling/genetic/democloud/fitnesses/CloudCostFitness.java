@@ -28,9 +28,7 @@ public class CloudCostFitness implements FitnessFunction<Cloud> {
 
 
 
-
         for(VirtualNode node : model.getNodes())
-
         {
 
             if ((node instanceof  Amazon) || (node instanceof  Rackspace)  )
