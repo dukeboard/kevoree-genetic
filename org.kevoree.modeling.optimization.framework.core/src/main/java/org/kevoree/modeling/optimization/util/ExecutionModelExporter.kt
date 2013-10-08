@@ -5,6 +5,7 @@ import java.io.File
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
 import java.io.FileOutputStream
 import org.kevoree.modeling.optimization.executionmodel.Run
+import org.kevoree.modeling.optimization.executionmodel.FitnessMetric
 import java.util.ArrayList
 import java.util.Collections
 import java.util.Comparator
@@ -51,9 +52,9 @@ object ExecutionModelExporter {
                 writer.append(fieldSeperator)
                 val step0 = run.steps.get(0)
                 for(metric in step0.metrics){
-                    writer.append(metric.javaClass.getCanonicalName())
+                    writer.append(metric.javaClass.getSimpleName())
                     if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
-                        val fitmet = metric as org.kevoree.modeling.optimization.executionmodel.FitnessMetric
+                        val fitmet = metric as FitnessMetric
                         writer.append("_" + fitmet.fitness!!.name)
                     } else {
                         writer.append("_pareto")
