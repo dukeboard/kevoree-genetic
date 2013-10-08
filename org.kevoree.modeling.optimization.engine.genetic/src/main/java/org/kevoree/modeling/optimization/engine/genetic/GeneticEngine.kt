@@ -30,6 +30,7 @@ import org.kevoree.modeling.optimization.executionmodel.Run
 import java.util.Date
 import org.kevoree.modeling.optimization.framework.FitnessMetric
 import org.kevoree.modeling.optimization.executionmodel.Metric
+import org.moeaframework.core.comparator.HypervolumeComparator
 
 /**
  * Created with IntelliJ IDEA.
@@ -101,8 +102,13 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             GeneticAlgorithm.EpsilonNSGII -> {
                 //don't do nothing -> default case
             }
-            GeneticAlgorithm.NSGII -> {
+            GeneticAlgorithm.NSGAII -> {
                 val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), CrowdingComparator()));
+                kalgo = NSGAII(problem, NondominatedSortingPopulation(), null, selection, variations, ModelInitialization(_populationFactory!!, problem, originAware));
+                //don't do nothing -> default case
+            }
+            GeneticAlgorithm.HypervolumeNSGAII -> {
+                val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), HypervolumeComparator(problem)));
                 kalgo = NSGAII(problem, NondominatedSortingPopulation(), null, selection, variations, ModelInitialization(_populationFactory!!, problem, originAware));
                 //don't do nothing -> default case
             }
