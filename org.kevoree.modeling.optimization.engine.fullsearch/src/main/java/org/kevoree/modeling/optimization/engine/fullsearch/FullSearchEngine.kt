@@ -21,12 +21,18 @@ import org.kevoree.modeling.api.ModelCloner
 import org.kevoree.modeling.api.trace.Event2Trace
 import org.kevoree.modeling.api.events.ModelElementListener
 import org.kevoree.modeling.api.events.ModelEvent
+import org.kevoree.modeling.optimization.api.SolutionComparator
 
 /**
  * Created by duke on 14/08/13.
  */
 
 public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
+
+    var mainComparator : SolutionComparator<A>? = null
+    override fun setComparator(solC: SolutionComparator<A>) {
+        mainComparator = solC;
+    }
 
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
     override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
@@ -131,7 +137,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
             val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence()))
             computeStep(defaultSolution)
             if(solutions.size >= _maxGeneration){
-                return solutions;
+                return buildSolutions();
             }
         }
         //Front is ready next step
@@ -142,11 +148,19 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
             for(sol in clonedFront){
                 computeStep(sol)
                 if(solutions.size >= _maxGeneration){
-                    return solutions;
+                    return buildSolutions();
                 }
             }
         }
-        return solutions;
+        return buildSolutions();
     }
+
+    private fun buildSolutions(): List<Solution<A>> {
+        var solutionsRes = ArrayList<Solution<A>>()
+        solutionsRes.addAll(solutions)
+        //TODO SORT using comparator
+        return solutionsRes
+    }
+
 
 }

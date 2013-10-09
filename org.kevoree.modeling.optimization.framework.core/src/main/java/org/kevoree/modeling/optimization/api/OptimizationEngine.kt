@@ -11,7 +11,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
  * Date: 13/08/13
  * Time: 17:12
  */
-public trait OptimizationEngine<A: KMFContainer> {
+public trait OptimizationEngine<A : KMFContainer> {
 
     public fun addOperator(operator: MutationOperator<A>): OptimizationEngine<A>
 
@@ -25,14 +25,16 @@ public trait OptimizationEngine<A: KMFContainer> {
 
     public fun solve(): List<Solution<A>>
 
-    public fun getExecutionModel() : ExecutionModel?
+    public fun getExecutionModel(): ExecutionModel?
 
     public fun activateExecutionModel()
 
-    public fun addFitnessMetric(fitness : FitnessFunction<A>, metric : ParetoFitnessMetrics)
+    public fun addFitnessMetric(fitness: FitnessFunction<A>, metric: ParetoFitnessMetrics)
 
-    public fun addParetoMetric(metric : ParetoMetrics)
+    public fun addParetoMetric(metric: ParetoMetrics)
 
     public fun desactivateOriginAware()
+
+    public fun setComparator(solC: SolutionComparator<A>)
 
 }

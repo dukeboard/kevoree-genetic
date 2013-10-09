@@ -23,7 +23,7 @@ public class MutationVariationAdaptor<A : KMFContainer>(val operator: MutationOp
         try {
             var clonedSolution = parents?.get(0)?.copy()
             var clonedVar = clonedSolution?.getVariable(0) as ModelVariable<A>;
-            var variables = operator.enumerateVariables()
+            var variables = operator.enumerateVariables(clonedVar.model)
             var params = MutationParameters()
             //random get
             for(variable in variables){

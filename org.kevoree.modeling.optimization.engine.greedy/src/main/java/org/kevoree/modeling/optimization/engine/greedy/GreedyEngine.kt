@@ -1,8 +1,6 @@
 package org.kevoree.modeling.optimization.engine.greedy;
 
 import org.kevoree.modeling.api.KMFContainer
-import org.kevoree.modeling.optimization.api.MutationOperator
-import org.kevoree.modeling.optimization.api.FitnessFunction
 import org.kevoree.modeling.optimization.api.PopulationFactory
 import org.kevoree.modeling.optimization.api.Solution
 import java.util.ArrayList
@@ -10,11 +8,26 @@ import org.kevoree.modeling.optimization.framework.AbstractOptimizationEngine
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
 import org.kevoree.modeling.optimization.executionmodel.impl.DefaultExecutionModelFactory
 import org.kevoree.modeling.optimization.framework.FitnessMetric
+import org.kevoree.modeling.optimization.api.mutation.MutationOperator
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
+import org.kevoree.modeling.api.compare.ModelCompare
+import org.kevoree.modeling.api.ModelCloner
+import org.kevoree.modeling.api.trace.Event2Trace
+import org.kevoree.modeling.optimization.framework.DefaultSolution
+import org.kevoree.modeling.api.events.ModelElementListener
+import org.kevoree.modeling.api.events.ModelEvent
+import org.kevoree.modeling.optimization.api.mutation.MutationParameters
+import java.util.HashMap
+import org.kevoree.modeling.optimization.api.mutation.QueryVar
+import org.kevoree.modeling.optimization.api.mutation.EnumVar
+import org.kevoree.modeling.optimization.api.GenerationContext
+import org.kevoree.modeling.optimization.api.SolutionComparator
 
 /**
  * Created by duke on 14/08/13.
  */
 public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
+
 
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
     override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
@@ -25,11 +38,130 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     override var _executionModelFactory: DefaultExecutionModelFactory? = null
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
 
-    public override fun solve(): List<Solution> {
-        var model = _populationFactory!!.createPopulation().get(0);
-        var solutions = ArrayList<Solution>()
-        return solutions;
+    var mainComparator: SolutionComparator<A>? = null
+
+    var originAware = true
+
+    override fun desactivateOriginAware() {
+        originAware = false;
     }
 
+    override fun setComparator(solC: SolutionComparator<A>) {
+        mainComparator = solC
+    }
+
+    var modelCompare: ModelCompare? = null
+    var front: Solution<A>? = null
+    var nbMutation: Int = 0
+
+    var modelCloner: ModelCloner? = null
+    var event2Trace: Event2Trace? = null
+
+
+    private fun mutate(solution: Solution<A>, operator: MutationOperator<A>, parameters: MutationParameters): Solution<A> {
+        val clonedModel = modelCloner!!.clone(solution.model)!!
+        val clonedContext = solution.context.createChild(modelCompare!!, clonedModel, true)
+        val newSolution = DefaultSolution(clonedModel, clonedContext)
+        val modelListener = object : ModelElementListener {
+            override fun elementChanged(evt: ModelEvent) {
+                if(clonedContext.traceSequence != null){
+                    clonedContext.traceSequence.populate(event2Trace!!.convert(evt).traces);
+                }
+            }
+        }
+        clonedModel.addModelTreeListener(modelListener)
+        //do real operation
+        operator.mutate(clonedModel, parameters)
+        return newSolution
+    }
+
+    private fun computeStep(solution: Solution<A>) {
+        for(operator in _operators){
+            val enumerationVariables = operator.enumerateVariables(solution.model);
+            val enumeratedValues = HashMap<String, List<Any>>()
+            //flat all variables
+            for(variable in enumerationVariables){
+                when(variable) {
+                    is QueryVar -> {
+                        var queryResult = solution.model.selectByQuery(variable.query)
+                        enumeratedValues.put(variable.name, queryResult)
+                    }
+                    is EnumVar -> {
+                        enumeratedValues.put(variable.name, variable.elements)
+                    }
+                    else -> {
+                        throw Exception("Unknow Mutator Variable (Enum/Query)" + variable)
+                    }
+                }
+            }
+            //indice for enumerate all possible paretoFront
+            val enumeratedValuesIndice = HashMap<String, Int>()
+            for(variable in enumerationVariables){
+                enumeratedValuesIndice.set(variable.name, 0)
+            }
+            //enumerate all candidates
+            for(keyName in enumeratedValues.keySet()){
+                while(enumeratedValuesIndice.get(keyName)!! < enumeratedValues.get(keyName)!!.size){
+                    var paramters = MutationParameters()
+                    for(keyName2 in enumeratedValues.keySet()){
+                        val indice = enumeratedValuesIndice.get(keyName2)!!
+                        val value = enumeratedValues.get(keyName2)!!.get(indice)
+                        paramters.setParam(keyName2, value)
+                    }
+                    var mutatedSolution = mutate(solution, operator, paramters)
+                    if(front == null || mainComparator!!.compare(front!!, mutatedSolution)){
+                        front = mutatedSolution
+                    }
+                    if(nbMutation > _maxGeneration){
+                        return;
+                    }
+                    enumeratedValuesIndice.put(keyName, enumeratedValuesIndice.get(keyName)!! + 1)
+                }
+            }
+        }
+    }
+
+
+    public override fun solve(): List<Solution<A>> {
+        if (_operators.isEmpty()) {
+            throw Exception("No operators are configured, please configure at least one");
+        }
+        if (_fitnesses.isEmpty()) {
+            throw Exception("No fitness function are configured, please configure at least one");
+        }
+        if(_populationFactory == null){
+            throw Exception("No population factory are configured, please configure at least one");
+        }
+        if(mainComparator == null){
+            throw Exception("No comparator are configured, please configure one");
+        }
+        modelCompare = _populationFactory!!.getModelCompare()
+        modelCloner = _populationFactory!!.getCloner()
+        event2Trace = Event2Trace(modelCompare!!)
+        var population = _populationFactory!!.createPopulation();
+        for(initElem in population){
+            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence()))
+            computeStep(defaultSolution)
+            if(nbMutation >= _maxGeneration){
+                return buildSolutions();
+            }
+        }
+        //Front is ready next step
+        while(nbMutation < _maxGeneration && front != null){
+            computeStep(front!!)
+            if(nbMutation >= _maxGeneration){
+                return buildSolutions();
+            }
+        }
+        return buildSolutions();
+    }
+
+    private fun buildSolutions(): List<Solution<A>> {
+        var solutions = ArrayList<Solution<A>>()
+        if(front != null){
+            solutions.add(front!!)
+        }
+        return solutions
+    }
 
 }

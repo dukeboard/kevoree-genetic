@@ -31,6 +31,7 @@ import org.kevoree.modeling.optimization.executionmodel.Metric
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 import org.kevoree.modeling.optimization.engine.genetic.ext.HypervolumeComparator
+import org.kevoree.modeling.optimization.api.SolutionComparator
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,6 +41,11 @@ import org.kevoree.modeling.optimization.engine.genetic.ext.HypervolumeComparato
  */
 
 class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
+
+    var mainComparator : SolutionComparator<A>? = null
+    override fun setComparator(solC: SolutionComparator<A>) {
+        mainComparator = solC;
+    }
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
     override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
@@ -184,6 +190,8 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         for (solution in population?.iterator()) {
             results.add(solution as org.kevoree.modeling.optimization.api.Solution<A>)
         }
+
+        //TODO sort result using comparator
 
         return results
     }
