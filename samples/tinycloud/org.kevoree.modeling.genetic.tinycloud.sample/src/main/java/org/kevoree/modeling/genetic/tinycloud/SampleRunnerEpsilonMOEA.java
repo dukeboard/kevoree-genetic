@@ -36,7 +36,7 @@ public class SampleRunnerEpsilonMOEA {
         engine.setPopulationFactory(new DefaultCloudPopulationFactory().setSize(10));
         engine.setAlgorithm(GeneticAlgorithm.EpsilonMOEA);
 
-        List<Solution> result = engine.solve();
+        List<Solution<Cloud>> result = engine.solve();
         SolutionPrinter printer = new SolutionPrinter();
         for (Solution sol : result) {
             printer.print(sol, System.out);

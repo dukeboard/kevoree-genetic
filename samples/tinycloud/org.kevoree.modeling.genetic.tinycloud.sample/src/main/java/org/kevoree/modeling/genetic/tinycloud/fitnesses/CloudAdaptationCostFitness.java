@@ -1,11 +1,13 @@
 package org.kevoree.modeling.genetic.tinycloud.fitnesses;
 
+import jet.runtime.typeinfo.JetValueParameter;
 import org.cloud.Cloud;
 import org.kevoree.modeling.api.trace.ModelAddTrace;
 import org.kevoree.modeling.api.trace.ModelRemoveTrace;
 import org.kevoree.modeling.api.trace.ModelTrace;
 import org.kevoree.modeling.api.trace.TraceSequence;
-import org.kevoree.modeling.optimization.api.FitnessFunction;
+import org.kevoree.modeling.optimization.api.GenerationContext;
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,16 +18,11 @@ import org.kevoree.modeling.optimization.api.FitnessFunction;
 
 public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
 
-    @Override
-    public boolean originAware(){
-        return true;
-    }
-
 
     @Override
-    public double evaluate(Cloud cloud, Cloud origin, TraceSequence traceSequence) {
+    public double evaluate(Cloud cloud, GenerationContext<Cloud> cloudGenerationContext) {
         double result = 0;
-        for (ModelTrace trace : traceSequence.getTraces()) {
+        for (ModelTrace trace : cloudGenerationContext.getTraceSequence().getTraces()) {
             if (trace instanceof ModelAddTrace) {
                 result = result +1;
             }
@@ -35,4 +32,5 @@ public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
         }
         return result;
     }
+
 }

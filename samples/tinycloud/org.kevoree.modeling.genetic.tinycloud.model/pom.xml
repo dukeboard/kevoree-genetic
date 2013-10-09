@@ -41,10 +41,10 @@
                         <configuration>
                             <ecore>cloud.ecore</ecore>
                             <packagePrefix>org</packagePrefix>
-                            <clearOutput>false</clearOutput>
                             <js>false</js>
                             <ecma5>false</ecma5>
                             <events>true</events>
+                            <selector>true</selector>
                         </configuration>
                     </execution>
                 </executions>

@@ -10,6 +10,6 @@ package org.kevoree.modeling.optimization.api.mutation
 
 public trait MutationVariable {
 
-    var name : String
+    val name : String
 
 }

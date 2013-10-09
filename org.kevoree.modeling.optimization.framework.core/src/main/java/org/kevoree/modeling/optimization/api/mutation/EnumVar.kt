@@ -7,6 +7,4 @@ package org.kevoree.modeling.optimization.api.mutation
  * Time: 18:59
  */
 
-public data class EnumVar(val elements: List<Any>) : MutationVariable {
-    override var name: String = "default"
-}
+public data class EnumVar(override val name: String,val elements: List<Any>) : MutationVariable

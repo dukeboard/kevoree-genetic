@@ -1,9 +1,14 @@
 package org.kevoree.modeling.genetic.tinycloud.mutators;
 
 import org.cloud.Cloud;
-import org.kevoree.modeling.optimization.api.MutationOperator;
+import org.cloud.Node;
+import org.kevoree.modeling.optimization.api.mutation.MutationOperator;
+import org.kevoree.modeling.optimization.api.mutation.MutationParameters;
+import org.kevoree.modeling.optimization.api.mutation.MutationVariable;
+import org.kevoree.modeling.optimization.api.mutation.QueryVar;
 
-import java.util.Random;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,12 +18,16 @@ import java.util.Random;
  */
 public class RemoveNodeMutator implements MutationOperator<Cloud> {
 
-    private Random rand = new Random();
+    @Override
+    public List<MutationVariable> enumerateVariables(Cloud cloud) {
+        return Arrays.asList((MutationVariable) new QueryVar("target", "nodes[*]"));
+    }
 
     @Override
-    public void mutate(Cloud parent) {
-        if (!parent.getNodes().isEmpty()) {
-            parent.removeNodes(parent.getNodes().get(rand.nextInt(parent.getNodes().size())));
+    public void mutate(Cloud model, MutationParameters mutationParameters) {
+        Node target = (Node) mutationParameters.getParam("target");
+        if (target != null) {
+            model.removeNodes(target);
         }
     }
 

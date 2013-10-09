@@ -20,7 +20,7 @@ public class DefaultCloudPopulationFactory implements PopulationFactory<Cloud> {
 
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
 
-    private Integer size = 100;
+    private Integer size = 5;
 
     public DefaultCloudPopulationFactory setSize(Integer nSize) {
         size = nSize;

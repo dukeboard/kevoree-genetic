@@ -7,6 +7,4 @@ package org.kevoree.modeling.optimization.api.mutation
  * Time: 18:58
  */
 
-public data class QueryVar(val query: String) : MutationVariable {
-    override var name: String = "default"
-}
+public data class QueryVar(override val name: String,val query: String) : MutationVariable
