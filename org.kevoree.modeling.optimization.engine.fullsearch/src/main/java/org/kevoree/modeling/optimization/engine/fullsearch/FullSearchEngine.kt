@@ -1,18 +1,26 @@
 package org.kevoree.modeling.optimization.engine.fullsearch
 
-import org.kevoree.modeling.optimization.api.OptimizationEngine
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.PopulationFactory
 import org.kevoree.modeling.optimization.api.Solution
 import java.util.ArrayList
 import org.kevoree.modeling.optimization.framework.DefaultSolution
-import org.kevoree.modeling.api.trace.TraceSequence
 import org.kevoree.modeling.optimization.executionmodel.impl.DefaultExecutionModelFactory
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
 import org.kevoree.modeling.optimization.framework.AbstractOptimizationEngine
 import org.kevoree.modeling.optimization.framework.FitnessMetric
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
+import org.kevoree.modeling.optimization.api.GenerationContext
+import org.kevoree.modeling.api.compare.ModelCompare
+import java.util.HashMap
+import org.kevoree.modeling.optimization.api.mutation.QueryVar
+import org.kevoree.modeling.optimization.api.mutation.EnumVar
+import org.kevoree.modeling.optimization.api.mutation.MutationParameters
+import org.kevoree.modeling.api.ModelCloner
+import org.kevoree.modeling.api.trace.Event2Trace
+import org.kevoree.modeling.api.events.ModelElementListener
+import org.kevoree.modeling.api.events.ModelEvent
 
 /**
  * Created by duke on 14/08/13.
@@ -35,6 +43,76 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         originAware = false;
     }
 
+    var solutions = ArrayList<Solution<A>>()
+    var modelCompare: ModelCompare? = null
+    var front = ArrayList<Solution<A>>()
+    var modelCloner: ModelCloner? = null
+    var event2Trace: Event2Trace? = null
+
+
+    private fun mutate(solution: Solution<A>, operator: MutationOperator<A>, parameters: MutationParameters): Solution<A> {
+        val clonedModel = modelCloner!!.clone(solution.model)!!
+        val clonedContext = solution.context.createChild(modelCompare!!, clonedModel, true)
+        val newSolution = DefaultSolution(clonedModel, clonedContext)
+        val modelListener = object : ModelElementListener {
+            override fun elementChanged(evt: ModelEvent) {
+                if(clonedContext.traceSequence != null){
+                    clonedContext.traceSequence.populate(event2Trace!!.convert(evt).traces);
+                }
+            }
+        }
+        clonedModel.addModelTreeListener(modelListener)
+        //do real operation
+        operator.mutate(clonedModel, parameters)
+        return newSolution
+    }
+
+    private fun computeStep(solution: Solution<A>) {
+        for(operator in _operators){
+            val enumerationVariables = operator.enumerateVariables(solution.model);
+            val enumeratedValues = HashMap<String, List<Any>>()
+            //flat all variables
+            for(variable in enumerationVariables){
+                when(variable) {
+                    is QueryVar -> {
+                        var queryResult = solution.model.selectByQuery(variable.query)
+                        enumeratedValues.put(variable.name, queryResult)
+                    }
+                    is EnumVar -> {
+                        enumeratedValues.put(variable.name, variable.elements)
+                    }
+                    else -> {
+                        throw Exception("Unknow Mutator Variable (Enum/Query)" + variable)
+                    }
+                }
+            }
+            //indice for enumerate all possible paretoFront
+            val enumeratedValuesIndice = HashMap<String, Int>()
+            for(variable in enumerationVariables){
+                enumeratedValuesIndice.set(variable.name, 0)
+            }
+            //enumerate all candidates
+            for(keyName in enumeratedValues.keySet()){
+                while(enumeratedValuesIndice.get(keyName)!! < enumeratedValues.get(keyName)!!.size){
+                    var paramters = MutationParameters()
+                    for(keyName2 in enumeratedValues.keySet()){
+                        val indice = enumeratedValuesIndice.get(keyName2)!!
+                        val value = enumeratedValues.get(keyName2)!!.get(indice)
+                        paramters.setParam(keyName2, value)
+                    }
+                    var mutatedSolution = mutate(solution, operator, paramters)
+                    front.add(mutatedSolution)
+                    solutions.add(mutatedSolution)
+                    if(solutions.size() > _maxGeneration){
+                        return;
+                    }
+                    enumeratedValuesIndice.put(keyName, enumeratedValuesIndice.get(keyName)!! + 1)
+                }
+            }
+        }
+    }
+
+
     public override fun solve(): List<Solution<A>> {
         if (_operators.isEmpty()) {
             throw Exception("No operators are configured, please configure at least one");
@@ -45,43 +123,30 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         if(_populationFactory == null){
             throw Exception("No population factory are configured, please configure at least one");
         }
-        var solutions = ArrayList<Solution<A>>()
+        modelCompare = _populationFactory!!.getModelCompare()
+        modelCloner = _populationFactory!!.getCloner()
+        event2Trace = Event2Trace(modelCompare!!)
         var population = _populationFactory!!.createPopulation();
         for(initElem in population){
-            for(operator in _operators){
-                  val enumerationVariables = operator.enumerateVariables();
-
+            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence()))
+            computeStep(defaultSolution)
+            if(solutions.size >= _maxGeneration){
+                return solutions;
             }
         }
-
-
-
-        var bestSolution: Solution<A> = if(originAware){
-            buildSolution(model, model, _populationFactory!!.getModelCompare().createSequence())
-        } else {
-            buildSolution(model, null, null)
+        //Front is ready next step
+        while(solutions.size < _maxGeneration){
+            val clonedFront = ArrayList<Solution<A>>()
+            clonedFront.addAll(front)
+            front.clear()
+            for(sol in clonedFront){
+                computeStep(sol)
+                if(solutions.size >= _maxGeneration){
+                    return solutions;
+                }
+            }
         }
-        var iterationNB = _maxGeneration;
-
-
-        solutions.add(bestSolution);
         return solutions;
     }
-
-    private fun nextIteration(previousSolution: Solution): List<Solution> {
-        var solutions = ArrayList<Solution>()
-
-
-        return solutions;
-    }
-
-    private fun buildSolution(model: A, origin: A?, traceSeq: TraceSequence?): Solution {
-        var newSolution = DefaultSolution(model, origin, traceSeq)
-        for(fitness in _fitnesses){
-            newSolution.results.put(fitness.javaClass.getSimpleName(), fitness.evaluate(model, origin, traceSeq))
-        }
-        return newSolution;
-    }
-
 
 }
