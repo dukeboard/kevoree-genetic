@@ -1,10 +1,11 @@
 package org.kevoree.modeling.optimization.framework
 
-import org.kevoree.modeling.optimization.api.FitnessFunction
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.api.trace.TraceSequence
 import org.kevoree.modeling.optimization.api.Rule
 import java.util.ArrayList
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
+import org.kevoree.modeling.optimization.api.GenerationContext
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,11 +23,7 @@ public class RulesFitnessFunction<A : KMFContainer> : FitnessFunction<A> {
         return this;
     }
 
-    override fun originAware(): Boolean {
-        return false
-    }
-
-    override fun evaluate(model: A, origin: A?, traceSeq: TraceSequence?): Double {
+    override fun evaluate(model: A, context : GenerationContext<A>): Double {
         var nbViolatedRules = 0
         for(rule in rules){
             if(!rule.check(model)){

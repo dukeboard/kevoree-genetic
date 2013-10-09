@@ -1,9 +1,9 @@
 package org.kevoree.modeling.optimization.framework;
 
 import org.kevoree.modeling.api.KMFContainer
-import org.kevoree.modeling.optimization.api.FitnessFunction
 import java.util.ArrayList
-import org.kevoree.modeling.api.trace.TraceSequence
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
+import org.kevoree.modeling.optimization.api.GenerationContext
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,19 +12,11 @@ import org.kevoree.modeling.api.trace.TraceSequence
  * Time: 16:20
  */
 public class CompositeFitnessFunction<A : KMFContainer> : FitnessFunction<A> {
-    public override fun originAware(): Boolean {
-        for(fitness in fitnesses){
-            if(fitness.originAware()){
-                return true ;
-            }
-        }
-        return false;
-    }
 
-    public override fun evaluate(model: A, origin: A?, traceSeq: TraceSequence?): Double {
+    override fun evaluate(model: A, context: GenerationContext<A>): Double {
         var value = 0.0;
         for (fit in fitnesses) {
-            value = value + fit.evaluate(model, origin, traceSeq);
+            value = value + fit.evaluate(model, context);
         }
         return value / fitnesses.size();
     }

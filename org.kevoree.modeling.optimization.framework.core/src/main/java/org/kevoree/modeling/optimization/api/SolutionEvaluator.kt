@@ -1,5 +1,7 @@
 package org.kevoree.modeling.optimization.api
 
+import org.kevoree.modeling.api.KMFContainer
+
 /**
  * Created with IntelliJ IDEA.
  * User: duke
@@ -7,8 +9,8 @@ package org.kevoree.modeling.optimization.api
  * Time: 14:39
  */
 
-public trait SolutionEvaluator {
+public trait SolutionEvaluator<A : KMFContainer> {
 
-    fun evaluate(solution : Solution) : Long
+    fun evaluate(solution : Solution<A>) : Long
 
 }

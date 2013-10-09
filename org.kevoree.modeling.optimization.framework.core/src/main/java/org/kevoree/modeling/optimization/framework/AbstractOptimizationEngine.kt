@@ -3,12 +3,12 @@ package org.kevoree.modeling.optimization.framework
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.OptimizationEngine
 import org.kevoree.modeling.optimization.api.PopulationFactory
-import org.kevoree.modeling.optimization.api.MutationOperator
-import org.kevoree.modeling.optimization.api.FitnessFunction
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
 import org.kevoree.modeling.optimization.executionmodel.impl.DefaultExecutionModelFactory
 import org.kevoree.modeling.optimization.api.ParetoMetrics
 import org.kevoree.modeling.optimization.api.ParetoFitnessMetrics
+import org.kevoree.modeling.optimization.api.mutation.MutationOperator
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 
 /**
  * Created with IntelliJ IDEA.

@@ -17,16 +17,16 @@ public class AbstractOptimizationStep<A : KMFContainer> : OptimizationStep<A> {
 
     private var engine: OptimizationEngine<A>? = null;
 
-    private var solutions: List<Solution>? = null;
+    private var solutions: List<Solution<A>>? = null;
 
-    override fun getSolutions(): List<Solution> {
+    override fun getSolutions(): List<Solution<A>> {
         if(solutions != null){
             return solutions!!
         }                   else {
-            return ArrayList<Solution>()
+            return ArrayList<Solution<A>>()
         }
     }
-    override fun populateInitalSolutions(solutions: List<Solution>) {
+    override fun populateInitalSolutions(solutions: List<Solution<A>>) {
         throw UnsupportedOperationException()
     }
     override fun run() {

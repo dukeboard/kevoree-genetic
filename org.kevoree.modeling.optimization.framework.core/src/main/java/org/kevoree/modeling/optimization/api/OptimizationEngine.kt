@@ -2,6 +2,8 @@ package org.kevoree.modeling.optimization.api;
 
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
+import org.kevoree.modeling.optimization.api.mutation.MutationOperator
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,7 +23,7 @@ public trait OptimizationEngine<A: KMFContainer> {
 
     public fun setMaxTime(maxTime: Long): OptimizationEngine<A>
 
-    public fun solve(): List<Solution>
+    public fun solve(): List<Solution<A>>
 
     public fun getExecutionModel() : ExecutionModel?
 
@@ -30,5 +32,7 @@ public trait OptimizationEngine<A: KMFContainer> {
     public fun addFitnessMetric(fitness : FitnessFunction<A>, metric : ParetoFitnessMetrics)
 
     public fun addParetoMetric(metric : ParetoMetrics)
+
+    public fun desactivateOriginAware()
 
 }

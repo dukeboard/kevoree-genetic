@@ -8,9 +8,9 @@ import org.kevoree.modeling.api.KMFContainer
 
 public trait OptimizationStep<A : KMFContainer> {
 
-    fun getSolutions(): List<Solution> ;
+    fun getSolutions(): List<Solution<A>> ;
 
-    fun populateInitalSolutions(solutions: List<Solution>);
+    fun populateInitalSolutions(solutions: List<Solution<A>>);
 
     fun run();
 

@@ -2,8 +2,6 @@ package org.kevoree.modeling.optimization.engine.fullsearch
 
 import org.kevoree.modeling.optimization.api.OptimizationEngine
 import org.kevoree.modeling.api.KMFContainer
-import org.kevoree.modeling.optimization.api.MutationOperator
-import org.kevoree.modeling.optimization.api.FitnessFunction
 import org.kevoree.modeling.optimization.api.PopulationFactory
 import org.kevoree.modeling.optimization.api.Solution
 import java.util.ArrayList
@@ -13,6 +11,8 @@ import org.kevoree.modeling.optimization.executionmodel.impl.DefaultExecutionMod
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
 import org.kevoree.modeling.optimization.framework.AbstractOptimizationEngine
 import org.kevoree.modeling.optimization.framework.FitnessMetric
+import org.kevoree.modeling.optimization.api.mutation.MutationOperator
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 
 /**
  * Created by duke on 14/08/13.
@@ -29,7 +29,13 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
     override var _executionModelFactory: DefaultExecutionModelFactory? = null
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
 
-    public override fun solve(): List<Solution> {
+    var originAware = true
+
+    override fun desactivateOriginAware() {
+        originAware = false;
+    }
+
+    public override fun solve(): List<Solution<A>> {
         if (_operators.isEmpty()) {
             throw Exception("No operators are configured, please configure at least one");
         }
@@ -39,25 +45,25 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         if(_populationFactory == null){
             throw Exception("No population factory are configured, please configure at least one");
         }
-        var originAware = false
-        for(fitness in _fitnesses){
-            if(fitness.originAware()){
-                originAware = true
+        var solutions = ArrayList<Solution<A>>()
+        var population = _populationFactory!!.createPopulation();
+        for(initElem in population){
+            for(operator in _operators){
+                  val enumerationVariables = operator.enumerateVariables();
+
             }
         }
-        var model = _populationFactory!!.createPopulation().get(0);
-        var bestSolution: Solution = if(originAware){
+
+
+
+        var bestSolution: Solution<A> = if(originAware){
             buildSolution(model, model, _populationFactory!!.getModelCompare().createSequence())
         } else {
             buildSolution(model, null, null)
         }
         var iterationNB = _maxGeneration;
-        while(iterationNB > 0){
 
-            iterationNB = iterationNB - 1;
-        }
 
-        var solutions = ArrayList<Solution>()
         solutions.add(bestSolution);
         return solutions;
     }

@@ -1,8 +1,6 @@
 package org.kevoree.modeling.optimization.engine.genetic
 
 import org.kevoree.modeling.api.KMFContainer
-import org.kevoree.modeling.optimization.api.MutationOperator
-import org.kevoree.modeling.optimization.api.FitnessFunction
 import org.kevoree.modeling.optimization.api.PopulationFactory
 import org.kevoree.modeling.optimization.api.Solution
 import java.util.ArrayList
@@ -30,7 +28,9 @@ import org.kevoree.modeling.optimization.executionmodel.Run
 import java.util.Date
 import org.kevoree.modeling.optimization.framework.FitnessMetric
 import org.kevoree.modeling.optimization.executionmodel.Metric
-import org.moeaframework.core.comparator.HypervolumeComparator
+import org.kevoree.modeling.optimization.api.mutation.MutationOperator
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
+import org.kevoree.modeling.optimization.engine.genetic.ext.HypervolumeComparator
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,9 +48,9 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     override var _maxTime: Long = -1.toLong()
     override var _executionModel: ExecutionModel? = null
     override var _executionModelFactory: DefaultExecutionModelFactory? = null
-
     private var _algorithm: GeneticAlgorithm = GeneticAlgorithm.EpsilonNSGII
     private var _dominanceEpsilon = 5.0;
+    private  var originAware = true
 
     private var currentRun: Run? = null;
 
@@ -58,11 +58,15 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         _algorithm = alg;
     }
 
+    override fun desactivateOriginAware() {
+        originAware = false
+    }
+
     public fun setEpsilonDominance(dd: Double) {
         _dominanceEpsilon = dd
     }
 
-    public override fun solve(): List<Solution> {
+    public override fun solve(): List<Solution<A>> {
         if (_operators.isEmpty()) {
             throw Exception("No operators are configured, please configure at least one");
         }
@@ -79,12 +83,9 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             _executionModel!!.addRuns(currentRun!!);
             currentRun!!.startTime = Date().getTime();
         }
-        var originAware = false
+
         for(fitness in _fitnesses){
-            if(fitness.originAware()){
-                originAware = true
-            }
-            if(_executionModel!=null &&_executionModel!!.findFitnessByID(fitness.javaClass.getCanonicalName()) == null){
+            if(_executionModel != null && _executionModel!!.findFitnessByID(fitness.javaClass.getCanonicalName()) == null){
                 val newFitness = _executionModelFactory!!.createFitness()
                 newFitness.name = fitness.javaClass.getCanonicalName()
                 _executionModel!!.addFitness(newFitness)
@@ -146,7 +147,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                     for (solution in population?.iterator()) {
                         val modelSolution = _executionModelFactory!!.createSolution()
                         newStep.addSolutions(modelSolution)
-                        for(i in 0..solution.getNumberOfObjectives()-1){
+                        for(i in 0..solution.getNumberOfObjectives() - 1){
                             val fitnessName = problem.fitnessFromIndice.get(i).javaClass.getCanonicalName()
                             val value = solution.getObjective(i);
                             val newScore = _executionModelFactory!!.createScore()
@@ -178,7 +179,13 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             currentRun!!.endTime = Date().getTime();
         }
 
-        return buildPopulation(kalgo, problem)
+        val population = kalgo.getResult();
+        var results = ArrayList<org.kevoree.modeling.optimization.api.Solution<A>>()
+        for (solution in population?.iterator()) {
+            results.add(solution as org.kevoree.modeling.optimization.api.Solution<A>)
+        }
+
+        return results
     }
 
     private fun continueEngineComputation(alg: Algorithm, beginTimeMilli: Long, nbGeneration: Int): Boolean {
@@ -194,20 +201,6 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             return false;
         }
         return true;
-    }
-
-    private fun buildPopulation(algo: Algorithm, problem: ModelOptimizationProblem<A>): List<Solution> {
-        val results = ArrayList<Solution>();
-        val population = algo.getResult();
-        for (solution in population?.iterator()) {
-            var loopvar = solution.getVariable(0) as ModelVariable;
-            var modelSolution = DefaultSolution(loopvar.model!!, loopvar.origin, loopvar.traceSequence);
-            for(fitness in _fitnesses){
-                modelSolution.results.put(fitness.javaClass.getSimpleName(), solution.getObjective(problem.indiceFromFitness.get(fitness)!!))
-            }
-            results.add(modelSolution);
-        }
-        return results;
     }
 
 }

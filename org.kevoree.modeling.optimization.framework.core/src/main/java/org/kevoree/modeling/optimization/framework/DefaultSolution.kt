@@ -4,11 +4,12 @@ import org.kevoree.modeling.optimization.api.Solution
 import org.kevoree.modeling.api.KMFContainer
 import java.util.HashMap
 import org.kevoree.modeling.api.trace.TraceSequence
+import org.kevoree.modeling.optimization.api.GenerationContext
 
 /**
  * Created by duke on 14/08/13.
  */
-public class DefaultSolution(override val model: KMFContainer,override val origin: KMFContainer?,override val traceSequence: TraceSequence?) : Solution {
+public class DefaultSolution<A : KMFContainer>(override val model: A,override val context: GenerationContext<A>) : Solution<A> {
 
     var results = HashMap<String, Double>()
 
