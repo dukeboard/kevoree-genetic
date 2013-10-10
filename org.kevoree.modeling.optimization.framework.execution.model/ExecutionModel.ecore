@@ -38,6 +38,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fitness" lowerBound="1"
         eType="#//Fitness"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Hypervolume" eSuperTypes="#//Metric"/>
   <eClassifiers xsi:type="ecore:EClass" name="Min" eSuperTypes="#//FitnessMetric"/>

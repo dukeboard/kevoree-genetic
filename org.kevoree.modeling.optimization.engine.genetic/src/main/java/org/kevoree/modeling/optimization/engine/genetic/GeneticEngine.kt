@@ -159,6 +159,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                             val newScore = _executionModelFactory!!.createScore()
                             newScore.fitness = _executionModel!!.findFitnessByID(fitnessName)
                             newScore.value = value
+                            newScore.name = newScore.fitness!!.name
                             modelSolution.addScores(newScore)
                         }
                     }

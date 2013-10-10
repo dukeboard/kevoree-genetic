@@ -56,15 +56,15 @@ public class SampleRunner {
         ExecutionModel model = engine.getExecutionModel();
         ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
 
-        /*
-        JSONModelSerializer saver = new JSONModelSerializer();
-        File temp = File.createTempFile("temporaryOutput",".json");
-        FileOutputStream fou = new FileOutputStream(temp);
-        saver.serializeToStream(engine.getExecutionModel(),fou);
 
-        fou.close();
-        System.out.println(temp.getAbsolutePath());
-            */
+        JSONModelSerializer saver = new JSONModelSerializer();
+       // File temp = File.createTempFile("temporaryOutput",".json");
+       // FileOutputStream fou = new FileOutputStream(temp);
+        //saver.serializeToStream(engine.getExecutionModel(),System.err);
+
+        //fou.close();
+        //System.out.println(temp.getAbsolutePath());
+
 
 
 

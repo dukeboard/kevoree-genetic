@@ -10,6 +10,7 @@ import java.util.ArrayList
 import java.util.Collections
 import java.util.Comparator
 import org.kevoree.modeling.optimization.executionmodel.Step
+import org.kevoree.modeling.optimization.executionmodel.Metric
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,6 +35,29 @@ object ExecutionModelExporter {
         return steps
     }
 
+    private fun generateHashByMetric(met: Metric): String {
+        return when(met) {
+            is FitnessMetric -> {
+                met.metaClassName() + "_" + met.fitness!!.name
+            }
+            else -> {
+                met.metaClassName()
+            }
+        }
+    }
+
+    private fun sortedMetrics(run: Step): List<Metric> {
+        val metrics = ArrayList<Metric>(run.metrics.size())
+        metrics.addAll(run.metrics)
+        Collections.sort(metrics, object : Comparator<Metric> {
+            override fun compare(o1: Metric, o2: Metric): Int {
+                return generateHashByMetric(o1).compareTo(generateHashByMetric(o2))
+            }
+        })
+        return metrics
+    }
+
+
     fun exportMetrics(model: ExecutionModel, outdir: File) {
         if(!(outdir.exists() && outdir.isDirectory()) ){
             outdir.mkdirs()
@@ -51,7 +75,7 @@ object ExecutionModelExporter {
                 writer.append("endTime")
                 writer.append(fieldSeperator)
                 val step0 = run.steps.get(0)
-                for(metric in step0.metrics){
+                for(metric in sortedMetrics(step0)){
                     writer.append(metric.javaClass.getSimpleName())
                     if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
                         val fitmet = metric as FitnessMetric
@@ -70,7 +94,7 @@ object ExecutionModelExporter {
                     writer.append(fieldSeperator)
                     writer.append(step.endTime.toString())
                     writer.append(fieldSeperator)
-                    for(metric in step.metrics){
+                    for(metric in sortedMetrics(step)){
                         writer.append(metric.value.toString())
                         writer.append(fieldSeperator)
                     }
