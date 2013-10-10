@@ -64,13 +64,13 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
         activateExecutionModel() //if at least one metric is added, initiate the ExecutionModel
         when(metric){
             ParetoFitnessMetrics.Max -> {
-                _metricsName.add(FitnessMetric(fitness.javaClass.getCanonicalName()!!, "org.kevoree.modeling.optimization.executionmodel.Max"));
+                _metricsName.add(FitnessMetric(fitness.javaClass.getSimpleName(), "org.kevoree.modeling.optimization.executionmodel.Max"));
             }
             ParetoFitnessMetrics.Min -> {
-                _metricsName.add(FitnessMetric(fitness.javaClass.getCanonicalName()!!, "org.kevoree.modeling.optimization.executionmodel.Min"));
+                _metricsName.add(FitnessMetric(fitness.javaClass.getSimpleName(), "org.kevoree.modeling.optimization.executionmodel.Min"));
             }
             ParetoFitnessMetrics.Mean -> {
-                _metricsName.add(FitnessMetric(fitness.javaClass.getCanonicalName()!!, "org.kevoree.modeling.optimization.executionmodel.Mean"));
+                _metricsName.add(FitnessMetric(fitness.javaClass.getSimpleName(), "org.kevoree.modeling.optimization.executionmodel.Mean"));
             }
             else -> {
             }

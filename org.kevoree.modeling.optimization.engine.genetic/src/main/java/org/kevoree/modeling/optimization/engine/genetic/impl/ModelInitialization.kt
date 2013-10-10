@@ -23,7 +23,8 @@ public class ModelInitialization<A : KMFContainer>(val factory: PopulationFactor
         return Array<Solution>(models.size(), { i ->
             val s = problem.newSolution()!!
             val model = models.get(i)
-            val initialContext = GenerationContext(null, model, model, null)
+            var initialTraceSeq = if(traceAware){modelCompare.createSequence()}else{null}
+            val initialContext = GenerationContext(null, model, model, initialTraceSeq)
             s.setVariable(0, ModelVariable(model, initialContext, factory.getCloner(), modelCompare, event2trace, traceAware));
             s
         });

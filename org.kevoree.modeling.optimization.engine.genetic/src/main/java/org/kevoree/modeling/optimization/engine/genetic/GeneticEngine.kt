@@ -91,9 +91,9 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         }
 
         for(fitness in _fitnesses){
-            if(_executionModel != null && _executionModel!!.findFitnessByID(fitness.javaClass.getCanonicalName()) == null){
+            if(_executionModel != null && _executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName()) == null){
                 val newFitness = _executionModelFactory!!.createFitness()
-                newFitness.name = fitness.javaClass.getCanonicalName()
+                newFitness.name = fitness.javaClass.getSimpleName()
                 _executionModel!!.addFitness(newFitness)
             }
         }
@@ -154,7 +154,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                         val modelSolution = _executionModelFactory!!.createSolution()
                         newStep.addSolutions(modelSolution)
                         for(i in 0..solution.getNumberOfObjectives() - 1){
-                            val fitnessName = problem.fitnessFromIndice.get(i).javaClass.getCanonicalName()
+                            val fitnessName = problem.fitnessFromIndice.get(i).javaClass.getSimpleName()
                             val value = solution.getObjective(i);
                             val newScore = _executionModelFactory!!.createScore()
                             newScore.fitness = _executionModel!!.findFitnessByID(fitnessName)
@@ -190,9 +190,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         for (solution in population?.iterator()) {
             results.add(solution as org.kevoree.modeling.optimization.api.Solution<A>)
         }
-
         //TODO sort result using comparator
-
         return results
     }
 

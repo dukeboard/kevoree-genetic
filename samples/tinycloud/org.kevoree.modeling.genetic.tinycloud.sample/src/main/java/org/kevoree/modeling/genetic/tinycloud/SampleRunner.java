@@ -54,7 +54,6 @@ public class SampleRunner {
 
 
         ExecutionModel model = engine.getExecutionModel();
-
         ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
 
         /*

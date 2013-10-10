@@ -24,7 +24,7 @@ public class ModelOptimizationProblem<A : KMFContainer>(val fitnesses: List<Fitn
         var i = 0;
         for(fitness in fitnesses){
             fitnessFromIndice.put(i, fitness)
-            indiceFromFitness.put(fitness.javaClass.getCanonicalName()!!, i)
+            indiceFromFitness.put(fitness.javaClass.getSimpleName()!!, i)
             i++;
         }
     }

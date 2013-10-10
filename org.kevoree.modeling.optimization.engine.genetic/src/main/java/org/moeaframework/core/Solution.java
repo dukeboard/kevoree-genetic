@@ -135,7 +135,7 @@ public class Solution implements Serializable {
 	 * @return an independent copy of this solution
 	 */
 	public Solution copy() {
-		return new Solution(this);
+        return new Solution(this);
 	}
 
 	/**

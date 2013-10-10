@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.moeaframework.algorithm.Checkpoints;
@@ -33,7 +32,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.TypedProperties;
-import org.moeaframework.util.distributed.DistributedProblem;
 import org.moeaframework.util.io.FileUtils;
 import org.moeaframework.util.progress.ProgressHelper;
 import org.moeaframework.util.progress.ProgressListener;
@@ -657,12 +655,6 @@ public class Executor extends ProblemBuilder {
 			problem = getProblemInstance();
 			
 			try {
-				if (executorService != null) {
-					problem = new DistributedProblem(problem, executorService);
-				} else if (numberOfThreads > 1) {
-					executor = Executors.newFixedThreadPool(numberOfThreads);
-					problem = new DistributedProblem(problem, executor);
-				}
 				
 				NondominatedPopulation result = newArchive();
 				

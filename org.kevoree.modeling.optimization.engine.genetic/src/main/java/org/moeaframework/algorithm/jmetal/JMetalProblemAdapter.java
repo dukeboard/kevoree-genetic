@@ -28,7 +28,6 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.ProblemException;
 
 /**
  * Adapter for JMetal problems. This allows MOEA Framework {@link Problem}s to
@@ -79,8 +78,7 @@ public class JMetalProblemAdapter extends jmetal.core.Problem {
 					if (solutionType == null) {
 						solutionType = new RealSolutionType(this);
 					} else if (!(solutionType instanceof RealSolutionType)) {
-						throw new ProblemException(problem, 
-								"mixed types not supported");
+						throw new Exception("mixed types not supported");
 					}
 				} else if (variable instanceof BinaryVariable) {
 					BinaryVariable binary = (BinaryVariable)variable;
@@ -89,7 +87,7 @@ public class JMetalProblemAdapter extends jmetal.core.Problem {
 					if (solutionType == null) {
 						solutionType = new BinarySolutionType(this);
 					} else if (!(solutionType instanceof BinarySolutionType)) {
-						throw new ProblemException(problem, 
+						throw new Exception(
 								"mixed types not supported");
 					}
 				} else if (variable instanceof Permutation) {
@@ -99,15 +97,15 @@ public class JMetalProblemAdapter extends jmetal.core.Problem {
 					if (solutionType == null) {
 						solutionType = new PermutationSolutionType(this);
 					} else if (!(solutionType instanceof PermutationSolutionType)) {
-						throw new ProblemException(problem, 
+						throw new Exception(
 								"mixed types not supported");
 					}
 				} else {
-					throw new ProblemException(problem, "type not supported");
+					throw new Exception("type not supported");
 				}
 			}
 		} catch (Exception e) {
-			throw new ProblemException(problem, e);
+			e.printStackTrace();
 		}
 		
 		solutionType_ = solutionType;
