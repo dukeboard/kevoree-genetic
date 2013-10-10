@@ -35,7 +35,7 @@ public class SampleRunner {
         engine.setMaxGeneration(100);
         engine.setPopulationFactory(new DefaultCloudPopulationFactory().setSize(10));
 
-        List<Solution> result = engine.solve();
+        List<Solution<Cloud>> result = engine.solve();
         SolutionPrinter printer = new SolutionPrinter();
         for (Solution sol : result) {
         printer.print(sol, System.out);
