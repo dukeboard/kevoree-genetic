@@ -59,7 +59,6 @@ public class SampleRunnerNSGAIIWithHypervolume {
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
 
         engine.setAlgorithm(GeneticAlgorithm.HypervolumeNSGAII);
-
         engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.Min);
         engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.Max);
         engine.addParetoMetric(ParetoMetrics.Mean);
