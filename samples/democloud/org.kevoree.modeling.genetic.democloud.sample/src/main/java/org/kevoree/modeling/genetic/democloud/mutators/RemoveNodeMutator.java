@@ -1,7 +1,18 @@
 package org.kevoree.modeling.genetic.democloud.mutators;
 
 import org.cloud.Cloud;
-import org.kevoree.modeling.optimization.api.MutationOperator;
+import org.cloud.VirtualNode;
+import org.cloud.impl.DefaultCloudFactory;
+import org.kevoree.modeling.optimization.api.mutation.MutationOperator;
+import org.kevoree.modeling.optimization.api.mutation.QueryVar;
+
+import org.kevoree.modeling.optimization.api.mutation.MutationParameters;
+import org.kevoree.modeling.optimization.api.mutation.MutationVariable;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 
 import java.util.Random;
 /**
@@ -16,7 +27,12 @@ public class RemoveNodeMutator implements MutationOperator<Cloud> {
     private Random rand = new Random();
 
     @Override
-    public void mutate(Cloud parent) {
+    public List<MutationVariable> enumerateVariables(Cloud cloud) {
+        return Arrays.asList((MutationVariable) new QueryVar("target", "nodes[*]"));
+    }
+
+    @Override
+    public void mutate(Cloud parent, MutationParameters mutationParameters) {
         if (!parent.getNodes().isEmpty()) {
            parent.removeNodes(parent.getNodes().get(rand.nextInt(parent.getNodes().size())));
         }

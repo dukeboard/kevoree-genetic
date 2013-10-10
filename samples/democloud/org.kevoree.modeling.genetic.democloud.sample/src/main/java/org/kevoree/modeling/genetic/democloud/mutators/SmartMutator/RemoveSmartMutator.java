@@ -1,10 +1,17 @@
 package org.kevoree.modeling.genetic.democloud.mutators.SmartMutator;
 
 import org.cloud.Cloud;
-import org.cloud.Software;
 import org.cloud.VirtualNode;
 import org.cloud.impl.DefaultCloudFactory;
-import org.kevoree.modeling.optimization.api.MutationOperator;
+import org.kevoree.modeling.optimization.api.mutation.MutationOperator;
+import org.kevoree.modeling.optimization.api.mutation.MutationParameters;
+import org.kevoree.modeling.optimization.api.mutation.QueryVar;
+
+import org.kevoree.modeling.optimization.api.mutation.MutationVariable;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import java.util.Random;
 
@@ -20,11 +27,16 @@ public class RemoveSmartMutator implements MutationOperator<Cloud> {
     private Random rand = new Random();
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
 
+
     @Override
+    public List<MutationVariable> enumerateVariables(Cloud cloud) {
+        return Arrays.asList((MutationVariable) new QueryVar("target", "nodes[*]"));
+    }
 
-    /* Removes  components in the most available VM to free the VM */
 
-    public void mutate(Cloud parent) {
+    @Override
+    public void mutate(Cloud parent, MutationParameters mutationParameters) {
+
 
 
         int cnumber =0;
