@@ -5,7 +5,8 @@ import org.cloud.VirtualNode;
 import org.cloud.impl.DefaultCloudFactory;
 import org.kevoree.modeling.api.trace.TraceSequence;
 import org.kevoree.modeling.genetic.democloud.Requirements;
-import org.kevoree.modeling.optimization.api.FitnessFunction;
+import org.kevoree.modeling.optimization.api.GenerationContext;
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,13 +22,9 @@ public class CloudRedundancyFitness implements FitnessFunction<Cloud> {
 
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
 
-    @Override
-    public boolean originAware(){
-        return false;
-    }
 
     @Override
-    public double evaluate(Cloud model, Cloud origin, TraceSequence traceSequence)
+    public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
     {
         int size =1;
 
@@ -47,5 +44,7 @@ public class CloudRedundancyFitness implements FitnessFunction<Cloud> {
         System.out.println("redunduncy is"+ size )  ;
         return redundancyeval;
     }
+
+}
 
 }

@@ -2,7 +2,8 @@ package org.kevoree.modeling.genetic.democloud.fitnesses;
 
 import org.cloud.*;
 import org.kevoree.modeling.api.trace.TraceSequence;
-import org.kevoree.modeling.optimization.api.FitnessFunction;
+import org.kevoree.modeling.optimization.api.GenerationContext;
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
 /**
  * Created with IntelliJ IDEA.
  * User: donia.elkateb
@@ -14,14 +15,9 @@ public class CloudLatencyFitness implements FitnessFunction<Cloud> {
 
     //private double maxNode = 10;
 
-    @Override
-    public boolean originAware() {
-        return false;
-    }
 
 
-    @Override
-    public double evaluate(Cloud model, Cloud origin, TraceSequence traceSequence) {
+    public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
 
         double latency = 0;
 

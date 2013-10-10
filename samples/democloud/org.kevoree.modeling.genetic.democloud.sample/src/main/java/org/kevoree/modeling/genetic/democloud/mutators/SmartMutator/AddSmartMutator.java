@@ -4,8 +4,12 @@ import org.cloud.Cloud;
 import org.cloud.Software;
 import org.cloud.VirtualNode;
 import org.cloud.impl.DefaultCloudFactory;
-import org.kevoree.modeling.optimization.api.MutationOperator;
-
+import org.kevoree.modeling.optimization.api.mutation.MutationOperator;
+import org.kevoree.modeling.optimization.api.mutation.MutationParameters;
+import org.kevoree.modeling.optimization.api.mutation.MutationVariable;
+import org.kevoree.modeling.optimization.api.mutation.QueryVar;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -21,11 +25,16 @@ public class AddSmartMutator implements MutationOperator<Cloud> {
     private Random rand = new Random();
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
 
+
+
     @Override
+    public List<MutationVariable> enumerateVariables(Cloud cloud) {
+        return Arrays.asList((MutationVariable) new QueryVar("target", "nodes[*]"));
+    }
 
-    /*Adds a component in the VM node that contains less components*/
 
-    public void mutate(Cloud parent) {
+    @Override
+    public void mutate(Cloud parent, MutationParameters mutationParameters) {
 
 
         int componentnumber =0;

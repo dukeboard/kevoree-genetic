@@ -5,7 +5,8 @@ import org.cloud.Rackspace;
 import org.cloud.Cloud;
 import org.cloud.VirtualNode;
 import org.kevoree.modeling.api.trace.TraceSequence;
-import org.kevoree.modeling.optimization.api.FitnessFunction;
+import org.kevoree.modeling.optimization.api.GenerationContext;
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,13 +17,10 @@ import org.kevoree.modeling.optimization.api.FitnessFunction;
  */
 public class CloudCostFitness implements FitnessFunction<Cloud> {
 
-    @Override
-    public boolean originAware() {
-        return false;
-    }
+
 
     @Override
-    public double evaluate(Cloud model, Cloud origin, TraceSequence traceSequence) {
+    public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
 
         double pres = 0;
 
