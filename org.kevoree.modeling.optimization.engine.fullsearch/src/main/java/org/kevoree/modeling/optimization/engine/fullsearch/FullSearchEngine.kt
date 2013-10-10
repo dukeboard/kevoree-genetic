@@ -27,6 +27,8 @@ import org.kevoree.modeling.optimization.api.SolutionComparator
  * Created by duke on 14/08/13.
  */
 
+//TODO Flat detection
+
 public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
 
     var mainComparator : SolutionComparator<A>? = null

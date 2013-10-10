@@ -76,7 +76,7 @@ object ExecutionModelExporter {
                 writer.append(fieldSeperator)
                 val step0 = run.steps.get(0)
                 for(metric in sortedMetrics(step0)){
-                    writer.append(metric.javaClass.getSimpleName())
+                    writer.append(generateHashByMetric(metric))
                     if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
                         val fitmet = metric as FitnessMetric
                         writer.append("_" + fitmet.fitness!!.name)
