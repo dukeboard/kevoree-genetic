@@ -2,7 +2,6 @@ package org.kevoree.modeling.genetic.democloud.evolutionary;
 
 import org.cloud.Cloud;
 import org.kevoree.modeling.genetic.democloud.CloudPopulationFactory;
-import org.kevoree.modeling.genetic.democloud.fitnesses.CloudAdaptationCostFitness;
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudCostFitness;
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudLatencyFitness;
 
