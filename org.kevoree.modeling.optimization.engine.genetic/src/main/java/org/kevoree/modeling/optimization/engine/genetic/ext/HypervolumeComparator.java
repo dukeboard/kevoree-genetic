@@ -19,13 +19,10 @@ package org.kevoree.modeling.optimization.engine.genetic.ext;
 
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
-
 import java.io.Serializable;
 import java.util.Comparator;
-
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
-
 import org.moeaframework.core.Solution;
 
 public class HypervolumeComparator extends IndicatorFitnessEvaluator implements DominanceComparator,
@@ -39,7 +36,7 @@ public class HypervolumeComparator extends IndicatorFitnessEvaluator implements 
 
     @Override
     protected double calculateIndicator(Solution solution1, Solution solution2) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0;
     }
 
     private static final ParetoDominanceComparator dominanceComparator =
@@ -59,8 +56,6 @@ public class HypervolumeComparator extends IndicatorFitnessEvaluator implements 
             return 0;
         }
     }
-
-
 
     protected double calculateHypervolume(Solution solution1,
                                           Solution solution2, int d) {
