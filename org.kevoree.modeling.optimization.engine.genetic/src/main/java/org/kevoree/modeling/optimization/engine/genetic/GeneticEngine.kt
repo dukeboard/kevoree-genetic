@@ -11,8 +11,6 @@ import org.moeaframework.core.NondominatedSortingPopulation
 import org.moeaframework.core.EpsilonBoxDominanceArchive
 import org.moeaframework.core.operator.TournamentSelection
 import org.kevoree.modeling.optimization.engine.genetic.impl.ModelInitialization
-import org.kevoree.modeling.optimization.framework.DefaultSolution
-import org.kevoree.modeling.optimization.engine.genetic.impl.ModelVariable
 import org.kevoree.modeling.optimization.engine.genetic.impl.RandomCompoundVariation
 import org.kevoree.modeling.optimization.engine.genetic.impl.MutationVariationAdaptor
 import org.moeaframework.algorithm.EpsilonMOEA
@@ -42,7 +40,7 @@ import org.kevoree.modeling.optimization.api.SolutionComparator
 
 class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
 
-    var mainComparator : SolutionComparator<A>? = null
+    var mainComparator: SolutionComparator<A>? = null
     override fun setComparator(solC: SolutionComparator<A>) {
         mainComparator = solC;
     }

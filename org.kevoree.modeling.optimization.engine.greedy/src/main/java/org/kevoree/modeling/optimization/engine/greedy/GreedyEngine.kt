@@ -22,12 +22,15 @@ import org.kevoree.modeling.optimization.api.mutation.QueryVar
 import org.kevoree.modeling.optimization.api.mutation.EnumVar
 import org.kevoree.modeling.optimization.api.GenerationContext
 import org.kevoree.modeling.optimization.api.SolutionComparator
+import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionComparator
+import org.kevoree.modeling.optimization.executionmodel.Run
+import java.util.Date
+import org.kevoree.modeling.optimization.executionmodel.Metric
 
 /**
  * Created by duke on 14/08/13.
  */
 public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
-
 
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
     override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
@@ -37,29 +40,35 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     override var _executionModel: ExecutionModel? = null
     override var _executionModelFactory: DefaultExecutionModelFactory? = null
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
-
-    var mainComparator: SolutionComparator<A>? = null
-
+    var mainComparator: SolutionComparator<A>? = MeanSolutionComparator<A>()
     var originAware = true
-
-    override fun desactivateOriginAware() {
-        originAware = false;
-    }
+    var modelCompare: ModelCompare? = null
+    var front: Solution<A>? = null
+    var nbMutation: Int = 0
+    var modelCloner: ModelCloner? = null
+    var event2Trace: Event2Trace? = null
+    private var currentRun: Run? = null;
 
     override fun setComparator(solC: SolutionComparator<A>) {
         mainComparator = solC
     }
 
-    var modelCompare: ModelCompare? = null
-    var front: Solution<A>? = null
-    var nbMutation: Int = 0
-
-    var modelCloner: ModelCloner? = null
-    var event2Trace: Event2Trace? = null
-
+    override fun desactivateOriginAware() {
+        originAware = false;
+    }
 
     private fun mutate(solution: Solution<A>, operator: MutationOperator<A>, parameters: MutationParameters): Solution<A> {
         val clonedModel = modelCloner!!.clone(solution.model)!!
+        /* try to unresolved if contained elements */
+        for(param in parameters.getKeys()){
+            val value = parameters.getParam(param)
+            if(value is KMFContainer){
+                val resolved = clonedModel.findByPath((value as KMFContainer).path()!!)
+                if(resolved != null && resolved.metaClassName() == value.metaClassName()){
+                    parameters.setParam(param, resolved)
+                }
+            }
+        }
         val clonedContext = solution.context.createChild(modelCompare!!, clonedModel, true)
         val newSolution = DefaultSolution(clonedModel, clonedContext)
         val modelListener = object : ModelElementListener {
@@ -72,10 +81,19 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         clonedModel.addModelTreeListener(modelListener)
         //do real operation
         operator.mutate(clonedModel, parameters)
+        clonedContext.operator = operator
+        nbMutation++
+        //evaluate new solution
+        for(fit in _fitnesses){
+            newSolution.results.put(fit.javaClass.getSimpleName(), fit.evaluate(newSolution.model, clonedContext))
+        }
         return newSolution
     }
 
+    private val date = Date()
+
     private fun computeStep(solution: Solution<A>) {
+        val previousTime = date.getTime()
         for(operator in _operators){
             val enumerationVariables = operator.enumerateVariables(solution.model);
             val enumeratedValues = HashMap<String, List<Any>>()
@@ -110,7 +128,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                     }
                     var mutatedSolution = mutate(solution, operator, paramters)
                     if(front == null || mainComparator!!.compare(front!!, mutatedSolution)){
-                        front = mutatedSolution
+                        switchToNewFrontSolution(mutatedSolution)
                     }
                     if(nbMutation > _maxGeneration){
                         return;
@@ -119,8 +137,38 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                 }
             }
         }
+        val newStep = _executionModelFactory!!.createStep()
+        newStep.startTime = previousTime
+        newStep.endTime = date.getTime()
+        newStep.generationNumber = nbMutation
+        val modelSolution = _executionModelFactory!!.createSolution()
+        newStep.addSolutions(modelSolution)
+        for(fitness in front!!.getFitnesses()){
+            val newScore = _executionModelFactory!!.createScore()
+            newScore.fitness = _executionModel!!.findFitnessByID(fitness)
+            newScore.value = front!!.getScoreForFitness(fitness)!!
+            newScore.name = newScore.fitness!!.name
+            modelSolution.addScores(newScore)
+        }
+        //add metric and call update
+        for(loopFitnessMetric in _metricsName){
+            val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
+            if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
+                val fitMet = metric as org.kevoree.modeling.optimization.executionmodel.FitnessMetric
+                fitMet.fitness = _executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName)
+            }
+            newStep.addMetrics(metric) //add before update ! mandatory !
+            metric.update()
+        }
+        currentRun!!.addSteps(newStep)
     }
 
+    private var isChangedSinceLastStep = false
+
+    private fun switchToNewFrontSolution(newSol: Solution<A>) {
+        front = newSol
+        isChangedSinceLastStep = true
+    }
 
     public override fun solve(): List<Solution<A>> {
         if (_operators.isEmpty()) {
@@ -132,24 +180,46 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         if(_populationFactory == null){
             throw Exception("No population factory are configured, please configure at least one");
         }
-        if(mainComparator == null){
-            throw Exception("No comparator are configured, please configure one");
+        if(_executionModel != null){
+            //create RUN
+            currentRun = _executionModelFactory!!.createRun();
+            currentRun!!.algName = "greedy_" + mainComparator.javaClass.getSimpleName();
+            _executionModel!!.addRuns(currentRun!!);
+            currentRun!!.startTime = Date().getTime();
         }
+        for(fitness in _fitnesses){
+            if(_executionModel != null && _executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName()) == null){
+                val newFitness = _executionModelFactory!!.createFitness()
+                newFitness.name = fitness.javaClass.getSimpleName()
+                _executionModel!!.addFitness(newFitness)
+            }
+        }
+        nbMutation = 0 // init nb mutation counter
         modelCompare = _populationFactory!!.getModelCompare()
         modelCloner = _populationFactory!!.getCloner()
         event2Trace = Event2Trace(modelCompare!!)
         var population = _populationFactory!!.createPopulation();
+        if(population.size() > _maxGeneration){
+            System.err.println("Warning Population Size > MaxGenetation !!!");
+        }
         for(initElem in population){
-            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence()))
+            //create an initial solution
+            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null))
+            //evaluate initial solution
+            for(fit in _fitnesses){
+                defaultSolution.results.put(fit.javaClass.getSimpleName(), fit.evaluate(defaultSolution.model, defaultSolution.context))
+            }
+            isChangedSinceLastStep = false //track modification
             computeStep(defaultSolution)
-            if(nbMutation >= _maxGeneration){
+            if(nbMutation >= _maxGeneration || !isChangedSinceLastStep){
                 return buildSolutions();
             }
         }
         //Front is ready next step
         while(nbMutation < _maxGeneration && front != null){
+            isChangedSinceLastStep = false //track modification
             computeStep(front!!)
-            if(nbMutation >= _maxGeneration){
+            if(nbMutation >= _maxGeneration || !isChangedSinceLastStep){
                 return buildSolutions();
             }
         }

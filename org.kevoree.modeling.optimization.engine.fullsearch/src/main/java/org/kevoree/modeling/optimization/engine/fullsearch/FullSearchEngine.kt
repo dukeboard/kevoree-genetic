@@ -31,7 +31,7 @@ import org.kevoree.modeling.optimization.api.SolutionComparator
 
 public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
 
-    var mainComparator : SolutionComparator<A>? = null
+    var mainComparator: SolutionComparator<A>? = null
     override fun setComparator(solC: SolutionComparator<A>) {
         mainComparator = solC;
     }
@@ -116,6 +116,9 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
                     }
                     enumeratedValuesIndice.put(keyName, enumeratedValuesIndice.get(keyName)!! + 1)
                 }
+                for(variable in enumerationVariables){
+                    enumeratedValuesIndice.set(variable.name, 0)
+                }
             }
         }
     }
@@ -136,7 +139,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         event2Trace = Event2Trace(modelCompare!!)
         var population = _populationFactory!!.createPopulation();
         for(initElem in population){
-            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence()))
+            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null))
             computeStep(defaultSolution)
             if(solutions.size >= _maxGeneration){
                 return buildSolutions();

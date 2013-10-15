@@ -29,7 +29,7 @@ public class MutationVariationAdaptor<A : KMFContainer>(val operator: MutationOp
             for(variable in variables){
                 when(variable) {
                     is QueryVar -> {
-                        var queryResult = clonedVar.model.selectByQuery( variable.query )
+                        var queryResult = clonedVar.model.selectByQuery(variable.query)
                         if(!queryResult.isEmpty()){
                             var indice = random.nextInt(queryResult.size())
                             params.setParam(variable.name, queryResult.get(indice))
@@ -48,6 +48,7 @@ public class MutationVariationAdaptor<A : KMFContainer>(val operator: MutationOp
             val result = Array<Solution>(1, { i ->
                 clonedSolution!!
             });
+            clonedVar.context.operator = operator
             return result
         } catch (e: Throwable) {
             e.printStackTrace();

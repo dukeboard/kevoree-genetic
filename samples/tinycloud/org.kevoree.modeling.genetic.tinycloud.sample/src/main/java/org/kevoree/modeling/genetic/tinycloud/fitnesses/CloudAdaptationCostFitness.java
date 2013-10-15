@@ -1,11 +1,9 @@
 package org.kevoree.modeling.genetic.tinycloud.fitnesses;
 
-import jet.runtime.typeinfo.JetValueParameter;
 import org.cloud.Cloud;
 import org.kevoree.modeling.api.trace.ModelAddTrace;
 import org.kevoree.modeling.api.trace.ModelRemoveTrace;
 import org.kevoree.modeling.api.trace.ModelTrace;
-import org.kevoree.modeling.api.trace.TraceSequence;
 import org.kevoree.modeling.optimization.api.GenerationContext;
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
 
