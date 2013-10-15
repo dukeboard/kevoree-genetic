@@ -87,7 +87,6 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             _executionModel!!.addRuns(currentRun!!);
             currentRun!!.startTime = Date().getTime();
         }
-
         for(fitness in _fitnesses){
             if(_executionModel != null && _executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName()) == null){
                 val newFitness = _executionModelFactory!!.createFitness()
@@ -95,7 +94,6 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                 _executionModel!!.addFitness(newFitness)
             }
         }
-
         val problem = ModelOptimizationProblem(_fitnesses, _populationFactory!!.getCloner(), _populationFactory!!.getModelCompare());
         val variations = RandomCompoundVariation();
         for (operator in _operators){

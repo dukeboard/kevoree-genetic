@@ -34,6 +34,11 @@
             <artifactId>org.kevoree.modeling.optimization.engine.greedy</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.kevoree.modeling.optimization</groupId>
+            <artifactId>org.kevoree.modeling.optimization.engine.fullsearch</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
