@@ -41,9 +41,7 @@
                         <configuration>
                             <ecore>ExecutionModel.ecore</ecore>
                             <packagePrefix>org.kevoree.modeling.optimization</packagePrefix>
-                            <clearOutput>false</clearOutput>
                             <js>false</js>
-                            <ecma5>false</ecma5>
                             <events>true</events>
                         </configuration>
                     </execution>
