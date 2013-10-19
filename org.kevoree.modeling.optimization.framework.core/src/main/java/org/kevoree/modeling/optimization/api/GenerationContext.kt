@@ -13,7 +13,7 @@ import org.kevoree.modeling.optimization.api.mutation.MutationOperator
  */
 
 public class GenerationContext<A : KMFContainer>(
-        parentContext: GenerationContext<A>?,
+        val parentContext: GenerationContext<A>?,
         var modelOrigin: A,
         var currentModel: A,
         val traceSequence: TraceSequence?,
