@@ -137,30 +137,32 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                 }
             }
         }
-        val newStep = _executionModelFactory!!.createStep()
-        newStep.startTime = previousTime
-        newStep.endTime = date.getTime()
-        newStep.generationNumber = nbMutation
-        val modelSolution = _executionModelFactory!!.createSolution()
-        newStep.addSolutions(modelSolution)
-        for(fitness in front!!.getFitnesses()){
-            val newScore = _executionModelFactory!!.createScore()
-            newScore.fitness = _executionModel!!.findFitnessByID(fitness)
-            newScore.value = front!!.getScoreForFitness(fitness)!!
-            newScore.name = newScore.fitness!!.name
-            modelSolution.addScores(newScore)
-        }
-        //add metric and call update
-        for(loopFitnessMetric in _metricsName){
-            val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
-            if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
-                val fitMet = metric as org.kevoree.modeling.optimization.executionmodel.FitnessMetric
-                fitMet.fitness = _executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName)
+        if(front != null){
+            val newStep = _executionModelFactory!!.createStep()
+            newStep.startTime = previousTime
+            newStep.endTime = date.getTime()
+            newStep.generationNumber = nbMutation
+            val modelSolution = _executionModelFactory!!.createSolution()
+            newStep.addSolutions(modelSolution)
+            for(fitness in front!!.getFitnesses()){
+                val newScore = _executionModelFactory!!.createScore()
+                newScore.fitness = _executionModel!!.findFitnessByID(fitness)
+                newScore.value = front!!.getScoreForFitness(fitness)!!
+                newScore.name = newScore.fitness!!.name
+                modelSolution.addScores(newScore)
             }
-            newStep.addMetrics(metric) //add before update ! mandatory !
-            metric.update()
+            //add metric and call update
+            for(loopFitnessMetric in _metricsName){
+                val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
+                if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
+                    val fitMet = metric as org.kevoree.modeling.optimization.executionmodel.FitnessMetric
+                    fitMet.fitness = _executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName)
+                }
+                newStep.addMetrics(metric) //add before update ! mandatory !
+                metric.update()
+            }
+            currentRun!!.addSteps(newStep)
         }
-        currentRun!!.addSteps(newStep)
     }
 
     private var isChangedSinceLastStep = false
