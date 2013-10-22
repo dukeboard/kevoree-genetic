@@ -1,10 +1,12 @@
 Kevoree Modeling Optimization Framework
 =======
 
-Framework documentation module
+Please, Pimp my model !
 
-This is the main doc !
+Optimization several criteria is a difficult task in computer science.
+Often it rely on on a problem encoding asking you very strong knowledge's in genetic or constraints programming or other evolutionary approach.
 
-```java
-engine.sayHello();
-```
+
+Getting started
+---------------
+
