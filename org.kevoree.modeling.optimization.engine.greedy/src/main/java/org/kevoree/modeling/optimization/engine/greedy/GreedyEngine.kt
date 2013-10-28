@@ -26,6 +26,10 @@ import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionCompar
 import org.kevoree.modeling.optimization.executionmodel.Run
 import java.util.Date
 import org.kevoree.modeling.optimization.executionmodel.Metric
+import org.kevoree.modeling.optimization.SolutionMutationListener
+import org.kevoree.modeling.optimization.api.MutationSelectionStrategy
+import org.kevoree.modeling.optimization.framework.DefaultRandomOperatorSelect
+import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 
 /**
  * Created by duke on 14/08/13.
@@ -33,6 +37,7 @@ import org.kevoree.modeling.optimization.executionmodel.Metric
 public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
 
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
+    override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelect(_operators)
     override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
     override var _populationFactory: PopulationFactory<A>? = null
     override var _maxGeneration: Int = 100
@@ -40,6 +45,8 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     override var _executionModel: ExecutionModel? = null
     override var _executionModelFactory: DefaultExecutionModelFactory? = null
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
+    override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
+
     var mainComparator: SolutionComparator<A>? = MeanSolutionComparator<A>()
     var originAware = true
     var modelCompare: ModelCompare? = null

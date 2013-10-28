@@ -9,6 +9,10 @@ import org.kevoree.modeling.optimization.api.ParetoMetrics
 import org.kevoree.modeling.optimization.api.ParetoFitnessMetrics
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
+import org.kevoree.modeling.optimization.SolutionMutationListener
+import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
+import org.kevoree.modeling.optimization.api.MutationSelectionStrategy
+import org.kevoree.modeling.optimization.engine.genetic.DarwinMutationOperatorSelector
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,6 +30,26 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
     var _maxTime: Long
     var _executionModel: ExecutionModel?
     var _executionModelFactory: DefaultExecutionModelFactory?
+    var solutionMutationListeners: MutableList<SolutionMutationListener<A>>
+    var mutationSelector: MutationOperatorSelector<A>
+
+    override fun setMutationSelectionStrategy(strategy: MutationSelectionStrategy) {
+        if(strategy == MutationSelectionStrategy.RANDOM){
+            mutationSelector = DefaultRandomOperatorSelect(_operators)
+        }
+        if(strategy == MutationSelectionStrategy.DARWIN){
+            //unregister previous
+            if(mutationSelector is SolutionMutationListener<*>){
+                solutionMutationListeners.remove(mutationSelector)
+            }
+            mutationSelector = DarwinMutationOperatorSelector(_operators, 25.0)
+            addSolutionMutationListener(mutationSelector as DarwinMutationOperatorSelector<A>)
+        }
+    }
+
+    public override fun addSolutionMutationListener(listener: SolutionMutationListener<A>) {
+        solutionMutationListeners.add(listener)
+    }
 
     public override fun addOperator(operator: MutationOperator<A>): OptimizationEngine<A> {
         _operators.add(operator);
@@ -48,7 +72,7 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
         return this;
     }
 
-    public override fun activateExecutionModel() {
+    private fun activateExecutionModel() {
         if(_executionModel == null){
             _executionModelFactory = DefaultExecutionModelFactory()
             _executionModel = _executionModelFactory!!.createExecutionModel()
@@ -62,7 +86,7 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
 
     public override fun addFitnessMetric(fitness: FitnessFunction<A>, metric: ParetoFitnessMetrics) {
         activateExecutionModel() //if at least one metric is added, initiate the ExecutionModel
-        when(metric){
+        when(metric) {
             ParetoFitnessMetrics.Max -> {
                 _metricsName.add(FitnessMetric(fitness.javaClass.getSimpleName(), "org.kevoree.modeling.optimization.executionmodel.Max"));
             }
@@ -79,7 +103,7 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
 
     public override fun addParetoMetric(metric: ParetoMetrics) {
         activateExecutionModel() //if at least one metric is added, initiate the ExecutionModel
-        when(metric){
+        when(metric) {
             ParetoMetrics.Hypervolume -> {
                 _metricsName.add(FitnessMetric(null, "org.kevoree.modeling.optimization.executionmodel.Hypervolume"));
             }

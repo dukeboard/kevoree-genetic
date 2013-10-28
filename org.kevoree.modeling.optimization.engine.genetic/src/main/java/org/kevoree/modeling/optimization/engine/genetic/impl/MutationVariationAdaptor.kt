@@ -8,11 +8,20 @@ import org.kevoree.modeling.optimization.api.mutation.MutationParameters
 import org.kevoree.modeling.optimization.api.mutation.QueryVar
 import org.kevoree.modeling.optimization.api.mutation.EnumVar
 import java.util.Random
+import org.kevoree.modeling.optimization.api.mutation.MutationVariable
+import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine
 
 /**
  * Created by duke on 07/08/13.
  */
-public class MutationVariationAdaptor<A : KMFContainer>(val operator: MutationOperator<A>) : Variation {
+public class MutationVariationAdaptor<A : KMFContainer>(val operator: MutationOperator<A>, val geneticEngine: GeneticEngine<A>) : Variation, MutationOperator<A> {
+
+    override fun enumerateVariables(model: A): List<MutationVariable> {
+        return operator.enumerateVariables(model)
+    }
+    override fun mutate(model: A, params: MutationParameters) {
+        return operator.mutate(model, params)
+    }
     public override fun getArity(): Int {
         return 1;
     }
@@ -21,7 +30,8 @@ public class MutationVariationAdaptor<A : KMFContainer>(val operator: MutationOp
 
     public override fun evolve(parents: Array<out Solution>?): Array<Solution>? {
         try {
-            var clonedSolution = parents?.get(0)?.copy()
+            var previousSolution = parents?.get(0)
+            var clonedSolution = previousSolution?.copy()
             var clonedVar = clonedSolution?.getVariable(0) as ModelVariable<A>;
             var variables = operator.enumerateVariables(clonedVar.model)
             var params = MutationParameters()
@@ -49,6 +59,14 @@ public class MutationVariationAdaptor<A : KMFContainer>(val operator: MutationOp
                 clonedSolution!!
             });
             clonedVar.context.operator = operator
+
+            //call all solution mutation listener
+            if(previousSolution != null){
+                for(listener in geneticEngine.solutionMutationListeners){
+                    listener.process(previousSolution as org.kevoree.modeling.optimization.api.Solution<A>, result as org.kevoree.modeling.optimization.api.Solution<A>)
+                }
+            }
+
             return result
         } catch (e: Throwable) {
             e.printStackTrace();

@@ -4,6 +4,7 @@ import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
+import org.kevoree.modeling.optimization.SolutionMutationListener
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,8 +28,6 @@ public trait OptimizationEngine<A : KMFContainer> {
 
     public fun getExecutionModel(): ExecutionModel?
 
-    public fun activateExecutionModel()
-
     public fun addFitnessMetric(fitness: FitnessFunction<A>, metric: ParetoFitnessMetrics)
 
     public fun addParetoMetric(metric: ParetoMetrics)
@@ -36,5 +35,9 @@ public trait OptimizationEngine<A : KMFContainer> {
     public fun desactivateOriginAware()
 
     public fun setComparator(solC: SolutionComparator<A>)
+
+    public fun addSolutionMutationListener(listener: SolutionMutationListener<A>)
+
+    public fun setMutationSelectionStrategy(strategy: MutationSelectionStrategy)
 
 }

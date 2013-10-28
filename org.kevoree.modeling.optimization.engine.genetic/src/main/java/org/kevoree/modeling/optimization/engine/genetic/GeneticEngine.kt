@@ -11,7 +11,7 @@ import org.moeaframework.core.NondominatedSortingPopulation
 import org.moeaframework.core.EpsilonBoxDominanceArchive
 import org.moeaframework.core.operator.TournamentSelection
 import org.kevoree.modeling.optimization.engine.genetic.impl.ModelInitialization
-import org.kevoree.modeling.optimization.engine.genetic.impl.RandomCompoundVariation
+import org.kevoree.modeling.optimization.engine.genetic.impl.CompoundVariation
 import org.kevoree.modeling.optimization.engine.genetic.impl.MutationVariationAdaptor
 import org.moeaframework.algorithm.EpsilonMOEA
 import org.moeaframework.algorithm.RandomSearch
@@ -30,6 +30,10 @@ import org.kevoree.modeling.optimization.api.mutation.MutationOperator
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 import org.kevoree.modeling.optimization.engine.genetic.ext.HypervolumeComparator
 import org.kevoree.modeling.optimization.api.SolutionComparator
+import org.kevoree.modeling.optimization.SolutionMutationListener
+import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
+import org.kevoree.modeling.optimization.framework.DefaultRandomOperatorSelect
+import org.kevoree.modeling.optimization.api.OptimizationEngine
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,12 +50,15 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     }
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
+    override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelect(_operators)
     override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
     override var _populationFactory: PopulationFactory<A>? = null
     override var _maxGeneration: Int = 100
     override var _maxTime: Long = -1.toLong()
     override var _executionModel: ExecutionModel? = null
     override var _executionModelFactory: DefaultExecutionModelFactory? = null
+    override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
+
     private var _algorithm: GeneticAlgorithm = GeneticAlgorithm.EpsilonNSGII
     private var _dominanceEpsilon = 5.0;
     private  var originAware = true
@@ -68,6 +75,11 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
 
     public fun setEpsilonDominance(dd: Double) {
         _dominanceEpsilon = dd
+    }
+
+    public override fun addOperator(operator: MutationOperator<A>): OptimizationEngine<A> {
+        _operators.add(MutationVariationAdaptor(operator,this));
+        return this;
     }
 
     public override fun solve(): List<Solution<A>> {
@@ -95,10 +107,8 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             }
         }
         val problem = ModelOptimizationProblem(_fitnesses, _populationFactory!!.getCloner(), _populationFactory!!.getModelCompare());
-        val variations = RandomCompoundVariation();
-        for (operator in _operators){
-            variations.appendOperator(MutationVariationAdaptor(operator));
-        }
+        val variations = CompoundVariation(this);
+
 
         var kalgo: Algorithm = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(_populationFactory!!, problem, originAware));
         when(_algorithm) {

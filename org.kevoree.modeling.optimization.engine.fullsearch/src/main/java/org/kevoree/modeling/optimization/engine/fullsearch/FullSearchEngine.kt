@@ -25,6 +25,9 @@ import org.kevoree.modeling.optimization.api.SolutionComparator
 import java.util.Date
 import org.kevoree.modeling.optimization.executionmodel.Metric
 import org.kevoree.modeling.optimization.executionmodel.Run
+import org.kevoree.modeling.optimization.SolutionMutationListener
+import org.kevoree.modeling.optimization.framework.DefaultRandomOperatorSelect
+import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 
 /**
  * Created by duke on 14/08/13.
@@ -33,6 +36,7 @@ import org.kevoree.modeling.optimization.executionmodel.Run
 public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     var mainComparator: SolutionComparator<A>? = null
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
+    override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelect(_operators)
     override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
     override var _populationFactory: PopulationFactory<A>? = null
     override var _maxGeneration: Int = 100
@@ -40,6 +44,8 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
     override var _executionModel: ExecutionModel? = null
     override var _executionModelFactory: DefaultExecutionModelFactory? = null
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
+    override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
+
     var originAware = true
     var modelCompare: ModelCompare? = null
     var front = ArrayList<Solution<A>>()
