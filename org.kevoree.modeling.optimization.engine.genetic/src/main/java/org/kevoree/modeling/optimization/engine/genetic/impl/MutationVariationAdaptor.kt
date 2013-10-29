@@ -31,6 +31,7 @@ public class MutationVariationAdaptor<A : KMFContainer>(val operator: MutationOp
     public override fun evolve(parents: Array<out Solution>?): Array<Solution>? {
         try {
             var previousSolution = parents?.get(0)
+
             var clonedSolution = previousSolution?.copy()
             var clonedVar = clonedSolution?.getVariable(0) as ModelVariable<A>;
             var variables = operator.enumerateVariables(clonedVar.model)
@@ -63,7 +64,7 @@ public class MutationVariationAdaptor<A : KMFContainer>(val operator: MutationOp
             //call all solution mutation listener
             if(previousSolution != null){
                 for(listener in geneticEngine.solutionMutationListeners){
-                    listener.process(previousSolution as org.kevoree.modeling.optimization.api.solution.Solution<A>, result as org.kevoree.modeling.optimization.api.solution.Solution<A>)
+                    listener.process(previousSolution as org.kevoree.modeling.optimization.api.solution.Solution<A>, clonedSolution as org.kevoree.modeling.optimization.api.solution.Solution<A>)
                 }
             }
 
