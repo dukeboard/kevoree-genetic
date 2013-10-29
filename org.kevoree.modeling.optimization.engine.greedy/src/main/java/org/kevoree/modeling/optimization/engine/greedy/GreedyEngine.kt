@@ -2,7 +2,7 @@ package org.kevoree.modeling.optimization.engine.greedy;
 
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.PopulationFactory
-import org.kevoree.modeling.optimization.api.Solution
+import org.kevoree.modeling.optimization.api.solution.Solution
 import java.util.ArrayList
 import org.kevoree.modeling.optimization.framework.AbstractOptimizationEngine
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
@@ -21,13 +21,13 @@ import java.util.HashMap
 import org.kevoree.modeling.optimization.api.mutation.QueryVar
 import org.kevoree.modeling.optimization.api.mutation.EnumVar
 import org.kevoree.modeling.optimization.api.GenerationContext
-import org.kevoree.modeling.optimization.api.SolutionComparator
+import org.kevoree.modeling.optimization.api.solution.SolutionComparator
 import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionComparator
 import org.kevoree.modeling.optimization.executionmodel.Run
 import java.util.Date
 import org.kevoree.modeling.optimization.executionmodel.Metric
-import org.kevoree.modeling.optimization.SolutionMutationListener
-import org.kevoree.modeling.optimization.api.MutationSelectionStrategy
+import org.kevoree.modeling.optimization.solution.SolutionMutationListener
+import org.kevoree.modeling.optimization.api.mutation.MutationSelectionStrategy
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
 
