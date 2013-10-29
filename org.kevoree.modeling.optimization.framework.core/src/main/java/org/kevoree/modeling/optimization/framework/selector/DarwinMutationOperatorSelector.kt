@@ -1,4 +1,4 @@
-package org.kevoree.modeling.optimization.engine.genetic
+package org.kevoree.modeling.optimization.engine.genetic.selector
 
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 import org.kevoree.modeling.api.KMFContainer
@@ -7,6 +7,7 @@ import org.kevoree.modeling.optimization.api.Solution
 import org.kevoree.modeling.optimization.SolutionMutationListener
 import java.util.Random
 import java.util.HashMap
+import org.kevoree.modeling.optimization.framework.selector.MutatorRanking
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +15,7 @@ import java.util.HashMap
  * Date: 28/10/2013
  * Time: 18:29
  */
-class DarwinMutationOperatorSelector<A : KMFContainer>(override val operators: List<MutationOperator<A>>, val probability: Double) : MutationOperatorSelector<A>, SolutionMutationListener<A> {
+public class DarwinMutationOperatorSelector<A : KMFContainer>(override val operators: List<MutationOperator<A>>, val probability: Double) : MutationOperatorSelector<A>, SolutionMutationListener<A> {
 
     val random = Random()
     val ranking = HashMap<String, HashMap<MutationOperator<A>, MutatorRanking<A>>>()
@@ -85,4 +86,3 @@ class DarwinMutationOperatorSelector<A : KMFContainer>(override val operators: L
 
 }
 
-data class MutatorRanking<A : KMFContainer>(var mean: Double, var sum: Double, var nbSelection: Int)

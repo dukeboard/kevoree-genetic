@@ -19,7 +19,7 @@ import org.kevoree.modeling.optimization.executionmodel.Metric
  * Time: 13:56
  */
 
-object ExecutionModelExporter {
+public object ExecutionModelExporter {
 
     val fieldSeperator = ","
     val lineSeparator = "\n"

@@ -32,8 +32,9 @@ import org.kevoree.modeling.optimization.engine.genetic.ext.HypervolumeComparato
 import org.kevoree.modeling.optimization.api.SolutionComparator
 import org.kevoree.modeling.optimization.SolutionMutationListener
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
-import org.kevoree.modeling.optimization.framework.DefaultRandomOperatorSelect
 import org.kevoree.modeling.optimization.api.OptimizationEngine
+import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
+import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionComparator
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,18 +45,15 @@ import org.kevoree.modeling.optimization.api.OptimizationEngine
 
 class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
 
-    var mainComparator: SolutionComparator<A>? = null
-    override fun setComparator(solC: SolutionComparator<A>) {
-        mainComparator = solC;
-    }
+    override var solutionComparator: SolutionComparator<A> = MeanSolutionComparator()
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
-    override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelect(_operators)
+    override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelector(_operators)
     override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
-    override var _populationFactory: PopulationFactory<A>? = null
-    override var _maxGeneration: Int = 100
-    override var _maxTime: Long = -1.toLong()
-    override var _executionModel: ExecutionModel? = null
+    override var populationFactory: PopulationFactory<A>? = null
+    override var maxGeneration: Int = 100
+    override var maxTime: Long = -1.toLong()
+    override var executionModel: ExecutionModel? = null
     override var _executionModelFactory: DefaultExecutionModelFactory? = null
     override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
 
@@ -89,51 +87,51 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         if (_fitnesses.isEmpty()) {
             throw Exception("No fitness function are configured, please configure at least one");
         }
-        if(_populationFactory == null){
+        if(populationFactory == null){
             throw Exception("No population factory are configured, please configure at least one");
         }
-        if(_executionModel != null){
+        if(executionModel != null){
             //create RUN
             currentRun = _executionModelFactory!!.createRun();
             currentRun!!.algName = _algorithm.name();
-            _executionModel!!.addRuns(currentRun!!);
+            executionModel!!.addRuns(currentRun!!);
             currentRun!!.startTime = Date().getTime();
         }
         for(fitness in _fitnesses){
-            if(_executionModel != null && _executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName()) == null){
+            if(executionModel != null && executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName()) == null){
                 val newFitness = _executionModelFactory!!.createFitness()
                 newFitness.name = fitness.javaClass.getSimpleName()
-                _executionModel!!.addFitness(newFitness)
+                executionModel!!.addFitness(newFitness)
             }
         }
-        val problem = ModelOptimizationProblem(_fitnesses, _populationFactory!!.getCloner(), _populationFactory!!.getModelCompare());
+        val problem = ModelOptimizationProblem(_fitnesses, populationFactory!!.getCloner(), populationFactory!!.getModelCompare());
         val variations = CompoundVariation(this);
 
 
-        var kalgo: Algorithm = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(_populationFactory!!, problem, originAware));
+        var kalgo: Algorithm = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(populationFactory!!, problem, originAware));
         when(_algorithm) {
             GeneticAlgorithm.EpsilonNSGII -> {
                 //don't do nothing -> default case
             }
             GeneticAlgorithm.NSGAII -> {
                 val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), CrowdingComparator()));
-                kalgo = NSGAII(problem, NondominatedSortingPopulation(), null, selection, variations, ModelInitialization(_populationFactory!!, problem, originAware));
+                kalgo = NSGAII(problem, NondominatedSortingPopulation(), null, selection, variations, ModelInitialization(populationFactory!!, problem, originAware));
                 //don't do nothing -> default case
             }
             GeneticAlgorithm.HypervolumeNSGAII -> {
                 val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), HypervolumeComparator(problem)));
-                kalgo = NSGAII(problem, NondominatedSortingPopulation(), null, selection, variations, ModelInitialization(_populationFactory!!, problem, originAware));
+                kalgo = NSGAII(problem, NondominatedSortingPopulation(), null, selection, variations, ModelInitialization(populationFactory!!, problem, originAware));
                 //don't do nothing -> default case
             }
             GeneticAlgorithm.EpsilonMOEA -> {
-                kalgo = EpsilonMOEA(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(_populationFactory!!, problem, originAware));
+                kalgo = EpsilonMOEA(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(populationFactory!!, problem, originAware));
             }
             GeneticAlgorithm.EpsilonRandom -> {
-                kalgo = RandomSearch(problem, ModelInitialization(_populationFactory!!, problem, originAware), NondominatedPopulation());
+                kalgo = RandomSearch(problem, ModelInitialization(populationFactory!!, problem, originAware), NondominatedPopulation());
             }
             GeneticAlgorithm.EpsilonCrowdingNSGII -> {
                 val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), CrowdingComparator()));
-                kalgo = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), selection, variations, ModelInitialization(_populationFactory!!, problem, originAware));
+                kalgo = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), selection, variations, ModelInitialization(populationFactory!!, problem, originAware));
             }
             else -> {
             }
@@ -147,7 +145,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             while (continueEngineComputation(kalgo, beginTimeMilli, generation)) {
                 previousTime = date.getTime()
                 kalgo.step();
-                if(_executionModel != null){
+                if(executionModel != null){
                     //update the execution model
                     val newStep = _executionModelFactory!!.createStep()
                     newStep.startTime = previousTime
@@ -163,7 +161,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                             val fitnessName = problem.fitnessFromIndice.get(i).javaClass.getSimpleName()
                             val value = solution.getObjective(i);
                             val newScore = _executionModelFactory!!.createScore()
-                            newScore.fitness = _executionModel!!.findFitnessByID(fitnessName)
+                            newScore.fitness = executionModel!!.findFitnessByID(fitnessName)
                             newScore.value = value
                             newScore.name = newScore.fitness!!.name
                             modelSolution.addScores(newScore)
@@ -174,7 +172,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                         val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
                         if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
                             val fitMet = metric as org.kevoree.modeling.optimization.executionmodel.FitnessMetric
-                            fitMet.fitness = _executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName)
+                            fitMet.fitness = executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName)
                         }
                         newStep.addMetrics(metric) //add before update ! mandatory !
                         metric.update()
@@ -187,7 +185,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             problem.close();
         }
 
-        if(_executionModel != null){
+        if(executionModel != null){
             //create RUN
             currentRun!!.endTime = Date().getTime();
         }
@@ -205,12 +203,12 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         if (alg.isTerminated()) {
             return false;
         }
-        if (_maxTime != -1.toLong()) {
-            if ((System.currentTimeMillis() - beginTimeMilli) >= _maxTime) {
+        if (maxTime != -1.toLong()) {
+            if ((System.currentTimeMillis() - beginTimeMilli) >= maxTime) {
                 return false;
             }
         }
-        if (nbGeneration >= _maxGeneration) {
+        if (nbGeneration >= maxGeneration) {
             return false;
         }
         return true;

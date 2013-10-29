@@ -28,8 +28,8 @@ import java.util.Date
 import org.kevoree.modeling.optimization.executionmodel.Metric
 import org.kevoree.modeling.optimization.SolutionMutationListener
 import org.kevoree.modeling.optimization.api.MutationSelectionStrategy
-import org.kevoree.modeling.optimization.framework.DefaultRandomOperatorSelect
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
+import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
 
 /**
  * Created by duke on 14/08/13.
@@ -37,15 +37,18 @@ import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
 
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
-    override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelect(_operators)
     override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
-    override var _populationFactory: PopulationFactory<A>? = null
-    override var _maxGeneration: Int = 100
-    override var _maxTime: Long = -1.toLong()
-    override var _executionModel: ExecutionModel? = null
+
+    override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelector(_operators)
+    override var populationFactory: PopulationFactory<A>? = null
+    override var maxGeneration: Int = 100
+    override var maxTime: Long = -1.toLong()
+    override var executionModel: ExecutionModel? = null
+    override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
+    override var solutionComparator: SolutionComparator<A> = MeanSolutionComparator()
+
     override var _executionModelFactory: DefaultExecutionModelFactory? = null
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
-    override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
 
     var mainComparator: SolutionComparator<A>? = MeanSolutionComparator<A>()
     var originAware = true
@@ -55,10 +58,6 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     var modelCloner: ModelCloner? = null
     var event2Trace: Event2Trace? = null
     private var currentRun: Run? = null;
-
-    override fun setComparator(solC: SolutionComparator<A>) {
-        mainComparator = solC
-    }
 
     override fun desactivateOriginAware() {
         originAware = false;
@@ -137,7 +136,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                     if(front == null || mainComparator!!.compare(front!!, mutatedSolution)){
                         switchToNewFrontSolution(mutatedSolution)
                     }
-                    if(nbMutation > _maxGeneration){
+                    if(nbMutation > maxGeneration){
                         return;
                     }
                     enumeratedValuesIndice.put(keyName, enumeratedValuesIndice.get(keyName)!! + 1)
@@ -153,7 +152,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             newStep.addSolutions(modelSolution)
             for(fitness in front!!.getFitnesses()){
                 val newScore = _executionModelFactory!!.createScore()
-                newScore.fitness = _executionModel!!.findFitnessByID(fitness)
+                newScore.fitness = executionModel!!.findFitnessByID(fitness)
                 newScore.value = front!!.getScoreForFitness(fitness)!!
                 newScore.name = newScore.fitness!!.name
                 modelSolution.addScores(newScore)
@@ -163,7 +162,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                 val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
                 if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
                     val fitMet = metric as org.kevoree.modeling.optimization.executionmodel.FitnessMetric
-                    fitMet.fitness = _executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName)
+                    fitMet.fitness = executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName)
                 }
                 newStep.addMetrics(metric) //add before update ! mandatory !
                 metric.update()
@@ -186,29 +185,29 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         if (_fitnesses.isEmpty()) {
             throw Exception("No fitness function are configured, please configure at least one");
         }
-        if(_populationFactory == null){
+        if(populationFactory == null){
             throw Exception("No population factory are configured, please configure at least one");
         }
-        if(_executionModel != null){
+        if(executionModel != null){
             //create RUN
             currentRun = _executionModelFactory!!.createRun();
             currentRun!!.algName = "greedy_" + mainComparator.javaClass.getSimpleName();
-            _executionModel!!.addRuns(currentRun!!);
+            executionModel!!.addRuns(currentRun!!);
             currentRun!!.startTime = Date().getTime();
         }
         for(fitness in _fitnesses){
-            if(_executionModel != null && _executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName()) == null){
+            if(executionModel != null && executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName()) == null){
                 val newFitness = _executionModelFactory!!.createFitness()
                 newFitness.name = fitness.javaClass.getSimpleName()
-                _executionModel!!.addFitness(newFitness)
+                executionModel!!.addFitness(newFitness)
             }
         }
         nbMutation = 0 // init nb mutation counter
-        modelCompare = _populationFactory!!.getModelCompare()
-        modelCloner = _populationFactory!!.getCloner()
+        modelCompare = populationFactory!!.getModelCompare()
+        modelCloner = populationFactory!!.getCloner()
         event2Trace = Event2Trace(modelCompare!!)
-        var population = _populationFactory!!.createPopulation();
-        if(population.size() > _maxGeneration){
+        var population = populationFactory!!.createPopulation();
+        if(population.size() > maxGeneration){
             System.err.println("Warning Population Size > MaxGenetation !!!");
         }
         for(initElem in population){
@@ -220,15 +219,15 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             }
             isChangedSinceLastStep = false //track modification
             computeStep(defaultSolution)
-            if(nbMutation >= _maxGeneration || !isChangedSinceLastStep){
+            if(nbMutation >= maxGeneration || !isChangedSinceLastStep){
                 return buildSolutions();
             }
         }
         //Front is ready next step
-        while(nbMutation < _maxGeneration && front != null){
+        while(nbMutation < maxGeneration && front != null){
             isChangedSinceLastStep = false //track modification
             computeStep(front!!)
-            if(nbMutation >= _maxGeneration || !isChangedSinceLastStep){
+            if(nbMutation >= maxGeneration || !isChangedSinceLastStep){
                 return buildSolutions();
             }
         }

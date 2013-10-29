@@ -1,4 +1,4 @@
-package org.kevoree.modeling.optimization.framework
+package org.kevoree.modeling.optimization.framework.selector
 
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
@@ -13,7 +13,7 @@ import java.util.Random
  * Time: 19:39
  */
 
-class DefaultRandomOperatorSelect<A : KMFContainer>(override val operators: List<MutationOperator<A>>) : MutationOperatorSelector<A> {
+public class DefaultRandomOperatorSelector<A : KMFContainer>(override val operators: List<MutationOperator<A>>) : MutationOperatorSelector<A> {
 
     val rand = Random()
 

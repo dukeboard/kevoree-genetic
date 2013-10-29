@@ -11,8 +11,8 @@ import org.kevoree.modeling.optimization.api.Solution
  * Time: 18:59
  */
 
-public class SolutionPrinter<A : KMFContainer> {
-    public fun print(solution: Solution<A>, writer: PrintStream) {
+public object SolutionPrinter {
+    public fun print(solution: Solution<*>, writer: PrintStream) {
         writer.print("Solution( ")
         var isFirst: Boolean = true
         for (name : String in solution.getFitnesses())

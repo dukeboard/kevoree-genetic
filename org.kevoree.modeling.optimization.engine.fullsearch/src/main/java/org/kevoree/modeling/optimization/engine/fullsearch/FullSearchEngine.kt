@@ -26,25 +26,30 @@ import java.util.Date
 import org.kevoree.modeling.optimization.executionmodel.Metric
 import org.kevoree.modeling.optimization.executionmodel.Run
 import org.kevoree.modeling.optimization.SolutionMutationListener
-import org.kevoree.modeling.optimization.framework.DefaultRandomOperatorSelect
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
+import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
+import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionComparator
 
 /**
  * Created by duke on 14/08/13.
  */
 
 public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
-    var mainComparator: SolutionComparator<A>? = null
+
+    override var solutionComparator: SolutionComparator<A> = MeanSolutionComparator()
+    override var populationFactory: PopulationFactory<A>? = null
+    override var maxGeneration: Int = 100
+    override var maxTime: Long = -1.toLong()
+    override var executionModel: ExecutionModel? = null
+    override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
+
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
-    override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelect(_operators)
     override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
-    override var _populationFactory: PopulationFactory<A>? = null
-    override var _maxGeneration: Int = 100
-    override var _maxTime: Long = -1.toLong()
-    override var _executionModel: ExecutionModel? = null
+
+    override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelector(_operators)
+
     override var _executionModelFactory: DefaultExecutionModelFactory? = null
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
-    override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
 
     var originAware = true
     var modelCompare: ModelCompare? = null
@@ -56,10 +61,6 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
 
     override fun desactivateOriginAware() {
         originAware = false;
-    }
-
-    override fun setComparator(solC: SolutionComparator<A>) {
-        mainComparator = solC;
     }
 
     private fun mutate(solution: Solution<A>, operator: MutationOperator<A>, parameters: MutationParameters): Solution<A> {
@@ -136,7 +137,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
                         newStep.addSolutions(modelSolution)
                         for(fitness in mutatedSolution.getFitnesses()){
                             val newScore = _executionModelFactory!!.createScore()
-                            newScore.fitness = _executionModel!!.findFitnessByID(fitness)!!
+                            newScore.fitness = executionModel!!.findFitnessByID(fitness)!!
                             newScore.value = mutatedSolution.getScoreForFitness(fitness)!!
                             newScore.name = newScore.fitness!!.name
                             modelSolution.addScores(newScore)
@@ -146,7 +147,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
                             val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
                             if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
                                 val fitMet = metric as org.kevoree.modeling.optimization.executionmodel.FitnessMetric
-                                fitMet.fitness = _executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName)
+                                fitMet.fitness = executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName)
                             }
                             newStep.addMetrics(metric) //add before update ! mandatory !
                             metric.update()
@@ -155,7 +156,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
 
 
                     }
-                    if(solutionIndex.getNumberOfSolution() > _maxGeneration){
+                    if(solutionIndex.getNumberOfSolution() > maxGeneration){
                         return;
                     }
                     enumeratedValuesIndice.put(keyName, enumeratedValuesIndice.get(keyName)!! + 1)
@@ -175,49 +176,49 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         if (_fitnesses.isEmpty()) {
             throw Exception("No fitness function are configured, please configure at least one");
         }
-        if(_populationFactory == null){
+        if(populationFactory == null){
             throw Exception("No population factory are configured, please configure at least one");
         }
-        if(_executionModel != null){
+        if(executionModel != null){
             //create RUN
             currentRun = _executionModelFactory!!.createRun();
             currentRun!!.algName = "fullsearch";
-            _executionModel!!.addRuns(currentRun!!);
+            executionModel!!.addRuns(currentRun!!);
             currentRun!!.startTime = Date().getTime();
         }
         for(fitness in _fitnesses){
-            if(_executionModel != null && _executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName()) == null){
+            if(executionModel != null && executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName()) == null){
                 val newFitness = _executionModelFactory!!.createFitness()
                 newFitness.name = fitness.javaClass.getSimpleName()
-                _executionModel!!.addFitness(newFitness)
+                executionModel!!.addFitness(newFitness)
             }
         }
 
 
-        modelCompare = _populationFactory!!.getModelCompare()
-        modelCloner = _populationFactory!!.getCloner()
+        modelCompare = populationFactory!!.getModelCompare()
+        modelCloner = populationFactory!!.getCloner()
         event2Trace = Event2Trace(modelCompare!!)
         solutionIndex.clear()
         solutionIndex.modelCompare = modelCompare
-        var population = _populationFactory!!.createPopulation();
+        var population = populationFactory!!.createPopulation();
         for(initElem in population){
             val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null))
             var previousNb = solutionIndex.getNumberOfSolution();
             computeStep(defaultSolution)
-            if(solutionIndex.getNumberOfSolution() >= _maxGeneration || previousNb == solutionIndex.getNumberOfSolution()){
+            if(solutionIndex.getNumberOfSolution() >= maxGeneration || previousNb == solutionIndex.getNumberOfSolution()){
                 return buildSolutions();
             }
         }
 
         //Front is ready next step
-        while(solutionIndex.getNumberOfSolution() < _maxGeneration){
+        while(solutionIndex.getNumberOfSolution() < maxGeneration){
             val clonedFront = ArrayList<Solution<A>>()
             clonedFront.addAll(front)
             front.clear()
             for(sol in clonedFront){
                 var previousNb = solutionIndex.getNumberOfSolution();
                 computeStep(sol)
-                if(solutionIndex.getNumberOfSolution() >= _maxGeneration || previousNb == solutionIndex.getNumberOfSolution()){
+                if(solutionIndex.getNumberOfSolution() >= maxGeneration || previousNb == solutionIndex.getNumberOfSolution()){
                     return buildSolutions();
                 }
             }

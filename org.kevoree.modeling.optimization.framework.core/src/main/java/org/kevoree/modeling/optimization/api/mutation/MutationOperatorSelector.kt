@@ -10,7 +10,7 @@ import org.kevoree.modeling.optimization.api.Solution
  * Time: 17:24
  */
 
-trait MutationOperatorSelector<A : KMFContainer> {
+public trait MutationOperatorSelector<A : KMFContainer> {
 
     val operators : List<MutationOperator<A>>
 

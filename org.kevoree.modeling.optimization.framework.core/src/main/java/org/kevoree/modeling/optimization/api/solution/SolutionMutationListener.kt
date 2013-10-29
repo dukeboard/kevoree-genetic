@@ -10,7 +10,7 @@ import org.kevoree.modeling.api.KMFContainer
  * Time: 18:24
  */
 
-trait SolutionMutationListener<A : KMFContainer> {
+public trait SolutionMutationListener<A : KMFContainer> {
 
     fun process(previousSolution: Solution<A>,solution: Solution<A>)
 
