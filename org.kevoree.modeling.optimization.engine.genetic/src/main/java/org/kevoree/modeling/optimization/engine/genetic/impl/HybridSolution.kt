@@ -12,7 +12,7 @@ import org.moeaframework.core.Solution
  * Time: 16:28
  */
 
-public class HybridSolution<A : KMFContainer>(val numberOfObjectives: Int, val problem: ModelOptimizationProblem<A>) : org.moeaframework.core.Solution(1, numberOfObjectives), org.kevoree.modeling.optimization.api.Solution<A> {
+public class HybridSolution<A : KMFContainer>(val numberOfObjectives: Int, val problem: ModelOptimizationProblem<A>) : org.moeaframework.core.Solution(1, numberOfObjectives), org.kevoree.modeling.optimization.api.solution.Solution<A> {
 
     override val model: A
         get(){

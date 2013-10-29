@@ -63,7 +63,7 @@ public class MutationVariationAdaptor<A : KMFContainer>(val operator: MutationOp
             //call all solution mutation listener
             if(previousSolution != null){
                 for(listener in geneticEngine.solutionMutationListeners){
-                    listener.process(previousSolution as org.kevoree.modeling.optimization.api.Solution<A>, result as org.kevoree.modeling.optimization.api.Solution<A>)
+                    listener.process(previousSolution as org.kevoree.modeling.optimization.api.solution.Solution<A>, result as org.kevoree.modeling.optimization.api.solution.Solution<A>)
                 }
             }
 

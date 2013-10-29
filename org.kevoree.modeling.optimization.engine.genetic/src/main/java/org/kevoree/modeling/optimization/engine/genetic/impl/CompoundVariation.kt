@@ -20,7 +20,7 @@ class CompoundVariation<A : KMFContainer>(val engine : GeneticEngine<A>) : Varia
 
     public override fun evolve(parents: Array<out Solution>?): Array<Solution>? {
         val solution = parents!!.get(0)
-        val selectedOperator = engine.mutationSelector.select(solution as org.kevoree.modeling.optimization.api.Solution<A>) as Variation
+        val selectedOperator = engine.mutationSelector.select(solution as org.kevoree.modeling.optimization.api.solution.Solution<A>) as Variation
         return selectedOperator.evolve(parents);
     }
 }
