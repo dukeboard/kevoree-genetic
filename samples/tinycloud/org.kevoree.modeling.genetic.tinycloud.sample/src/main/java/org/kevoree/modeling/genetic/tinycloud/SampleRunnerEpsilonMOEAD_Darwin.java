@@ -13,9 +13,7 @@ import org.kevoree.modeling.optimization.engine.genetic.GeneticAlgorithm;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
 import org.kevoree.modeling.optimization.framework.SolutionPrinter;
-import org.kevoree.modeling.optimization.util.ExecutionModelExporter;
-
-import java.io.File;
+import org.kevoree.modeling.optimization.web.Server;
 import java.util.List;
 
 /**
@@ -30,7 +28,9 @@ public class SampleRunnerEpsilonMOEAD_Darwin {
     public static void main(String[] args) throws Exception {
 
         GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
-        engine.setMutationSelectionStrategy(MutationSelectionStrategy.DARWIN);
+
+        //engine.setMutationSelectionStrategy(MutationSelectionStrategy.DARWIN);
+
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
         engine.addFitnessFuntion(new CloudConsumptionFitness());
@@ -38,9 +38,10 @@ public class SampleRunnerEpsilonMOEAD_Darwin {
         engine.addFitnessFuntion(new CloudAdaptationCostFitness());
 
         engine.setMaxGeneration(100);
-        engine.setPopulationFactory(new DefaultCloudPopulationFactory().setSize(10));
+        engine.setPopulationFactory(new DefaultCloudPopulationFactory().setSize(20));
         engine.setAlgorithm(GeneticAlgorithm.EpsilonMOEA);
-        engine.addParetoMetric(ParetoMetrics.HYPERVOLUME);
+        //engine.addParetoMetric(ParetoMetrics.HYPERVOLUME);
+        engine.addParetoMetric(ParetoMetrics.MEAN);
 
 
         List<Solution<Cloud>> result = engine.solve();
@@ -49,7 +50,9 @@ public class SampleRunnerEpsilonMOEAD_Darwin {
         }
 
         ExecutionModel model = engine.getExecutionModel();
-        ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
+        Server.instance$.serveExecutionModel(model);
+
+
 
     }
 

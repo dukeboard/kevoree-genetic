@@ -57,7 +57,6 @@ public object ExecutionModelExporter {
         return metrics
     }
 
-
     fun exportMetrics(model: ExecutionModel, outdir: File) {
         if(!(outdir.exists() && outdir.isDirectory()) ){
             outdir.mkdirs()

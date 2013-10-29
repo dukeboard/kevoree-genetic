@@ -145,6 +145,9 @@
         <module>org.kevoree.modeling.optimization.engine.greedy</module>
         <!-- FullSearchEngine -->
         <module>org.kevoree.modeling.optimization.engine.fullsearch</module>
+
+        <!-- Optional Web visualization -->
+        <module>org.kevoree.modeling.optimization.framework.web</module>
     </modules>
 
     <distributionManagement>
