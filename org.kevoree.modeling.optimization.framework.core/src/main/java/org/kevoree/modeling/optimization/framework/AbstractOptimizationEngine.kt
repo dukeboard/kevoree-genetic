@@ -9,7 +9,7 @@ import org.kevoree.modeling.optimization.api.mutation.MutationOperator
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 import org.kevoree.modeling.optimization.api.mutation.MutationSelectionStrategy
-import org.kevoree.modeling.optimization.solution.SolutionMutationListener
+import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
 import org.kevoree.modeling.optimization.engine.genetic.selector.DarwinMutationOperatorSelector
 

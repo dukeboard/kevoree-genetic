@@ -2,7 +2,7 @@ package org.kevoree.modeling.optimization.engine.genetic
 
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.PopulationFactory
-import org.kevoree.modeling.optimization.api.Solution
+import org.kevoree.modeling.optimization.api.solution.Solution
 import java.util.ArrayList
 import org.moeaframework.core.Algorithm
 import org.kevoree.genetic.framework.internal.ModelOptimizationProblem
@@ -29,12 +29,12 @@ import org.kevoree.modeling.optimization.executionmodel.Metric
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 import org.kevoree.modeling.optimization.engine.genetic.ext.HypervolumeComparator
-import org.kevoree.modeling.optimization.api.SolutionComparator
-import org.kevoree.modeling.optimization.SolutionMutationListener
+import org.kevoree.modeling.optimization.api.solution.SolutionComparator
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 import org.kevoree.modeling.optimization.api.OptimizationEngine
 import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
 import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionComparator
+import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 
 /**
  * Created with IntelliJ IDEA.
@@ -191,9 +191,9 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         }
 
         val population = kalgo.getResult();
-        var results = ArrayList<org.kevoree.modeling.optimization.api.Solution<A>>()
+        var results = ArrayList<org.kevoree.modeling.optimization.api.solution.Solution<A>>()
         for (solution in population?.iterator()) {
-            results.add(solution as org.kevoree.modeling.optimization.api.Solution<A>)
+            results.add(solution as org.kevoree.modeling.optimization.api.solution.Solution<A>)
         }
         //TODO sort result using comparator
         return results

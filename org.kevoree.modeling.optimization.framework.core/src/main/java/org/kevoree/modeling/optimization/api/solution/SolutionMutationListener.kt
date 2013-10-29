@@ -1,4 +1,4 @@
-package org.kevoree.modeling.optimization.solution
+package org.kevoree.modeling.optimization.api.solution
 
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.solution.Solution

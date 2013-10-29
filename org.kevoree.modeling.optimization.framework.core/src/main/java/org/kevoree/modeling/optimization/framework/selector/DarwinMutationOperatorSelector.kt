@@ -7,7 +7,7 @@ import java.util.Random
 import java.util.HashMap
 import org.kevoree.modeling.optimization.framework.selector.MutatorRanking
 import org.kevoree.modeling.optimization.api.solution.Solution
-import org.kevoree.modeling.optimization.solution.SolutionMutationListener
+import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 
 /**
  * Created with IntelliJ IDEA.

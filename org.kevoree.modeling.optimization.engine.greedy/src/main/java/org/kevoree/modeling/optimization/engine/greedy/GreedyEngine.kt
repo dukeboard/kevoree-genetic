@@ -26,7 +26,7 @@ import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionCompar
 import org.kevoree.modeling.optimization.executionmodel.Run
 import java.util.Date
 import org.kevoree.modeling.optimization.executionmodel.Metric
-import org.kevoree.modeling.optimization.solution.SolutionMutationListener
+import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.api.mutation.MutationSelectionStrategy
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector

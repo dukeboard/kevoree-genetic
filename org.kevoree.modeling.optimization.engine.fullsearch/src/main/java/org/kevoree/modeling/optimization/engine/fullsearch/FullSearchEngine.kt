@@ -2,7 +2,7 @@ package org.kevoree.modeling.optimization.engine.fullsearch
 
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.PopulationFactory
-import org.kevoree.modeling.optimization.api.Solution
+import org.kevoree.modeling.optimization.api.solution.Solution
 import java.util.ArrayList
 import org.kevoree.modeling.optimization.framework.DefaultSolution
 import org.kevoree.modeling.optimization.executionmodel.impl.DefaultExecutionModelFactory
@@ -21,11 +21,11 @@ import org.kevoree.modeling.api.ModelCloner
 import org.kevoree.modeling.api.trace.Event2Trace
 import org.kevoree.modeling.api.events.ModelElementListener
 import org.kevoree.modeling.api.events.ModelEvent
-import org.kevoree.modeling.optimization.api.SolutionComparator
+import org.kevoree.modeling.optimization.api.solution.SolutionComparator
 import java.util.Date
 import org.kevoree.modeling.optimization.executionmodel.Metric
 import org.kevoree.modeling.optimization.executionmodel.Run
-import org.kevoree.modeling.optimization.SolutionMutationListener
+import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
 import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionComparator
