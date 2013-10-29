@@ -1,6 +1,7 @@
-package org.kevoree.modeling.optimization.api;
+package org.kevoree.modeling.optimization.api.solution;
 
 import org.kevoree.modeling.api.KMFContainer
+import org.kevoree.modeling.optimization.api.GenerationContext
 
 /**
  * Created with IntelliJ IDEA.

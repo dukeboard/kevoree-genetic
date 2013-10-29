@@ -2,9 +2,9 @@ package org.kevoree.modeling.optimization.framework
 
 import org.kevoree.modeling.optimization.api.OptimizationStep
 import org.kevoree.modeling.api.KMFContainer
-import org.kevoree.modeling.optimization.api.Solution
 import org.kevoree.modeling.optimization.api.OptimizationEngine
 import java.util.ArrayList
+import org.kevoree.modeling.optimization.api.solution.Solution
 
 /**
  * Created with IntelliJ IDEA.

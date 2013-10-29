@@ -1,6 +1,7 @@
 package org.kevoree.modeling.optimization.api
 
 import org.kevoree.modeling.api.KMFContainer
+import org.kevoree.modeling.optimization.api.solution.Solution
 
 /**
  * Created by duke on 14/08/13.

@@ -3,11 +3,11 @@ package org.kevoree.modeling.optimization.engine.genetic.selector
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator
-import org.kevoree.modeling.optimization.api.Solution
-import org.kevoree.modeling.optimization.SolutionMutationListener
 import java.util.Random
 import java.util.HashMap
 import org.kevoree.modeling.optimization.framework.selector.MutatorRanking
+import org.kevoree.modeling.optimization.api.solution.Solution
+import org.kevoree.modeling.optimization.solution.SolutionMutationListener
 
 /**
  * Created with IntelliJ IDEA.

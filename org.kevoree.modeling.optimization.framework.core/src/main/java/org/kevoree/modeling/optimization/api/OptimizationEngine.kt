@@ -4,9 +4,12 @@ import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
-import org.kevoree.modeling.optimization.SolutionMutationListener
+import org.kevoree.modeling.optimization.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.api.metric.ParetoFitnessMetrics
 import org.kevoree.modeling.optimization.api.metric.ParetoMetrics
+import org.kevoree.modeling.optimization.api.mutation.MutationSelectionStrategy
+import org.kevoree.modeling.optimization.api.solution.SolutionComparator
+import org.kevoree.modeling.optimization.api.solution.Solution
 
 /**
  * Created with IntelliJ IDEA.

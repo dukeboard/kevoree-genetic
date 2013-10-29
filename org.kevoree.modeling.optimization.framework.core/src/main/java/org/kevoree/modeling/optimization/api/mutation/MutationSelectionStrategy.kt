@@ -1,4 +1,4 @@
-package org.kevoree.modeling.optimization.api
+package org.kevoree.modeling.optimization.api.mutation
 
 /**
  * Created with IntelliJ IDEA.

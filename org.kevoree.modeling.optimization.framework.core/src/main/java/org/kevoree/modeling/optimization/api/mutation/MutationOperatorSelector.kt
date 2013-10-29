@@ -1,7 +1,7 @@
 package org.kevoree.modeling.optimization.api.mutation
 
 import org.kevoree.modeling.api.KMFContainer
-import org.kevoree.modeling.optimization.api.Solution
+import org.kevoree.modeling.optimization.api.solution.Solution
 
 /**
  * Created with IntelliJ IDEA.

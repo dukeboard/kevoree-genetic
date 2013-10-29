@@ -2,7 +2,7 @@ package org.kevoree.modeling.optimization.framework.selector
 
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
-import org.kevoree.modeling.optimization.api.Solution
+import org.kevoree.modeling.optimization.api.solution.Solution
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator
 import java.util.Random
 
