@@ -22,14 +22,16 @@ public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
     @Override
     public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
         double result = 0;
-        /*for (ModelTrace trace : traceSequence.getTraces()) {
+        for (ModelTrace trace : cloudGenerationContext.getTraceSequence().getTraces()) {
+
+
             if (trace instanceof ModelAddTrace) {
                 result = result +1;
             }
             if (trace instanceof ModelRemoveTrace) {
                 result = result - 1;
             }
-        }   */
+        }
         return result;
     }
 }
