@@ -3,11 +3,8 @@ package org.kevoree.modeling.genetic.democloud.evolutionary;
 import jet.runtime.typeinfo.JetValueParameter;
 import org.cloud.Cloud;
 import org.kevoree.modeling.genetic.democloud.CloudPopulationFactory;
-import org.kevoree.modeling.genetic.democloud.fitnesses.CloudCostFitness;
-import org.kevoree.modeling.genetic.democloud.fitnesses.CloudLatencyFitness;
-import org.kevoree.modeling.genetic.democloud.fitnesses.CloudAdaptationCostFitness;
+import org.kevoree.modeling.genetic.democloud.fitnesses.*;
 
-import org.kevoree.modeling.genetic.democloud.fitnesses.CloudRedundancyFitness;
 import org.kevoree.modeling.genetic.democloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.RemoveNodeMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.RemoveSoftwareMutator;
@@ -24,6 +21,7 @@ import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
 import org.kevoree.modeling.optimization.framework.SolutionPrinter;
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
 import org.kevoree.modeling.optimization.util.ExecutionModelExporter;
+import org.kevoree.modeling.optimization.web.Server;
 
 import org.kevoree.modeling.optimization.api.metric.ParetoFitnessMetrics;
 import org.kevoree.modeling.optimization.api.metric.ParetoMetrics;
@@ -61,6 +59,7 @@ public class SampleRunnerNSGAII {
 
         //engine.addFitnessFuntion(new CloudAdaptationCostFitness());
         engine.addFitnessFuntion(new CloudCostFitness());
+        engine.addFitnessFuntion(new CloudSimilarityFitness());
         engine.addFitnessFuntion(new CloudLatencyFitness());
         engine.addFitnessFuntion(new CloudRedundancyFitness());
 
@@ -73,9 +72,13 @@ public class SampleRunnerNSGAII {
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
 
         engine.setAlgorithm(GeneticAlgorithm.NSGAII);
-        engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.MIN);
-        engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.MAX);
         engine.addParetoMetric(ParetoMetrics.HYPERVOLUME);
+       // engine.addParetoMetric(ParetoMetrics.MIN_MEAN);
+
+
+
+      //  engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.MIN);
+       // engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.MAX);
 
 
         List<Solution<Cloud>> result = engine.solve();
@@ -88,6 +91,7 @@ public class SampleRunnerNSGAII {
         ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
 
 
+        Server.instance$.serveExecutionModel(model);
 
 
     }

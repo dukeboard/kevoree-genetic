@@ -25,7 +25,7 @@ import org.kevoree.modeling.optimization.api.metric.ParetoFitnessMetrics;
 import org.kevoree.modeling.optimization.api.metric.ParetoMetrics;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticAlgorithm;
 import org.kevoree.modeling.optimization.engine.greedy.GreedyEngine;
-import org.kevoree.modeling.optimization.api.Solution;
+import org.kevoree.modeling.optimization.api.solution.Solution;
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
 import org.kevoree.modeling.optimization.framework.SolutionPrinter;
 import org.kevoree.modeling.optimization.util.ExecutionModelExporter;
