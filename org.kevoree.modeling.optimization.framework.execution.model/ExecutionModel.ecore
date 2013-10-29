@@ -61,4 +61,6 @@
         eType="#//Fitness"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ParetoMean" eSuperTypes="#//Metric"/>
+    <eClassifiers xsi:type="ecore:EClass" name="MaxMean" eSuperTypes="#//Metric"/>
+    <eClassifiers xsi:type="ecore:EClass" name="MinMean" eSuperTypes="#//Metric"/>
 </ecore:EPackage>
