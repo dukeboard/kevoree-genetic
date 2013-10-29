@@ -87,7 +87,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         if(executionModel != null){
             //create RUN
             currentRun = _executionModelFactory!!.createRun();
-            currentRun!!.algName = _algorithm.name();
+            currentRun!!.algName = _algorithm.name()+"-"+mutationSelectionStrategy.name();
             executionModel!!.addRuns(currentRun!!);
             currentRun!!.startTime = Date().getTime();
         }
