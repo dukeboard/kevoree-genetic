@@ -2,6 +2,7 @@ package org.kevoree.modeling.genetic.democloud;
 
 import org.cloud.Cloud;
 
+import org.cloud.serializer.JSONModelSerializer;
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudAdaptationCostFitness;
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudCostFitness;
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudRedundancyFitness;
@@ -10,8 +11,16 @@ import org.kevoree.modeling.genetic.democloud.mutators.RemoveNodeMutator;
 import org.kevoree.modeling.optimization.api.OptimizationEngine;
 import org.kevoree.modeling.optimization.api.Solution;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
+import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
 import org.kevoree.modeling.optimization.framework.SolutionPrinter;
+import org.kevoree.modeling.optimization.util.ExecutionModelExporter;
 
+
+
+
+
+
+import java.io.File;
 import java.util.List;
 
 /**
@@ -36,11 +45,21 @@ public class SampleRunner {
         engine.setPopulationFactory(new DefaultCloudPopulationFactory().setSize(10));
 
         List<Solution<Cloud>> result = engine.solve();
-        SolutionPrinter printer = new SolutionPrinter();
         for (Solution sol : result) {
-        printer.print(sol, System.out);
+            SolutionPrinter.instance$.print(sol, System.out);
         }
 
-    }
+
+        ExecutionModel model = engine.getExecutionModel();
+        ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
+
+
+        JSONModelSerializer saver = new JSONModelSerializer();
+
+
+
+        }
+
+
 
 }

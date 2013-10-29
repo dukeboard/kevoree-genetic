@@ -16,8 +16,9 @@ import org.kevoree.modeling.genetic.democloud.fitnesses.CloudRedundancyFitness;
 import org.kevoree.modeling.genetic.democloud.mutators.AddSoftwareMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.SmartMutator.AddSmartMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.SmartMutator.RemoveSmartMutator;
-import org.kevoree.modeling.optimization.api.ParetoFitnessMetrics;
-import org.kevoree.modeling.optimization.api.ParetoMetrics;
+
+import org.kevoree.modeling.optimization.api.metric.ParetoFitnessMetrics;
+import org.kevoree.modeling.optimization.api.metric.ParetoMetrics;
 import org.kevoree.modeling.optimization.api.Solution;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticAlgorithm;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
@@ -62,21 +63,18 @@ public class SampleRunnerEpsilonCrowdingNSGII {
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
 
         engine.setAlgorithm(GeneticAlgorithm.EpsilonCrowdingNSGII);
+        engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.MIN);
+        engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.MAX);
+        engine.addParetoMetric(ParetoMetrics.MEAN);
 
-        engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.Min);
-        engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.Max);
-        engine.addParetoMetric(ParetoMetrics.Mean);
 
         List<Solution<Cloud>> result = engine.solve();
-
-
-        SolutionPrinter printer = new SolutionPrinter();
         for (Solution sol : result) {
-            printer.print(sol, System.out);
+            SolutionPrinter.instance$.print(sol, System.out);
         }
 
-        ExecutionModel model = engine.getExecutionModel();
 
+        ExecutionModel model = engine.getExecutionModel();
         ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
 
 
