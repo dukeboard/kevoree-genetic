@@ -33,7 +33,7 @@ public class CloudCostFitness implements FitnessFunction<Cloud> {
 
             {
 
-                System.out.println(node.getId());
+                //System.out.println(node.getId());
                 pres=pres + node.getPricePerHour();
 
             }

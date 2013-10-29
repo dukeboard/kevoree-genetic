@@ -30,7 +30,7 @@ public class CloudLatencyFitness implements FitnessFunction<Cloud> {
 
             {
                 latency=latency + soft.getLatency();
-                System.out.println(latency);
+                //System.out.println(latency);
 
 
             }

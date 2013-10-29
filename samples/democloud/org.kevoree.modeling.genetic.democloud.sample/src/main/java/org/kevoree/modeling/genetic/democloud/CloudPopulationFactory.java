@@ -39,7 +39,7 @@ public class CloudPopulationFactory implements PopulationFactory<Cloud> {
         for (int i = 0; i < size; i++) {
 
             Cloud cloud = cloudfactory.createCloud();
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < 50; j++) {
             VirtualNode myAmazonEC2node = cloudfactory.createAmazon();
             VirtualNode myRackspacenode = cloudfactory.createRackspace();
 
