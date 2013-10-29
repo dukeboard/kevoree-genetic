@@ -37,7 +37,7 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
                 if(mutationSelector is SolutionMutationListener<*>){
                     solutionMutationListeners.remove(mutationSelector)
                 }
-                mutationSelector = DarwinMutationOperatorSelector(_operators, 25.0)
+                mutationSelector = DarwinMutationOperatorSelector(_operators, 75.0)
                 solutionMutationListeners.add(mutationSelector as DarwinMutationOperatorSelector<A>)
             }
         }
