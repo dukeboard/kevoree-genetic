@@ -12,7 +12,6 @@ import org.moeaframework.core.EpsilonBoxDominanceArchive
 import org.moeaframework.core.operator.TournamentSelection
 import org.kevoree.modeling.optimization.engine.genetic.impl.ModelInitialization
 import org.kevoree.modeling.optimization.engine.genetic.impl.CompoundVariation
-import org.kevoree.modeling.optimization.engine.genetic.impl.MutationVariationAdaptor
 import org.moeaframework.algorithm.EpsilonMOEA
 import org.moeaframework.algorithm.RandomSearch
 import org.moeaframework.core.NondominatedPopulation
@@ -73,11 +72,6 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
 
     public fun setEpsilonDominance(dd: Double) {
         _dominanceEpsilon = dd
-    }
-
-    public override fun addOperator(operator: MutationOperator<A>): OptimizationEngine<A> {
-        _operators.add(MutationVariationAdaptor(operator,this));
-        return this;
     }
 
     public override fun solve(): List<Solution<A>> {
