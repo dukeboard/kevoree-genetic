@@ -7,9 +7,9 @@ import org.kevoree.modeling.genetic.tinycloud.fitnesses.CloudRedondencyFitness;
 import org.kevoree.modeling.genetic.tinycloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.tinycloud.mutators.RemoveNodeMutator;
 import org.kevoree.modeling.optimization.api.OptimizationEngine;
-import org.kevoree.modeling.optimization.api.ParetoFitnessMetrics;
-import org.kevoree.modeling.optimization.api.ParetoMetrics;
 import org.kevoree.modeling.optimization.api.Solution;
+import org.kevoree.modeling.optimization.api.metric.ParetoFitnessMetrics;
+import org.kevoree.modeling.optimization.api.metric.ParetoMetrics;
 import org.kevoree.modeling.optimization.engine.fullsearch.FullSearchEngine;
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
 import org.kevoree.modeling.optimization.executionmodel.serializer.JSONModelSerializer;
@@ -38,17 +38,16 @@ public class SampleRunnerFullSearch {
         engine.addFitnessFuntion(new CloudRedondencyFitness());
         engine.addFitnessFuntion(new CloudAdaptationCostFitness());
 
-        engine.addFitnessMetric(new CloudRedondencyFitness(), ParetoFitnessMetrics.Min);
-        engine.addFitnessMetric(new CloudRedondencyFitness(), ParetoFitnessMetrics.Max);
-        engine.addParetoMetric(ParetoMetrics.Mean);
+        engine.addFitnessMetric(new CloudRedondencyFitness(), ParetoFitnessMetrics.MIN);
+        engine.addFitnessMetric(new CloudRedondencyFitness(), ParetoFitnessMetrics.MAX);
+        engine.addParetoMetric(ParetoMetrics.MEAN);
 
         engine.setMaxGeneration(100);
         engine.setPopulationFactory(new DefaultCloudPopulationFactory().setSize(10));
 
         List<Solution<Cloud>> result = engine.solve();
-        SolutionPrinter printer = new SolutionPrinter();
         for (Solution sol : result) {
-            printer.print(sol, System.out);
+            SolutionPrinter.instance$.print(sol, System.out);
         }
         ExecutionModel model = engine.getExecutionModel();
         ExecutionModelExporter.instance$.exportMetrics(model, new File("results"));

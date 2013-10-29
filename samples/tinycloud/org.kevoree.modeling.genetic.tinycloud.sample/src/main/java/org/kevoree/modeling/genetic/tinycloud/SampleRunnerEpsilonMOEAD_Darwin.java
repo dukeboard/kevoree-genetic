@@ -38,9 +38,8 @@ public class SampleRunnerEpsilonMOEAD_Darwin {
         engine.setAlgorithm(GeneticAlgorithm.EpsilonMOEA);
 
         List<Solution<Cloud>> result = engine.solve();
-        SolutionPrinter printer = new SolutionPrinter();
         for (Solution sol : result) {
-            printer.print(sol, System.out);
+            SolutionPrinter.instance$.print(sol, System.out);
         }
 
     }

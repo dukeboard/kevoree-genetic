@@ -22,11 +22,11 @@ import org.kevoree.modeling.optimization.engine.genetic.selector.DarwinMutationO
 
 public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A> {
 
-    protected var _operators: MutableList<MutationOperator<A>>
-    protected var _fitnesses: MutableList<FitnessFunction<A>>
-
-    protected var _executionModelFactory: DefaultExecutionModelFactory?
+    var _operators: MutableList<MutationOperator<A>>
+    var _fitnesses: MutableList<FitnessFunction<A>>
+    var _executionModelFactory: DefaultExecutionModelFactory?
     var mutationSelector: MutationOperatorSelector<A>
+
     public override var mutationSelectionStrategy: MutationSelectionStrategy
         set(strategy){
             if(strategy == MutationSelectionStrategy.RANDOM){
@@ -65,7 +65,7 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
         }
     }
 
-    protected var _metricsName: MutableList<FitnessMetric>
+     var _metricsName: MutableList<FitnessMetric>
 
     public override fun addFitnessMetric(fitness: FitnessFunction<A>, metric: ParetoFitnessMetrics) {
         activateExecutionModel() //if at least one metric is added, initiate the ExecutionModel
