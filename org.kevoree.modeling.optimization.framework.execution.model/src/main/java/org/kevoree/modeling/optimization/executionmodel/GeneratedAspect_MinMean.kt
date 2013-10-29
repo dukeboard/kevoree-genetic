@@ -15,7 +15,7 @@ public aspect trait GeneratedAspect_MinMean : org.kevoree.modeling.optimization.
             }
             val currentMean = sum / nb
             if(currentMean < value!!){
-                value = currentMean!!
+                value = currentMean
             }
         }
     }
