@@ -10,4 +10,6 @@ package org.kevoree.modeling.optimization.api.metric
 public enum class ParetoMetrics {
     HYPERVOLUME
     MEAN
+    MIN_MEAN
+    MAX_MEAN
 }

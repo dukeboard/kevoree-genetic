@@ -93,6 +93,12 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
             ParetoMetrics.MEAN -> {
                 _metricsName.add(FitnessMetric(null, "org.kevoree.modeling.optimization.executionmodel.ParetoMean"));
             }
+            ParetoMetrics.MIN_MEAN -> {
+                _metricsName.add(FitnessMetric(null, "org.kevoree.modeling.optimization.executionmodel.MinMean"));
+            }
+            ParetoMetrics.MAX_MEAN -> {
+                _metricsName.add(FitnessMetric(null, "org.kevoree.modeling.optimization.executionmodel.MaxMean"));
+            }
             else -> {
             }
         }

@@ -29,8 +29,7 @@ public class SampleRunnerEpsilonMOEAD_Darwin {
 
         GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
 
-        //engine.setMutationSelectionStrategy(MutationSelectionStrategy.DARWIN);
-
+        engine.setMutationSelectionStrategy(MutationSelectionStrategy.DARWIN);
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
         engine.addFitnessFuntion(new CloudConsumptionFitness());
