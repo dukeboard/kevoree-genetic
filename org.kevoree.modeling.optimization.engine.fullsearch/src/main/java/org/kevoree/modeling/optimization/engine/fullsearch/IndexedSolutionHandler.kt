@@ -1,7 +1,7 @@
 package org.kevoree.modeling.optimization.engine.fullsearch
 
 import java.util.HashMap
-import org.kevoree.modeling.optimization.api.Solution
+import org.kevoree.modeling.optimization.api.solution.Solution
 import org.kevoree.modeling.api.KMFContainer
 import java.util.ArrayList
 import org.kevoree.modeling.api.compare.ModelCompare
