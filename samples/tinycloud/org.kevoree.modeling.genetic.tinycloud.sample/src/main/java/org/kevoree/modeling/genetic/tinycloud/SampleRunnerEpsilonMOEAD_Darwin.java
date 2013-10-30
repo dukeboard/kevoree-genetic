@@ -41,7 +41,7 @@ public class SampleRunnerEpsilonMOEAD_Darwin {
         engine.setPopulationFactory(new DefaultCloudPopulationFactory().setSize(20));
         engine.setAlgorithm(GeneticAlgorithm.EpsilonMOEA);
         engine.addParetoMetric(ParetoMetrics.HYPERVOLUME);
-      //  engine.addParetoMetric(ParetoMetrics.MEAN);
+        engine.addParetoMetric(ParetoMetrics.MEAN);
         engine.addParetoMetric(ParetoMetrics.MIN_MEAN);
 
 
