@@ -67,25 +67,27 @@ public class MetricExporterHttpHandler(val model: ExecutionModel) : HttpHandler 
 
     private fun exportMetrics(model: ExecutionModel): String {
         if(model.runs.empty){
+            Log.error("Run is empty, no CSV generated")
             return ""
         }
         //check run consistency
-        var previousSize : Int? = null
+        var previousSize: Int? = null
         for(run in model.runs){
             if(previousSize != null && run.steps.size() != previousSize){
-               Log.error("Unconsistant Run , const merge it in one CSV")
+                Log.error("Unconsistant Run , const merge it in one CSV")
                 return ""
             }
             previousSize = run.steps.size()
         }
+
         val writer = StringBuilder()
         writer.append("generation")
         for(run in model.runs){
-            writer.append(fieldSeperator)
             val step0 = run.steps.get(0)
             for(metric in sortedMetrics(step0)){
+                writer.append(fieldSeperator)
                 val hash = generateHashByMetric(metric)
-                writer.append(run.algName+"_"+hash.substring(hash.lastIndexOf('.')))
+                writer.append(run.algName + "_" + hash.substring(hash.lastIndexOf('.')+1))
                 if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
                     val fitmet = metric as FitnessMetric
                     writer.append("_" + fitmet.fitness!!.name)
@@ -94,25 +96,24 @@ public class MetricExporterHttpHandler(val model: ExecutionModel) : HttpHandler 
                 }
             }
         }
-        writer.append(lineSeparator)
-        for(run in model.runs){
-
-        }
-
-
-
-
-
-        writer.append(step.generationNumber.toString())
-        writer.append(fieldSeperator)
-        for(i in 0..model.runs.size()){
-            for(j in 0..previousSize!!){
-
+        val sortedStepRun0 = sortedStep(model.runs.get(0))
+        for(loopStep in 0..previousSize!!-1){
+            writer.append(lineSeparator)
+            val currentGenerationNumber = sortedStepRun0.get(loopStep).generationNumber
+            writer.append(currentGenerationNumber.toString())
+            for(runLoop in 0..model.runs.size()-1){
+                val currentStep = sortedStep(model.runs.get(runLoop)).get(loopStep)
+                if(currentStep.generationNumber != currentGenerationNumber){
+                    Log.error("Unconsistant error")
+                    return ""
+                }
+                for(metric in sortedMetrics(currentStep)){
+                    writer.append(fieldSeperator)
+                    writer.append(metric.value.toString())
+                }
             }
         }
-
-
-
+        /*
         for(run in model.runs){
             if(run.steps.size() > 0){
                 //print line headers
@@ -142,7 +143,10 @@ public class MetricExporterHttpHandler(val model: ExecutionModel) : HttpHandler 
                     writer.append(lineSeparator)
                 }
             }
-        }
+        }*/
+
+        Log.info(writer.toString())
+
         return writer.toString()
     }
 
