@@ -136,6 +136,7 @@
     </build>
 
     <modules>
+        <module>org.kevoree.modeling.optimization.framework.execution.model.metrics</module>
         <module>org.kevoree.modeling.optimization.framework.execution.model</module>
         <module>org.kevoree.modeling.optimization.framework.core</module>
 

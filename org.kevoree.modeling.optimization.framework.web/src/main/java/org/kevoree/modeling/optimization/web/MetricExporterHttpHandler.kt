@@ -12,6 +12,7 @@ import org.webbitserver.HttpRequest
 import org.webbitserver.HttpResponse
 import org.webbitserver.HttpControl
 import org.kevoree.modeling.optimization.executionmodel.Run
+import org.kevoree.log.Log
 
 /**
  * Created with IntelliJ IDEA.
@@ -65,18 +66,58 @@ public class MetricExporterHttpHandler(val model: ExecutionModel) : HttpHandler 
     }
 
     private fun exportMetrics(model: ExecutionModel): String {
-
+        if(model.runs.empty){
+            return ""
+        }
+        //check run consistency
+        var previousSize : Int? = null
+        for(run in model.runs){
+            if(previousSize != null && run.steps.size() != previousSize){
+               Log.error("Unconsistant Run , const merge it in one CSV")
+                return ""
+            }
+            previousSize = run.steps.size()
+        }
         val writer = StringBuilder()
+        writer.append("generation")
+        for(run in model.runs){
+            writer.append(fieldSeperator)
+            val step0 = run.steps.get(0)
+            for(metric in sortedMetrics(step0)){
+                val hash = generateHashByMetric(metric)
+                writer.append(run.algName+"_"+hash.substring(hash.lastIndexOf('.')))
+                if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
+                    val fitmet = metric as FitnessMetric
+                    writer.append("_" + fitmet.fitness!!.name)
+                } else {
+                    writer.append("_pareto")
+                }
+            }
+        }
+        writer.append(lineSeparator)
+        for(run in model.runs){
+
+        }
+
+
+
+
+
+        writer.append(step.generationNumber.toString())
+        writer.append(fieldSeperator)
+        for(i in 0..model.runs.size()){
+            for(j in 0..previousSize!!){
+
+            }
+        }
+
+
 
         for(run in model.runs){
             if(run.steps.size() > 0){
                 //print line headers
                 writer.append("generation")
                 writer.append(fieldSeperator)
-               // writer.append("startTime")
-               // writer.append(fieldSeperator)
-               // writer.append("endTime")
-               // writer.append(fieldSeperator)
                 val step0 = run.steps.get(0)
                 for(metric in sortedMetrics(step0)){
                     val hash = generateHashByMetric(metric)
@@ -94,10 +135,6 @@ public class MetricExporterHttpHandler(val model: ExecutionModel) : HttpHandler 
                 for(step in sortedStep(run)){
                     writer.append(step.generationNumber.toString())
                     writer.append(fieldSeperator)
-                    //writer.append(step.startTime.toString())
-                    //writer.append(fieldSeperator)
-                    //writer.append(step.endTime.toString())
-                   // writer.append(fieldSeperator)
                     for(metric in sortedMetrics(step)){
                         writer.append(metric.value.toString())
                         writer.append(fieldSeperator)

@@ -29,7 +29,9 @@ public class SampleRunnerEpsilonMOEAD_Darwin {
 
         GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
 
-        engine.setMutationSelectionStrategy(MutationSelectionStrategy.DARWIN);
+        engine.setMutationSelectionStrategy(MutationSelectionStrategy.RANDOM);
+
+
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
         engine.addFitnessFuntion(new CloudConsumptionFitness());
@@ -41,7 +43,6 @@ public class SampleRunnerEpsilonMOEAD_Darwin {
         engine.setAlgorithm(GeneticAlgorithm.EpsilonMOEA);
         //engine.addParetoMetric(ParetoMetrics.HYPERVOLUME);
         engine.addParetoMetric(ParetoMetrics.MEAN);
-
 
         List<Solution<Cloud>> result = engine.solve();
         for (Solution sol : result) {
