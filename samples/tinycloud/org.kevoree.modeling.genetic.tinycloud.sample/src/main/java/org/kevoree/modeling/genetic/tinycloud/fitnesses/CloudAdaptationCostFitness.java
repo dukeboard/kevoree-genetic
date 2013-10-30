@@ -28,7 +28,7 @@ public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
                 result = result - 1;
             }
         }
-        return result;
+        return Math.min(100,Math.max(0,result));
     }
 
 }
