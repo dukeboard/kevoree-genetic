@@ -26,7 +26,7 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
         for(fitness in solution.getFitnesses()){
             val currentScore = solution.getScoreForFitness(fitness)!!
             val previousScore = previousSolution.getScoreForFitness(fitness)!!
-            val impactOnFitness = currentScore - previousScore
+            val impactOnFitness = previousScore - currentScore
             val lastOperator = solution.context.operator!!
             val rankinValues: HashMap<MutationOperator<A>, MutatorRanking<A>> = ranking.getOrPut(fitness, {
                 HashMap<MutationOperator<A>, MutatorRanking<A>>()
@@ -34,6 +34,8 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
             val currentRanking: MutatorRanking<A> = rankinValues.getOrPut(lastOperator, {
                 MutatorRanking<A>(0.0, 0.0,0.0, 0.0, 0)
             })
+
+            //println(lastOperator.javaClass.getSimpleName()+"->"+impactOnFitness+"("+previousScore+"->"+currentScore+")")
 
             if(impactOnFitness <= 0){
                 currentRanking.negativeSum += impactOnFitness
