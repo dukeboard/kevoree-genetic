@@ -8,13 +8,10 @@ import org.kevoree.modeling.genetic.tinycloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.tinycloud.mutators.RemoveNodeMutator;
 import org.kevoree.modeling.optimization.api.metric.ParetoMetrics;
 import org.kevoree.modeling.optimization.api.mutation.MutationSelectionStrategy;
-import org.kevoree.modeling.optimization.api.solution.Solution;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticAlgorithm;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
-import org.kevoree.modeling.optimization.framework.SolutionPrinter;
 import org.kevoree.modeling.optimization.web.Server;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -55,6 +52,7 @@ public class SampleRunnerEpsilonMOEAD_Darwin {
         Server.instance$.serveExecutionModel(model);
 
 
+        System.out.println(engine.getMutationSelector().toString());
 
     }
 

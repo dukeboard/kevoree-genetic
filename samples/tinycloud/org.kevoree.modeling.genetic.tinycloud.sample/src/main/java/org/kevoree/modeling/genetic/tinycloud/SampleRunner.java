@@ -15,9 +15,7 @@ import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
 import org.kevoree.modeling.optimization.executionmodel.serializer.JSONModelSerializer;
 import org.kevoree.modeling.optimization.framework.SolutionPrinter;
 import org.kevoree.modeling.optimization.util.ExecutionModelExporter;
-
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
 
 /**
@@ -63,6 +61,8 @@ public class SampleRunner {
 
         //fou.close();
         //System.out.println(temp.getAbsolutePath());
+
+
 
 
 

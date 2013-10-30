@@ -84,5 +84,38 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
         return worstName
     }
 
+    public fun toString(): String {
+        val buffer = StringBuffer()
+        buffer.append("DarwinMutationOperatorSelector\n")
+        buffer.append("Best Current Ranking\n")
+        for(rank in bestRanks){
+            buffer.append("fitness ")
+            buffer.append(rank.key)
+            buffer.append(" -> ")
+            buffer.append(rank.value.javaClass.getSimpleName())
+            buffer.append("\n")
+        }
+        buffer.append("Full ranking report\n")
+        for(rank in ranking){
+            buffer.append("fitness ")
+            buffer.append(rank.key)
+            buffer.append("\n")
+            for(mut in rank.getValue()){
+                buffer.append("mutator ")
+                buffer.append(mut.getKey().javaClass.getSimpleName())
+                buffer.append(" -> ")
+                val value = mut.getValue()
+                buffer.append("(mean=")
+                buffer.append(value.mean)
+                buffer.append(",sum=")
+                buffer.append(value.sum)
+                buffer.append(",nbSelection=")
+                buffer.append(value.nbSelection)
+                buffer.append(")\n")
+            }
+        }
+        return buffer.toString()
+    }
+
 }
 
