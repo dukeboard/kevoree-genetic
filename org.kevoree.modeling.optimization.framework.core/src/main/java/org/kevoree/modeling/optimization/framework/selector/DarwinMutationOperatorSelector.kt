@@ -32,18 +32,25 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                 HashMap<MutationOperator<A>, MutatorRanking<A>>()
             })
             val currentRanking: MutatorRanking<A> = rankinValues.getOrPut(lastOperator, {
-                MutatorRanking<A>(0.0, 0.0, 0)
+                MutatorRanking<A>(0.0, 0.0,0.0, 0.0, 0)
             })
-            currentRanking.sum = currentRanking.sum + impactOnFitness
-            currentRanking.nbSelection = currentRanking.nbSelection + 1
-            currentRanking.mean = currentRanking.sum / currentRanking.nbSelection
+
+            if(impactOnFitness <= 0){
+                currentRanking.negativeSum += impactOnFitness
+            } else {
+                currentRanking.positiveSum += impactOnFitness
+            }
+            currentRanking.nbSelection += 1
+            currentRanking.positiveMean = currentRanking.positiveSum / currentRanking.nbSelection
+            currentRanking.negativeMean = currentRanking.negativeSum / currentRanking.nbSelection
+
             //update best score
             val bestFoundedRanking = bestRanking.get(fitness)
             if(bestFoundedRanking == null){
                 bestRanks.put(fitness, lastOperator)
                 bestRanking.put(fitness, currentRanking)
             } else {
-                if(bestFoundedRanking.mean < currentRanking.mean){
+                if(bestFoundedRanking.positiveMean < currentRanking.positiveMean){
                     bestRanks.put(fitness, lastOperator)
                     bestRanking.put(fitness, currentRanking)
                 }
@@ -105,10 +112,14 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                 buffer.append(mut.getKey().javaClass.getSimpleName())
                 buffer.append(" -> ")
                 val value = mut.getValue()
-                buffer.append("(mean=")
-                buffer.append(value.mean)
-                buffer.append(",sum=")
-                buffer.append(value.sum)
+                buffer.append("(positiveMean=")
+                buffer.append(value.positiveMean)
+                buffer.append("(negativeMean=")
+                buffer.append(value.negativeMean)
+                buffer.append(",positiveSum=")
+                buffer.append(value.positiveSum)
+                buffer.append(",negativeSum=")
+                buffer.append(value.negativeSum)
                 buffer.append(",nbSelection=")
                 buffer.append(value.nbSelection)
                 buffer.append(")\n")

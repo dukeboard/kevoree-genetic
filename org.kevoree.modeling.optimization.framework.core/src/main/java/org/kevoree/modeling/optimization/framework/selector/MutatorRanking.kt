@@ -9,4 +9,10 @@ import org.kevoree.modeling.api.KMFContainer
  * Time: 09:38
  */
 
-data class MutatorRanking<A : KMFContainer>(var mean: Double, var sum: Double, var nbSelection: Int)
+data class MutatorRanking<A : KMFContainer>(
+        var positiveMean: Double,
+        var negativeMean: Double,
+        var positiveSum: Double,
+        var negativeSum: Double,
+        var nbSelection: Int
+)
