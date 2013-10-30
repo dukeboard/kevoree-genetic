@@ -144,9 +144,6 @@ public class MetricExporterHttpHandler(val model: ExecutionModel) : HttpHandler 
                 }
             }
         }*/
-
-        Log.info(writer.toString())
-
         return writer.toString()
     }
 

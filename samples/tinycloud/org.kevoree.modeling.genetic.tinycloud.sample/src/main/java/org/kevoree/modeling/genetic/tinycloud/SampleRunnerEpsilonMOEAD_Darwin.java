@@ -40,22 +40,16 @@ public class SampleRunnerEpsilonMOEAD_Darwin {
         engine.setMaxGeneration(100);
         engine.setPopulationFactory(new DefaultCloudPopulationFactory().setSize(20));
         engine.setAlgorithm(GeneticAlgorithm.EpsilonMOEA);
-        engine.addParetoMetric(ParetoMetrics.HYPERVOLUME);
-        engine.addParetoMetric(ParetoMetrics.MEAN);
+        //engine.addParetoMetric(ParetoMetrics.HYPERVOLUME);
+        //engine.addParetoMetric(ParetoMetrics.MEAN);
         engine.addParetoMetric(ParetoMetrics.MIN_MEAN);
 
 
 
-        List<Solution<Cloud>> result = engine.solve();
+        engine.solve();
         engine.setMutationSelectionStrategy(MutationSelectionStrategy.DARWIN);
-        List<Solution<Cloud>> result2 = engine.solve();
-
-        for (Solution sol : result) {
-            SolutionPrinter.instance$.print(sol, System.out);
-        }
-        for (Solution sol : result2) {
-            SolutionPrinter.instance$.print(sol, System.out);
-        }
+        engine.solve();
+        engine.solve();
 
         ExecutionModel model = engine.getExecutionModel();
         Server.instance$.serveExecutionModel(model);
