@@ -41,8 +41,8 @@ public class GenerationContext<A : KMFContainer>(
         if(cop != null){
             stack.add(cop)
         }
-        if(parentContext != null){
-            populateOperatorsStack(parentContext, stack)
+        if(current.parentContext != null){
+            populateOperatorsStack(current.parentContext, stack)
         }
     }
 

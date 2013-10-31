@@ -35,7 +35,7 @@ public object SolutionPrinter {
     public fun printOperatorsStack(solution: Solution<*>, writer: PrintStream) {
         writer.println()
         val stack = solution.context.createOperatorsStack()
-        writer.append("operators stack / last=" + solution.context.operator.javaClass.getSimpleName() + "- (")
+        writer.append("operators stack / last=" + solution.context?.operator?.javaClass?.getSimpleName() + "- (")
         for(op in stack){
             writer.append("," + op.javaClass.getName())
         }
