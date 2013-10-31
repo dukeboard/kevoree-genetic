@@ -4,6 +4,8 @@ import org.cloud.*;
 import org.kevoree.modeling.api.trace.TraceSequence;
 import org.kevoree.modeling.optimization.api.GenerationContext;
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
+
 /**
  * Created with IntelliJ IDEA.
  * User: donia.elkateb
@@ -40,4 +42,18 @@ public class CloudLatencyFitness implements FitnessFunction<Cloud> {
         return (latency / (model.getNodes().size()*110)) * 100;
     }
 
+
+    @Override
+    public double min() {
+
+        return 0.0;
+    }
+    public double max() {
+
+        return 10.0;
+    }
+    public FitnessOrientation orientation() {
+
+        return FitnessOrientation.MINIMIZE;
+    }
 }

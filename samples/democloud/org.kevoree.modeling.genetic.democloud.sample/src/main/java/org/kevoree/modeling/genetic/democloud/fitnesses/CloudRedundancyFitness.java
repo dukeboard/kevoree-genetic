@@ -7,6 +7,7 @@ import org.kevoree.modeling.api.trace.TraceSequence;
 import org.kevoree.modeling.genetic.democloud.Requirements;
 import org.kevoree.modeling.optimization.api.GenerationContext;
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,5 +47,19 @@ public class CloudRedundancyFitness implements FitnessFunction<Cloud> {
     }
 
 }
+
+    @Override
+    public double min() {
+
+        return 0.0;
+    }
+    public double max() {
+
+        return 1.0;
+    }
+    public FitnessOrientation orientation() {
+
+        return FitnessOrientation.MINIMIZE;
+    }
 
 }

@@ -5,6 +5,8 @@ import org.cloud.VirtualNode;
 import org.cloud.Cloud;
 import org.kevoree.modeling.optimization.api.GenerationContext;
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
+
 import java.util.List;
 
 
@@ -72,4 +74,18 @@ public class CloudSimilarityFitness implements FitnessFunction<Cloud> {
         return (similaritymeasure/ (model.getNodes().size()))*100;
     }
 
+
+    @Override
+    public double min() {
+
+        return 0.0;
+    }
+    public double max() {
+
+        return 10.0;
+    }
+    public FitnessOrientation orientation() {
+
+        return FitnessOrientation.MINIMIZE;
+    }
 }

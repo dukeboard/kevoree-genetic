@@ -7,6 +7,7 @@ import org.cloud.VirtualNode;
 import org.kevoree.modeling.api.trace.TraceSequence;
 import org.kevoree.modeling.optimization.api.GenerationContext;
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,4 +44,20 @@ public class CloudCostFitness implements FitnessFunction<Cloud> {
         return ((pres / (model.getNodes().size()*10))) * 100;
     }
 
+
+
+
+    @Override
+    public double min() {
+
+          return 0.0;
+    }
+    public double max() {
+
+        return 5.0;
+    }
+    public FitnessOrientation orientation() {
+
+        return FitnessOrientation.MINIMIZE;
+    }
 }

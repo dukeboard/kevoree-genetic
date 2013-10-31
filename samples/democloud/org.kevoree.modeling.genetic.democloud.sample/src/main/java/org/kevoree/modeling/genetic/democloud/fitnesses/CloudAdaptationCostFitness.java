@@ -7,6 +7,7 @@ import org.kevoree.modeling.api.trace.ModelTrace;
 import org.kevoree.modeling.api.trace.TraceSequence;
 import org.kevoree.modeling.optimization.api.GenerationContext;
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,5 +34,18 @@ public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
             }
         }
         return result;
+    }
+    @Override
+    public double min() {
+
+        return 0.0;
+    }
+    public double max() {
+
+        return 5.0;
+    }
+    public FitnessOrientation orientation() {
+
+        return FitnessOrientation.MINIMIZE;
     }
 }
