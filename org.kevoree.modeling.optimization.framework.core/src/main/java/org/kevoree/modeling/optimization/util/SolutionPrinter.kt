@@ -26,7 +26,7 @@ public object SolutionPrinter {
             writer.print(solution.getScoreForFitness(fitness))
             isFirst = false
         }
-        writer.print(" ) / " + (solution.getFitnesses()))
+        writer.print(" ) ")
         writer.println()
     }
 

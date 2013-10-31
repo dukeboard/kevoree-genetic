@@ -17,7 +17,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 
 public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
 
-    Double maxCost = 1000.0;
+    Double maxCost = 100.0;
 
 
     @Override
@@ -28,7 +28,7 @@ public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
                 result = result +1;
             }
             if (trace instanceof ModelRemoveTrace) {
-                result = result - 1;
+               // result = result - 1;
             }
         }
         return Math.min(maxCost,result);

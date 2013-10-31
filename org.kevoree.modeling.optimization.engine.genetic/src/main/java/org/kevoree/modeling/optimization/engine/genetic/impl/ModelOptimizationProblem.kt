@@ -22,6 +22,7 @@ public class ModelOptimizationProblem<A : KMFContainer>(val fitnesses: List<Fitn
     val indiceFromFitness = HashMap<FitnessFunction<A>, Int>();
 
     {
+        //asign a unique indice for each fitness
         var i = 0;
         for(fitness in fitnesses){
             fitnessFromIndice.put(i, fitness)
@@ -31,25 +32,20 @@ public class ModelOptimizationProblem<A : KMFContainer>(val fitnesses: List<Fitn
     }
 
     public override fun evaluate(solution: Solution?) {
-
         val hybridSol = solution as HybridSolution<*>
         if(hybridSol.alreadyEvaluated){
             return
         } else {
-            var i = 0;
-            for(fitness in fitnesses){
+            for(fitnessT in indiceFromFitness){
                 val vloop = solution?.getVariable(0) as? ModelVariable<A>;
                 if(vloop != null){
-                    var fitness = fitnesses.get(i)
-                    val rawValue = fitness.evaluate(vloop.model, vloop.context)
-                    solution?.setObjective(i, FitnessNormalizer.norm(rawValue, fitness));
+                    //var fitness = fitnesses.get(i)
+                    val rawValue = fitnessT.key.evaluate(vloop.model, vloop.context)
+                    solution.setObjective(fitnessT.value, FitnessNormalizer.norm(rawValue, fitnessT.key));
                 }
-                i++;
             }
             hybridSol.alreadyEvaluated = true
         }
-
-
     }
 
     public override fun newSolution(): Solution? {

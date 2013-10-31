@@ -16,9 +16,13 @@ public object FitnessNormalizer {
     fun norm(rawValue: Double, fitness: FitnessFunction<*>): Double {
         val minValue = fitness.min()
         val maxValue = fitness.max()
+        //check fitnessRawValue
+        if(rawValue > maxValue || rawValue < minValue){
+            throw Exception("out of bound value "+rawValue+" for "+fitness);
+        }
         val normalizedValue = (rawValue - minValue) / (maxValue - minValue)
         if(fitness.orientation() == FitnessOrientation.MAXIMIZE){
-            return maxValue - normalizedValue
+            return 1 - normalizedValue
         } else {
             return normalizedValue
         }

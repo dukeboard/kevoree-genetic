@@ -8,10 +8,14 @@ import org.kevoree.modeling.genetic.tinycloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.tinycloud.mutators.RemoveNodeMutator;
 import org.kevoree.modeling.optimization.api.metric.ParetoMetrics;
 import org.kevoree.modeling.optimization.api.mutation.MutationSelectionStrategy;
+import org.kevoree.modeling.optimization.api.solution.Solution;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticAlgorithm;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
+import org.kevoree.modeling.optimization.framework.SolutionPrinter;
 import org.kevoree.modeling.optimization.web.Server;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,24 +36,28 @@ public class SampleRunnerEpsilonMOEAD_Darwin {
         engine.addOperator(new RemoveNodeMutator());
         engine.addFitnessFuntion(new CloudConsumptionFitness());
         engine.addFitnessFuntion(new CloudRedondencyFitness());
-        engine.addFitnessFuntion(new CloudAdaptationCostFitness());
+        //engine.addFitnessFuntion(new CloudAdaptationCostFitness());
 
         engine.setMaxGeneration(200);
         engine.setPopulationFactory(new DefaultCloudPopulationFactory().setSize(20));
         engine.setAlgorithm(GeneticAlgorithm.EpsilonMOEA);
         //engine.addParetoMetric(ParetoMetrics.HYPERVOLUME);
         //engine.addParetoMetric(ParetoMetrics.MEAN);
-        engine.addParetoMetric(ParetoMetrics.MIN_MEAN);
+        engine.addParetoMetric(ParetoMetrics.HYPERVOLUME);
 
 
 
-        engine.solve();
+        List<Solution<Cloud>> result = engine.solve();
         engine.setMutationSelectionStrategy(MutationSelectionStrategy.DARWIN);
         engine.solve();
-        engine.solve();
+        //engine.solve();
 
         ExecutionModel model = engine.getExecutionModel();
         Server.instance$.serveExecutionModel(model);
+
+        for (Solution sol : result) {
+            SolutionPrinter.instance$.print(sol, System.out);
+        }
 
 
         System.out.println(engine.getMutationSelector().toString());
