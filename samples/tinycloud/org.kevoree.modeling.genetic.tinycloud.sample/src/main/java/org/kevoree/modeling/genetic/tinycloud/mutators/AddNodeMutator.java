@@ -22,7 +22,7 @@ public class AddNodeMutator implements MutationOperator<Cloud> {
 
     private Random rand = new Random();
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
-    private Integer maxNode = 10;
+    private Integer maxNode = 50;
 
     @Override
     public List<MutationVariable> enumerateVariables(Cloud cloud) {

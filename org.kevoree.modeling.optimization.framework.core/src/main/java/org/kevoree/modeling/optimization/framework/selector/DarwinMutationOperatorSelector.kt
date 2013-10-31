@@ -35,7 +35,7 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                 MutatorRanking<A>(0.0, 0.0,0.0, 0.0, 0)
             })
 
-            //println(lastOperator.javaClass.getSimpleName()+"->"+impactOnFitness+"("+previousScore+"->"+currentScore+")")
+            println(fitness+"/"+lastOperator.javaClass.getSimpleName()+"->"+impactOnFitness+"("+previousScore+"->"+currentScore+")")
 
             if(impactOnFitness <= 0){
                 currentRanking.negativeSum += impactOnFitness

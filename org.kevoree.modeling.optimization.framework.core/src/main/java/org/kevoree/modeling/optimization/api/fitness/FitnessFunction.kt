@@ -13,4 +13,10 @@ public trait FitnessFunction<A : KMFContainer> {
 
     public fun evaluate(model: A, context: GenerationContext<A>): Double ;
 
+    public fun max(): Double;
+
+    public fun min(): Double;
+
+    public fun orientation(): FitnessOrientation;
+
 }

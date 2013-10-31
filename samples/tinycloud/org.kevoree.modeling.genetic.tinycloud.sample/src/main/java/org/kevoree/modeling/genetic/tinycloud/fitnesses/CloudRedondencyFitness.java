@@ -9,12 +9,18 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
  */
 public class CloudRedondencyFitness implements FitnessFunction<Cloud> {
 
-    private double bestRedondency = 3;
+    private double bestRedondency = 10;
 
 
     @Override
     public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
+
+
         double pres = (  (bestRedondency - model.getNodes().size()) / bestRedondency) * 100;
+
+        System.out.println(model.getNodes().size()+"->"+pres);
+
+
         return Math.min(Math.max(0,pres),100);
     }
 }
