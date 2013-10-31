@@ -29,9 +29,19 @@ public object SolutionPrinter {
         writer.print(" )")
         writer.println()
         printModelStructure(solution, writer)
+        printOperatorsStack(solution, writer)
     }
 
-    public fun
+    public fun printOperatorsStack(solution: Solution<*>, writer: PrintStream) {
+        writer.println()
+        val stack = solution.context.createOperatorsStack()
+        writer.append("operators stack / last=" + solution.context.operator.javaClass.getSimpleName() + "- (")
+        for(op in stack){
+            writer.append("," + op.javaClass.getName())
+        }
+        writer.append(")")
+        writer.println()
+    }
 
     public fun printModelStructure(solution: Solution<*>, writer: PrintStream) {
         val attPrinter = object : org.kevoree.modeling.api.util.ModelAttributeVisitor{
@@ -42,7 +52,7 @@ public object SolutionPrinter {
                 writer.print(",")
             }
         }
-        var i=0;
+        var i = 0;
         solution.model.visit(object : org.kevoree.modeling.api.util.ModelVisitor(){
             override fun beginVisitElem(elem: KMFContainer) {
                 i++
