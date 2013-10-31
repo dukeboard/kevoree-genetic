@@ -26,8 +26,40 @@ public object SolutionPrinter {
             writer.print(solution.getScoreForFitness(fitness))
             isFirst = false
         }
-        writer.print(" ) ")
+        writer.print(" )")
         writer.println()
+        printModelStructure(solution, writer)
+    }
+
+    public fun
+
+    public fun printModelStructure(solution: Solution<*>, writer: PrintStream) {
+        val attPrinter = object : org.kevoree.modeling.api.util.ModelAttributeVisitor{
+            override fun visit(value: Any?, name: String, parent: KMFContainer) {
+                writer.print(name)
+                writer.print("=")
+                writer.print(value)
+                writer.print(",")
+            }
+        }
+        var i=0;
+        solution.model.visit(object : org.kevoree.modeling.api.util.ModelVisitor(){
+            override fun beginVisitElem(elem: KMFContainer) {
+                i++
+                for(r in 0..1){
+                    writer.print(" ")
+                }
+                writer.print(elem.metaClassName() + " (")
+                elem.visitAttributes(attPrinter)
+                writer.print(")")
+                writer.println()
+            }
+            override fun endVisitElem(elem: org.kevoree.modeling.api.KMFContainer) {
+                i--
+            }
+            override fun visit(elem: KMFContainer, refNameInParent: String, parent: KMFContainer) {
+            }
+        }, true, true, false)
     }
 
 }

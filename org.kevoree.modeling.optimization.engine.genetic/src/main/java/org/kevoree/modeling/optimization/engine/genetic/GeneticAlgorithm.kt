@@ -14,4 +14,5 @@ public enum class GeneticAlgorithm {
     EpsilonMOEA
     EpsilonRandom
     HypervolumeNSGAII
+    HypervolumeMOEA
 }

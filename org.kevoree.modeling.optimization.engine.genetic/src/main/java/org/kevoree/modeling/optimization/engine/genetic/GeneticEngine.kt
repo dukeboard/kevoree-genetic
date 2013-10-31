@@ -34,6 +34,7 @@ import org.kevoree.modeling.optimization.api.OptimizationEngine
 import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
 import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionComparator
 import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
+import org.kevoree.modeling.optimization.engine.genetic.ext.HypervolumeSelection
 
 /**
  * Created with IntelliJ IDEA.
@@ -119,6 +120,9 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             }
             GeneticAlgorithm.EpsilonMOEA -> {
                 kalgo = EpsilonMOEA(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(populationFactory!!, problem, originAware));
+            }
+            GeneticAlgorithm.HypervolumeMOEA -> {
+                kalgo = EpsilonMOEA(problem, NondominatedSortingPopulation(), null, HypervolumeSelection(HypervolumeComparator(problem)), variations, ModelInitialization(populationFactory!!, problem, originAware));
             }
             GeneticAlgorithm.EpsilonRandom -> {
                 kalgo = RandomSearch(problem, ModelInitialization(populationFactory!!, problem, originAware), NondominatedPopulation());
