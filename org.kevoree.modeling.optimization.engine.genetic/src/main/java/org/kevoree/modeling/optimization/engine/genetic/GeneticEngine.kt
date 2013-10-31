@@ -99,7 +99,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             }
         }
         val problem = ModelOptimizationProblem(_fitnesses, populationFactory!!.getCloner(), populationFactory!!.getModelCompare());
-        val variations = CompoundVariation(this);
+        val variations = CompoundVariation(this,problem);
 
 
         var kalgo: Algorithm = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(populationFactory!!, problem, originAware));

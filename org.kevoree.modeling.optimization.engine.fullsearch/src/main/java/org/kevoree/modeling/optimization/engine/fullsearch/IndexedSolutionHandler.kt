@@ -5,6 +5,9 @@ import org.kevoree.modeling.optimization.api.solution.Solution
 import org.kevoree.modeling.api.KMFContainer
 import java.util.ArrayList
 import org.kevoree.modeling.api.compare.ModelCompare
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
+import java.util.Collections
+import java.util.Comparator
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,7 +55,7 @@ public class IndexSolutionHandler<A : KMFContainer> {
 
     public fun computeSolutionResultHash(solution: Solution<A>): String {
         var hash = StringBuffer();
-        var orderedFitness = solution.getFitnesses().toSortedList()
+        var orderedFitness = sortedFitness(solution.getFitnesses())
         for(fit in orderedFitness){
             var value = solution.getScoreForFitness(fit)
             hash.append(value)
@@ -66,6 +69,17 @@ public class IndexSolutionHandler<A : KMFContainer> {
             solutionsRes.addAll(sols)
         }
         return solutionsRes
+    }
+
+    private fun sortedFitness(fitnessSet: Set<FitnessFunction<A>>): List<FitnessFunction<A>> {
+        val sorted = ArrayList<FitnessFunction<A>>(fitnessSet.size())
+        sorted.addAll(fitnessSet)
+        Collections.sort(sorted, object : Comparator<FitnessFunction<A>> {
+            override fun compare(o1: FitnessFunction<A>, o2: FitnessFunction<A>): Int {
+                return o1.javaClass.getSimpleName().compareTo(o2.javaClass.getSimpleName())
+            }
+        })
+        return sorted
     }
 
 }

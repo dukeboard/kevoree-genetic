@@ -2,6 +2,7 @@ package org.kevoree.modeling.optimization.api.solution;
 
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.GenerationContext
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,8 +16,8 @@ public trait Solution<A : KMFContainer> {
 
     val context: GenerationContext<A>
 
-    public fun getScoreForFitness(fitnessName: String): Double?
+    public fun getScoreForFitness(fitnessName: FitnessFunction<A>): Double?
 
-    public fun getFitnesses(): Set<String>
+    public fun getFitnesses(): Set<FitnessFunction<A>>
 
 }

@@ -27,9 +27,9 @@ import org.kevoree.modeling.optimization.executionmodel.Run
 import java.util.Date
 import org.kevoree.modeling.optimization.executionmodel.Metric
 import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
-import org.kevoree.modeling.optimization.api.mutation.MutationSelectionStrategy
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
+import org.kevoree.modeling.optimization.util.FitnessNormalizer
 
 /**
  * Created by duke on 14/08/13.
@@ -91,7 +91,8 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         nbMutation++
         //evaluate new solution
         for(fit in _fitnesses){
-            newSolution.results.put(fit.javaClass.getSimpleName(), fit.evaluate(newSolution.model, clonedContext))
+            val rawValue = fit.evaluate(newSolution.model, clonedContext)
+            newSolution.results.put(fit, FitnessNormalizer.norm(rawValue, fit))
         }
         return newSolution
     }
@@ -152,7 +153,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             newStep.addSolutions(modelSolution)
             for(fitness in front!!.getFitnesses()){
                 val newScore = _executionModelFactory!!.createScore()
-                newScore.fitness = executionModel!!.findFitnessByID(fitness)
+                newScore.fitness = executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName())
                 newScore.value = front!!.getScoreForFitness(fitness)!!
                 newScore.name = newScore.fitness!!.name
                 modelSolution.addScores(newScore)
@@ -215,7 +216,8 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null))
             //evaluate initial solution
             for(fit in _fitnesses){
-                defaultSolution.results.put(fit.javaClass.getSimpleName(), fit.evaluate(defaultSolution.model, defaultSolution.context))
+                val rawValue = fit.evaluate(defaultSolution.model, defaultSolution.context)
+                defaultSolution.results.put(fit, FitnessNormalizer.norm(rawValue, fit))
             }
             isChangedSinceLastStep = false //track modification
             computeStep(defaultSolution)

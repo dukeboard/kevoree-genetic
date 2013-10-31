@@ -9,7 +9,7 @@ public class MetricsUtil {
         double [][] truePareto = new double[2][];
         double [] worst = new double[noObjectives];
         for(int i=0;i<noObjectives;i++){
-            worst[i] = 100;
+            worst[i] = 1;
         }
         double [] best = new double[noObjectives];
         for(int i=0;i<noObjectives;i++){

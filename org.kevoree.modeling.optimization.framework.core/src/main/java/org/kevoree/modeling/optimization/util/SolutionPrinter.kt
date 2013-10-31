@@ -15,15 +15,15 @@ public object SolutionPrinter {
     public fun print(solution: Solution<*>, writer: PrintStream) {
         writer.print("Solution( ")
         var isFirst: Boolean = true
-        for (name : String in solution.getFitnesses())
+        for (fitness in solution.getFitnesses())
         {
             if (!isFirst)
             {
                 writer.print(" , ")
             }
-            writer.print(name)
+            writer.print(fitness.javaClass.getSimpleName())
             writer.print("=")
-            writer.print(solution.getScoreForFitness(name))
+            writer.print(solution.getScoreForFitness(fitness))
             isFirst = false
         }
         writer.print(" ) / " + (solution.getFitnesses()))

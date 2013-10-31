@@ -8,6 +8,7 @@ import org.kevoree.modeling.optimization.api.mutation.MutationParameters
 import org.kevoree.modeling.optimization.api.mutation.QueryVar
 import org.kevoree.modeling.optimization.api.mutation.EnumVar
 import java.util.Random
+import org.kevoree.genetic.framework.internal.ModelOptimizationProblem
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +16,7 @@ import java.util.Random
  * Date: 04/09/13
  * Time: 17:54
  */
-class CompoundVariation<A : KMFContainer>(val engine: GeneticEngine<A>) : Variation {
+class CompoundVariation<A : KMFContainer>(val engine: GeneticEngine<A>, val problem : ModelOptimizationProblem<A>) : Variation {
 
     override fun getArity(): Int {
         return 1
@@ -27,8 +28,8 @@ class CompoundVariation<A : KMFContainer>(val engine: GeneticEngine<A>) : Variat
         val previousSolution = parents!!.get(0)
         val operator = engine.mutationSelector.select(previousSolution as org.kevoree.modeling.optimization.api.solution.Solution<A>)
         try {
-            var clonedSolution = previousSolution?.copy()
-            var clonedVar = clonedSolution?.getVariable(0) as ModelVariable<A>;
+            var clonedSolution = previousSolution.copy()!!
+            var clonedVar = clonedSolution.getVariable(0) as ModelVariable<A>;
             var variables = operator.enumerateVariables(clonedVar.model)
             var params = MutationParameters()
             //random get
@@ -56,6 +57,9 @@ class CompoundVariation<A : KMFContainer>(val engine: GeneticEngine<A>) : Variat
             });
             clonedVar.context.operator = operator
             //call all solution mutation listener
+
+            //pre evalute solution
+            problem.evaluate(clonedSolution!!)
             if(previousSolution != null){
                 for(listener in engine.solutionMutationListeners){
                     listener.process(previousSolution as org.kevoree.modeling.optimization.api.solution.Solution<A>, clonedSolution as org.kevoree.modeling.optimization.api.solution.Solution<A>)

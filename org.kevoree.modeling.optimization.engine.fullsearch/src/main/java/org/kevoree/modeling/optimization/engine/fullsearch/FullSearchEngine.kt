@@ -29,6 +29,7 @@ import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
 import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionComparator
+import org.kevoree.modeling.optimization.util.FitnessNormalizer
 
 /**
  * Created by duke on 14/08/13.
@@ -79,7 +80,8 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         operator.mutate(clonedModel, parameters)
         //evaluate new solution
         for(fit in _fitnesses){
-            newSolution.results.put(fit.javaClass.getSimpleName(), fit.evaluate(newSolution.model, clonedContext))
+            val rawValue = fit.evaluate(newSolution.model, clonedContext)
+            newSolution.results.put(fit, FitnessNormalizer.norm(rawValue,fit))
         }
         return newSolution
     }
@@ -137,7 +139,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
                         newStep.addSolutions(modelSolution)
                         for(fitness in mutatedSolution.getFitnesses()){
                             val newScore = _executionModelFactory!!.createScore()
-                            newScore.fitness = executionModel!!.findFitnessByID(fitness)!!
+                            newScore.fitness = executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName())!!
                             newScore.value = mutatedSolution.getScoreForFitness(fitness)!!
                             newScore.name = newScore.fitness!!.name
                             modelSolution.addScores(newScore)

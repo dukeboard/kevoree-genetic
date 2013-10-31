@@ -8,6 +8,7 @@ import java.util.HashMap
 import org.kevoree.modeling.optimization.framework.selector.MutatorRanking
 import org.kevoree.modeling.optimization.api.solution.Solution
 import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,9 +19,9 @@ import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 public class DarwinMutationOperatorSelector<A : KMFContainer>(override val operators: List<MutationOperator<A>>, val probability: Double) : MutationOperatorSelector<A>, SolutionMutationListener<A> {
 
     val random = Random()
-    val ranking = HashMap<String, HashMap<MutationOperator<A>, MutatorRanking<A>>>()
-    val bestRanks = HashMap<String, MutationOperator<A>>()
-    val bestRanking = HashMap<String, MutatorRanking<A>>()
+    val ranking = HashMap<FitnessFunction<A>, HashMap<MutationOperator<A>, MutatorRanking<A>>>()
+    val bestRanks = HashMap<FitnessFunction<A>, MutationOperator<A>>()
+    val bestRanking = HashMap<FitnessFunction<A>, MutatorRanking<A>>()
 
     override fun process(previousSolution: Solution<A>, solution: Solution<A>) {
         for(fitness in solution.getFitnesses()){
@@ -35,7 +36,7 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                 MutatorRanking<A>(0.0, 0.0,0.0, 0.0, 0)
             })
 
-            println(fitness+"/"+lastOperator.javaClass.getSimpleName()+"->"+impactOnFitness+"("+previousScore+"->"+currentScore+")")
+            //println(fitness.javaClass.getSimpleName()+"/"+lastOperator.javaClass.getSimpleName()+"->"+impactOnFitness+"("+previousScore+"->"+currentScore+")")
 
             if(impactOnFitness <= 0){
                 currentRanking.negativeSum += impactOnFitness
@@ -80,17 +81,17 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
         }
     }
 
-    private fun selectWorstCurrentFitness(solution: Solution<A>): String {
+    private fun selectWorstCurrentFitness(solution: Solution<A>): FitnessFunction<A> {
         var worstScore = 0.0
-        var worstName: String = ""
+        var worst: FitnessFunction<A>? = null
         for(fitness in solution.getFitnesses()){
             val loopScore = solution.getScoreForFitness(fitness)!!
-            if(worstScore < solution.getScoreForFitness(fitness)!!){
-                worstName = fitness
+            if(worst==null || worstScore <= solution.getScoreForFitness(fitness)!!){
+                worst = fitness
                 worstScore = loopScore
             }
         }
-        return worstName
+        return worst!!
     }
 
     public fun toString(): String {

@@ -6,6 +6,7 @@ import org.kevoree.modeling.api.trace.ModelRemoveTrace;
 import org.kevoree.modeling.api.trace.ModelTrace;
 import org.kevoree.modeling.optimization.api.GenerationContext;
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,6 +16,8 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
  */
 
 public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
+
+    Double maxCost = 1000.0;
 
 
     @Override
@@ -28,7 +31,22 @@ public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
                 result = result - 1;
             }
         }
-        return Math.min(100,Math.max(0,result));
+        return Math.min(maxCost,result);
+    }
+
+    @Override
+    public double max() {
+        return maxCost;
+    }
+
+    @Override
+    public double min() {
+        return 0;
+    }
+
+    @Override
+    public FitnessOrientation orientation() {
+        return FitnessOrientation.MINIMIZE;
     }
 
 }
