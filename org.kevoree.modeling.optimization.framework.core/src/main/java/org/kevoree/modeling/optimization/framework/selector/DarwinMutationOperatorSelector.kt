@@ -5,10 +5,15 @@ import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator
 import java.util.Random
 import java.util.HashMap
+import java.util.LinkedHashMap
+import java.util.LinkedList
+import java.util.Comparator
 import org.kevoree.modeling.optimization.framework.selector.MutatorRanking
 import org.kevoree.modeling.optimization.api.solution.Solution
 import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
+import java.util.SortedMap
+import java.util.LinkedHashMap
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,9 +30,49 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
         val fitnessRanks = ranking.get(fitness)
         //select positive impacted values
 
+        var probacounter = 0
+
+        for ((mutationoperator, mutatorranking) in fitnessRanks) {
+
+
+            println("$mutationoperator -> $mutatorranking")
+            if (mutatorranking.positiveSum > 0)
+            {
+                probacounter += 1
+            }
+        }
+
+
+
+
+
         //determine i value
+        val nomalizer  = 1/probacounter
 
         //assign for each positive value a rank
+       // val list = arrayListOf<MutationOperator<A>>()
+
+
+        val sortedMap =  LinkedHashMap<MutationOperator<A>, MutatorRanking<A>>
+
+        var i  = 0.0
+
+        for ((mutationoperator, mutatorranking) in sortedMap) {
+
+            if (mutatorranking.positiveSum > 0)
+            {
+                mutatorranking.selectionProbability  = nomalizer * (probacounter-i)
+            }
+            i += 1
+        }
+
+
+
+
+
+
+
+
 
     }
 
