@@ -5,15 +5,13 @@ import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator
 import java.util.Random
 import java.util.HashMap
-import java.util.LinkedHashMap
-import java.util.LinkedList
-import java.util.Comparator
 import org.kevoree.modeling.optimization.framework.selector.MutatorRanking
 import org.kevoree.modeling.optimization.api.solution.Solution
 import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
-import java.util.SortedMap
-import java.util.LinkedHashMap
+import java.util.ArrayList
+import java.util.Collections
+import java.util.Comparator
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,52 +26,23 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
 
     private fun updateSelectionProbability(fitness: FitnessFunction<A>) {
         val fitnessRanks = ranking.get(fitness)
-        //select positive impacted values
-
-        var probacounter = 0
-
-        for ((mutationoperator, mutatorranking) in fitnessRanks) {
-
-
-            println("$mutationoperator -> $mutatorranking")
-            if (mutatorranking.positiveSum > 0)
-            {
-                probacounter += 1
+        val sortedList = ArrayList<MutatorRanking<A>>()
+        for (r in fitnessRanks) {
+            if (r.value.positiveSum > 0){
+                sortedList.add(r.value)
             }
         }
-
-
-
-
-
-        //determine i value
-        val nomalizer  = 1/probacounter
-
-        //assign for each positive value a rank
-       // val list = arrayListOf<MutationOperator<A>>()
-
-
-        val sortedMap =  LinkedHashMap<MutationOperator<A>, MutatorRanking<A>>
-
-        var i  = 0.0
-
-        for ((mutationoperator, mutatorranking) in sortedMap) {
-
-            if (mutatorranking.positiveSum > 0)
-            {
-                mutatorranking.selectionProbability  = nomalizer * (probacounter-i)
+        Collections.sort(sortedList, object : Comparator<MutatorRanking<*>>{
+            override fun compare(o1: MutatorRanking<out KMFContainer>, o2: MutatorRanking<out KMFContainer>): Int {
+                o1.selectionProbability.compareTo(o2.selectionProbability)
             }
+        })
+        val nomalizer = 1 / sortedList.size
+        var i = 0.0
+        for (r in sortedList) {
+            r.selectionProbability = nomalizer * (sortedList.size - i)
             i += 1
         }
-
-
-
-
-
-
-
-
-
     }
 
     override fun process(previousSolution: Solution<A>, solution: Solution<A>) {
@@ -86,7 +55,7 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                 HashMap<MutationOperator<A>, MutatorRanking<A>>()
             })
             val currentRanking: MutatorRanking<A> = rankinValues.getOrPut(lastOperator, {
-                MutatorRanking<A>(0.0, 0.0, 0.0, 0.0, 0)
+                MutatorRanking<A>(0.0, 0.0, 0.0, 0.0, 0, 0.0)
             })
 
             if(impactOnFitness <= 0){
@@ -97,18 +66,6 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
             currentRanking.nbSelection += 1
             currentRanking.positiveMean = currentRanking.positiveSum / currentRanking.nbSelection
             currentRanking.negativeMean = currentRanking.negativeSum / currentRanking.nbSelection
-
-            //update best score
-            val bestFoundedRanking = bestRanking.get(fitness)
-            if(bestFoundedRanking == null){
-                bestRanks.put(fitness, lastOperator)
-                bestRanking.put(fitness, currentRanking)
-            } else {
-                if(bestFoundedRanking.positiveMean < currentRanking.positiveMean){
-                    bestRanks.put(fitness, lastOperator)
-                    bestRanking.put(fitness, currentRanking)
-                }
-            }
             updateSelectionProbability(fitness)
         }
     }
@@ -121,7 +78,7 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
             if(potentialRanks == null){
                 return randomSelector()
             }
-            var indiceBegin = 0
+            var indiceBegin = 0.0
             var currentBestOperator: MutationOperator<A>? = null
             var indice = random.nextDouble()
             for(rank in potentialRanks){
@@ -137,7 +94,7 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
             if(currentBestOperator == null){
                 throw Exception("Bad proba selection behavior !!!, internal problem")
             } else {
-                return currentBestOperator
+                return currentBestOperator!!
             }
         } else {
             //random selection
@@ -168,13 +125,6 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
         val buffer = StringBuffer()
         buffer.append("DarwinMutationOperatorSelector\n")
         buffer.append("Best Current Ranking\n")
-        for(rank in bestRanks){
-            buffer.append("fitness ")
-            buffer.append(rank.key)
-            buffer.append(" -> ")
-            buffer.append(rank.value.javaClass.getSimpleName())
-            buffer.append("\n")
-        }
         buffer.append("Full ranking report\n")
         for(rank in ranking){
             buffer.append("fitness ")
@@ -185,6 +135,8 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                 buffer.append(mut.getKey().javaClass.getSimpleName())
                 buffer.append(" -> ")
                 val value = mut.getValue()
+                buffer.append("(selectionProbability=")
+                buffer.append(value.selectionProbability)
                 buffer.append("(positiveMean=")
                 buffer.append(value.positiveMean)
                 buffer.append("(negativeMean=")
