@@ -14,5 +14,6 @@ data class MutatorRanking<A : KMFContainer>(
         var negativeMean: Double,
         var positiveSum: Double,
         var negativeSum: Double,
-        var nbSelection: Int
+        var nbSelection: Int,
+        var selectionProbability : Double
 )

@@ -20,8 +20,16 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
 
     val random = Random()
     val ranking = HashMap<FitnessFunction<A>, HashMap<MutationOperator<A>, MutatorRanking<A>>>()
-    val bestRanks = HashMap<FitnessFunction<A>, MutationOperator<A>>()
-    val bestRanking = HashMap<FitnessFunction<A>, MutatorRanking<A>>()
+
+    private fun updateSelectionProbability(fitness: FitnessFunction<A>) {
+        val fitnessRanks = ranking.get(fitness)
+        //select positive impacted values
+
+        //determine i value
+
+        //assign for each positive value a rank
+
+    }
 
     override fun process(previousSolution: Solution<A>, solution: Solution<A>) {
         for(fitness in solution.getFitnesses()){
@@ -33,7 +41,7 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                 HashMap<MutationOperator<A>, MutatorRanking<A>>()
             })
             val currentRanking: MutatorRanking<A> = rankinValues.getOrPut(lastOperator, {
-                MutatorRanking<A>(0.0, 0.0,0.0, 0.0, 0)
+                MutatorRanking<A>(0.0, 0.0, 0.0, 0.0, 0)
             })
 
             if(impactOnFitness <= 0){
@@ -56,6 +64,7 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                     bestRanking.put(fitness, currentRanking)
                 }
             }
+            updateSelectionProbability(fitness)
         }
 
     }
@@ -84,7 +93,7 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
         var worst: FitnessFunction<A>? = null
         for(fitness in solution.getFitnesses()){
             val loopScore = solution.getScoreForFitness(fitness)!!
-            if(worst==null || worstScore <= solution.getScoreForFitness(fitness)!!){
+            if(worst == null || worstScore <= solution.getScoreForFitness(fitness)!!){
                 worst = fitness
                 worstScore = loopScore
             }
