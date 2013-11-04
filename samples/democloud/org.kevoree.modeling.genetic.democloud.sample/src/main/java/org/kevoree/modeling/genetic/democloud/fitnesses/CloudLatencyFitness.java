@@ -39,7 +39,7 @@ public class CloudLatencyFitness implements FitnessFunction<Cloud> {
         }
 
 
-        return (latency / (model.getNodes().size()*110)) * 100;
+        return (latency / (model.getNodes().size()));
     }
 
 
@@ -50,7 +50,7 @@ public class CloudLatencyFitness implements FitnessFunction<Cloud> {
     }
     public double max() {
 
-        return 10.0;
+        return 100.0;
     }
     public FitnessOrientation orientation() {
 

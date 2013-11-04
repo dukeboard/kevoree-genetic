@@ -23,6 +23,7 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
 
     val random = Random()
     val ranking = HashMap<FitnessFunction<A>, HashMap<MutationOperator<A>, MutatorRanking<A>>>()
+    var nomalizer   = 1.0
 
     private fun updateSelectionProbability(fitness: FitnessFunction<A>) {
         val fitnessRanks = ranking.get(fitness)
@@ -30,6 +31,7 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
         for (r in fitnessRanks) {
             if (r.value.positiveSum > 0){
                 sortedList.add(r.value)
+
             }
         }
         Collections.sort(sortedList, object : Comparator<MutatorRanking<*>>{
@@ -37,11 +39,14 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                 o1.selectionProbability.compareTo(o2.selectionProbability)
             }
         })
-        val nomalizer = 1 / sortedList.size
-        var i = 0.0
-        for (r in sortedList) {
-            r.selectionProbability = nomalizer * (sortedList.size - i)
-            i += 1
+        if (sortedList.size > 0){
+             nomalizer = 1 / sortedList.size.toDouble()
+             var i = 0.0
+            for (r in sortedList) {
+                r.selectionProbability = nomalizer * (sortedList.size - i)
+                i += 1
+            }
+
         }
     }
 
@@ -81,9 +86,11 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
             var indiceBegin = 0.0
             var currentBestOperator: MutationOperator<A>? = null
             var indice = random.nextDouble()
+            var atLeastOneFound = false
             for(rank in potentialRanks){
                 val loopRank = rank.getValue()
                 if(rank.getValue().positiveMean > 0){
+                    atLeastOneFound = true
                     if(indice >= indiceBegin && indice < loopRank.selectionProbability){
                         currentBestOperator = rank.getKey()
                         break;
@@ -92,7 +99,25 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                 }
             }
             if(currentBestOperator == null){
-                throw Exception("Bad proba selection behavior !!!, internal problem")
+                if(atLeastOneFound)     {
+                    var indiceBegin = 0.0
+                    for(rank in potentialRanks){
+                        val loopRank = rank.getValue()
+                        if(rank.getValue().positiveMean > 0){
+                            System.out.print("indice "+indice+" "+indiceBegin+" "+loopRank.selectionProbability)
+                            if(indice >= indiceBegin && indice < loopRank.selectionProbability){
+                                System.out.print(" @ true")
+                            }
+                            System.out.println()
+                            indiceBegin = loopRank.selectionProbability //move lower boundary
+                        }
+                    }
+
+                    throw Exception("Bad proba selection behavior !!!, internal problem "+indice)
+                } else {
+                    return randomSelector()
+                }
+
             } else {
                 return currentBestOperator!!
             }

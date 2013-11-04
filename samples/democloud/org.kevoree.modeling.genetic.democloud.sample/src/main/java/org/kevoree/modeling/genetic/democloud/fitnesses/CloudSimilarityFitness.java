@@ -71,7 +71,7 @@ public class CloudSimilarityFitness implements FitnessFunction<Cloud> {
 
         }
 
-        return (similaritymeasure/ (model.getNodes().size()))*100;
+        return (similaritymeasure/ (model.getNodes().size()));
     }
 
 

@@ -41,7 +41,7 @@ public class CloudCostFitness implements FitnessFunction<Cloud> {
 
         }
 
-        return ((pres / (model.getNodes().size()*10))) * 100;
+        return ((pres / (model.getNodes().size()*10)));
     }
 
 
@@ -54,7 +54,7 @@ public class CloudCostFitness implements FitnessFunction<Cloud> {
     }
     public double max() {
 
-        return 5.0;
+        return 10.0;
     }
     public FitnessOrientation orientation() {
 
