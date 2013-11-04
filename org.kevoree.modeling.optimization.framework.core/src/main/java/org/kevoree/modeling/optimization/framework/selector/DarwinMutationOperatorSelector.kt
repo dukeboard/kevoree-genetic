@@ -111,18 +111,31 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
             }
             updateSelectionProbability(fitness)
         }
-
     }
 
     override fun select(solution: Solution<A>): MutationOperator<A> {
         val randomNb = random.nextInt(100)
         if(randomNb < probability){
             val worstFitnessToFix = selectWorstCurrentFitness(solution)
-            val currentBestOperator = bestRanks.get(worstFitnessToFix)
+            val potentialRanks = ranking.get(worstFitnessToFix)
+            if(potentialRanks == null){
+                return randomSelector()
+            }
+            var indiceBegin = 0
+            var currentBestOperator: MutationOperator<A>? = null
+            var indice = random.nextDouble()
+            for(rank in potentialRanks){
+                val loopRank = rank.getValue()
+                if(rank.getValue().positiveMean > 0){
+                    if(indice >= indiceBegin && indice < loopRank.selectionProbability){
+                        currentBestOperator = rank.getKey()
+                        break;
+                    }
+                    indiceBegin = loopRank.selectionProbability //move lower boundary
+                }
+            }
             if(currentBestOperator == null){
-                //random
-                var indice = random.nextInt(operators.size())
-                return operators.get(indice)
+                throw Exception("Bad proba selection behavior !!!, internal problem")
             } else {
                 return currentBestOperator
             }
@@ -131,6 +144,11 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
             var indice = random.nextInt(operators.size())
             return operators.get(indice)
         }
+    }
+
+    private fun randomSelector(): MutationOperator<A> {
+        var indice = random.nextInt(operators.size())
+        return operators.get(indice)
     }
 
     private fun selectWorstCurrentFitness(solution: Solution<A>): FitnessFunction<A> {
