@@ -170,7 +170,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                         val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
                         if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
                             val fitMet = metric as org.kevoree.modeling.optimization.executionmodel.FitnessMetric
-                            fitMet.fitness = executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName)
+                            fitMet.fitness = executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName!!)
                         }
                         newStep.addMetrics(metric) //add before update ! mandatory !
                         metric.update()
