@@ -40,7 +40,7 @@ public class SampleRunnerNSGAII {
     public static void main(String[] args) throws Exception {
 
         GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
-
+       engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
 
 
        // engine.desactivateOriginAware();
@@ -54,7 +54,6 @@ public class SampleRunnerNSGAII {
         engine.addOperator(new AddSmartMutator());
         engine.addOperator(new RemoveSmartMutator());
 
-        //engine.addFitnessFuntion(new CloudAdaptationCostFitness());
         engine.addFitnessFuntion(new CloudCostFitness());
         engine.addFitnessFuntion(new CloudSimilarityFitness());
         engine.addFitnessFuntion(new CloudLatencyFitness());

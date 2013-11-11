@@ -9,9 +9,6 @@ import org.kevoree.modeling.optimization.framework.selector.MutatorRanking
 import org.kevoree.modeling.optimization.api.solution.Solution
 import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
-import java.util.ArrayList
-import java.util.Collections
-import java.util.Comparator
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,49 +20,19 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
 
     val random = Random()
     val ranking = HashMap<FitnessFunction<A>, HashMap<MutationOperator<A>, MutatorRanking<A>>>()
-
-    val positiveRanking =
-
-    var nomalizer = 1.0
-  //  var sumimpact = 0.0
+    val positiveRanking = HashMap<FitnessFunction<A>, HashMap<MutationOperator<A>, MutatorRanking<A>>>()
 
     private fun updateSelectionProbability(fitness: FitnessFunction<A>) {
-        val fitnessRanks = ranking.get(fitness)
-
-        val sortedList = ArrayList<MutatorRanking<A>>()
-
-
-        for (r in fitnessRanks) {
-            if (r.value.positiveMean > 0){
-                sortedList.add(r.value)
-               // sumimpact += r.value.positiveMean
+        val fitnessRanks = positiveRanking.get(fitness)
+        if(fitnessRanks != null && !fitnessRanks.isEmpty()){
+            var bestRanking: MutatorRanking<A>? = null
+            for (r in fitnessRanks.values()) {
+                if (bestRanking == null || r.positiveMean > bestRanking!!.positiveSum){
+                    bestRanking = r
+                    r.selectionProbability = 1.0
+                }
             }
         }
-         /*
-        for (r in fitnessRanks) {
-            if (r.value.positiveMean > 0){
-                r.value.selectionProbability = r.value.positiveMean / sumimpact
-
-            }
-        }*/
-
-
-
-        Collections.sort(sortedList, object : Comparator<MutatorRanking<*>>{
-            override fun compare(o1: MutatorRanking<out KMFContainer>, o2: MutatorRanking<out KMFContainer>): Int {
-                o1.selectionProbability.compareTo(o2.selectionProbability)
-            }
-        })
-        if (sortedList.size > 0){
-            nomalizer = 1 / sortedList.size.toDouble()
-            var i = 0.0
-            for (r in sortedList) {
-                r.selectionProbability = nomalizer * (sortedList.size - i)
-                i += 1
-            }
-
-        }
-
     }
 
     override fun process(previousSolution: Solution<A>, solution: Solution<A>) {
@@ -77,10 +44,15 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
             val rankinValues: HashMap<MutationOperator<A>, MutatorRanking<A>> = ranking.getOrPut(fitness, {
                 HashMap<MutationOperator<A>, MutatorRanking<A>>()
             })
+            val positiveRankingValues: HashMap<MutationOperator<A>, MutatorRanking<A>> = positiveRanking.getOrPut(fitness, {
+                HashMap<MutationOperator<A>, MutatorRanking<A>>()
+            })
             val currentRanking: MutatorRanking<A> = rankinValues.getOrPut(lastOperator, {
                 MutatorRanking<A>(0.0, 0.0, 0.0, 0.0, 0, 0.0)
             })
-
+            if(impactOnFitness > 0 && currentRanking.positiveSum == 0.0){
+                positiveRankingValues.put(lastOperator, currentRanking)
+            }
             if(impactOnFitness <= 0){
                 currentRanking.negativeSum += impactOnFitness
             } else {
@@ -97,31 +69,22 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
         val randomNb = random.nextInt(100)
         if(randomNb < probability){
             val worstFitnessToFix = selectWorstCurrentFitness(solution)
-            val potentialRanks = ranking.get(worstFitnessToFix)
+            val potentialRanks = positiveRanking.get(worstFitnessToFix)
             if(potentialRanks == null){
                 return randomSelector()
             }
             var indiceBegin = 0.0
             var indice = random.nextDouble()
-
-
             for(rank in potentialRanks){
                 val loopRank = rank.getValue()
                 if(rank.getValue().positiveMean > 0 && loopRank.selectionProbability > 0){
                     val normalizedProba = indiceBegin + loopRank.selectionProbability
-
-                    println(indice.toString()+"/"+indiceBegin+"/"+normalizedProba+"@@@"+loopRank.selectionProbability)
-
                     if(indice >= indiceBegin && indice < normalizedProba){
-                        println("Select !")
                         return rank.getKey()
                     }
                     indiceBegin += loopRank.selectionProbability //move lower boundary
                 }
             }
-
-            println("random")
-
             return randomSelector();
         } else {
             //random selection
