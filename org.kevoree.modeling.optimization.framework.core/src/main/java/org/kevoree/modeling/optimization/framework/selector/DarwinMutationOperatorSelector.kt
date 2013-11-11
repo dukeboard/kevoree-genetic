@@ -23,38 +23,40 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
 
     val random = Random()
     val ranking = HashMap<FitnessFunction<A>, HashMap<MutationOperator<A>, MutatorRanking<A>>>()
+
+    val positiveRanking =
+
     var nomalizer = 1.0
-    var sumimpact = 0.0
+  //  var sumimpact = 0.0
 
     private fun updateSelectionProbability(fitness: FitnessFunction<A>) {
         val fitnessRanks = ranking.get(fitness)
+
         val sortedList = ArrayList<MutatorRanking<A>>()
+
+
         for (r in fitnessRanks) {
             if (r.value.positiveMean > 0){
                 sortedList.add(r.value)
-                sumimpact += r.value.positiveMean
-
+               // sumimpact += r.value.positiveMean
             }
         }
-
+         /*
         for (r in fitnessRanks) {
             if (r.value.positiveMean > 0){
-                r.value.selectionProbability    = r.value.positiveMean/sumimpact
+                r.value.selectionProbability = r.value.positiveMean / sumimpact
 
             }
-        }
+        }*/
 
 
 
-        /*Collections.sort(sortedList, object : Comparator<MutatorRanking<*>>{
+        Collections.sort(sortedList, object : Comparator<MutatorRanking<*>>{
             override fun compare(o1: MutatorRanking<out KMFContainer>, o2: MutatorRanking<out KMFContainer>): Int {
                 o1.selectionProbability.compareTo(o2.selectionProbability)
             }
-        })      */
-
-
-
-        /*if (sortedList.size > 0){
+        })
+        if (sortedList.size > 0){
             nomalizer = 1 / sortedList.size.toDouble()
             var i = 0.0
             for (r in sortedList) {
@@ -62,7 +64,7 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                 i += 1
             }
 
-        }   */
+        }
 
     }
 
@@ -100,43 +102,27 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                 return randomSelector()
             }
             var indiceBegin = 0.0
-            var currentBestOperator: MutationOperator<A>? = null
             var indice = random.nextDouble()
-            var atLeastOneFound = false
+
+
             for(rank in potentialRanks){
                 val loopRank = rank.getValue()
-                if(rank.getValue().positiveMean > 0){
-                    atLeastOneFound = true
-                    if(indice >= indiceBegin && indice < loopRank.selectionProbability){
-                        currentBestOperator = rank.getKey()
-                        break;
-                    }
-                    indiceBegin = loopRank.selectionProbability //move lower boundary
-                }
-            }
-            if(currentBestOperator == null){
-                if(atLeastOneFound) {
-                    var indiceBegin = 0.0
-                    for(rank in potentialRanks){
-                        val loopRank = rank.getValue()
-                        if(rank.getValue().positiveMean > 0){
-                            System.out.print("indice "+indice+" "+indiceBegin+" "+loopRank.selectionProbability)
-                            if(indice >= indiceBegin && indice < loopRank.selectionProbability){
-                                System.out.print(" @ true")
-                            }
-                            System.out.println()
-                            indiceBegin = loopRank.selectionProbability //move lower boundary
-                        }
-                    }
-                    return randomSelector()
-                    //throw Exception("Bad proba selection behavior !!!, internal problem "+indice)
-                } else {
-                    return randomSelector()
-                }
+                if(rank.getValue().positiveMean > 0 && loopRank.selectionProbability > 0){
+                    val normalizedProba = indiceBegin + loopRank.selectionProbability
 
-            } else {
-                return currentBestOperator!!
+                    println(indice.toString()+"/"+indiceBegin+"/"+normalizedProba+"@@@"+loopRank.selectionProbability)
+
+                    if(indice >= indiceBegin && indice < normalizedProba){
+                        println("Select !")
+                        return rank.getKey()
+                    }
+                    indiceBegin += loopRank.selectionProbability //move lower boundary
+                }
             }
+
+            println("random")
+
+            return randomSelector();
         } else {
             //random selection
             var indice = random.nextInt(operators.size())

@@ -1,6 +1,5 @@
 package org.kevoree.modeling.genetic.democloud.evolutionary;
 
-import jet.runtime.typeinfo.JetValueParameter;
 import org.cloud.Cloud;
 import org.kevoree.modeling.genetic.democloud.CloudPopulationFactory;
 import org.kevoree.modeling.genetic.democloud.fitnesses.*;
@@ -22,8 +21,6 @@ import org.kevoree.modeling.optimization.framework.SolutionPrinter;
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
 import org.kevoree.modeling.optimization.util.ExecutionModelExporter;
 import org.kevoree.modeling.optimization.web.Server;
-
-import org.kevoree.modeling.optimization.api.metric.ParetoFitnessMetrics;
 import org.kevoree.modeling.optimization.api.metric.ParetoMetrics;
 
 import java.io.File;
@@ -87,8 +84,13 @@ public class SampleRunnerNSGAII {
         }
 
 
+        engine.setMutationSelectionStrategy(MutationSelectionStrategy.RANDOM);
+
+        engine.solve();
+
+
         ExecutionModel model = engine.getExecutionModel();
-        ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
+      //  ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
 
 
         Server.instance$.serveExecutionModel(model);
