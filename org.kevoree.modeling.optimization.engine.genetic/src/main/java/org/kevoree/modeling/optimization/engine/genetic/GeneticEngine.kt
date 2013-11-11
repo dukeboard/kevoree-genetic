@@ -114,7 +114,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                 //don't do nothing -> default case
             }
             GeneticAlgorithm.HypervolumeNSGAII -> {
-                val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), HypervolumeComparator(problem)));
+                val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), CrowdingComparator(),  HypervolumeComparator(problem)));
                 kalgo = NSGAII(problem, NondominatedSortingPopulation(), null, selection, variations, ModelInitialization(populationFactory!!, problem, originAware));
                 //don't do nothing -> default case
             }
