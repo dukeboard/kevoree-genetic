@@ -36,6 +36,7 @@ public class HypervolumeSelection implements Selection {
             solution[i] = population.get(i);
         }
         return solution;
+
     }
 
 }
