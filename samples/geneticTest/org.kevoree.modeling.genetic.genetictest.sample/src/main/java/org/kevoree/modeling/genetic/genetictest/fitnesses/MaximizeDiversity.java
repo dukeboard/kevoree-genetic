@@ -2,7 +2,6 @@ package org.kevoree.modeling.genetic.genetictest.fitnesses;
 
 import org.genetictest.BinaryString;
 import org.genetictest.MyBoolean;
-import org.kevoree.modeling.api.trace.TraceSequence;
 import org.kevoree.modeling.optimization.api.GenerationContext;
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
 import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;

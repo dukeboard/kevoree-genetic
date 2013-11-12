@@ -4,13 +4,11 @@ package org.kevoree.modeling.genetic.genetictest.mutators;
 import org.genetictest.BinaryString;
 import org.genetictest.MyBoolean;
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator;
-import org.kevoree.modeling.optimization.api.mutation.QueryVar;
-
 import org.kevoree.modeling.optimization.api.mutation.MutationParameters;
 import org.kevoree.modeling.optimization.api.mutation.MutationVariable;
+import org.kevoree.modeling.optimization.api.mutation.QueryVar;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -40,8 +38,6 @@ public class SwitchMutator implements MutationOperator<BinaryString> {
 
         //if(rand.nextDouble()<0.1)
             x.setValue(!x.getValue());
-
-
 
 
     }

@@ -176,7 +176,7 @@
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_iOcPsUeKEeOFGrtswxI0ZQ" lineColor="4210752"/>
     <styles xmi:type="notation:FontStyle" xmi:id="_iOcPskeKEeOFGrtswxI0ZQ" fontColor="4210752" fontName="Segoe UI" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="ImageReconstruction.ecore#//Shape/color"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_iOcPs0eKEeOFGrtswxI0ZQ" points="[-4, 21, 14, -92]$[-17, 100, 1, -13]"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_iOcPs0eKEeOFGrtswxI0ZQ" points="[26, 21, -316, -80]$[82, 64, -260, -37]$[342, 52, 0, -49]$[342, 52, 0, -49]$[342, 88, 0, -13]"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_iOkykEeKEeOFGrtswxI0ZQ" id="(0.3235294117647059,0.13725490196078433)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_kfIf8EeKEeOFGrtswxI0ZQ" type="3003" source="_KjTFgEeJEeOFGrtswxI0ZQ" target="_esmgoEeKEeOFGrtswxI0ZQ">
