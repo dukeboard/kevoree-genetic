@@ -30,6 +30,8 @@ public class DarwinMutationOperatorSelector<A : KMFContainer>(override val opera
                 if (bestRanking == null || r.positiveMean > bestRanking!!.positiveSum){
                     bestRanking = r
                     r.selectionProbability = 1.0
+                } else {
+                    r.selectionProbability = 0.0
                 }
             }
         }

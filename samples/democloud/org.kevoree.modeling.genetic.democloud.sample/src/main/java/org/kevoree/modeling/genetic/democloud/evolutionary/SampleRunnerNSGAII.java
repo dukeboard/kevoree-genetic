@@ -64,10 +64,10 @@ public class SampleRunnerNSGAII {
 
 
 
-        engine.setMaxGeneration(100);
+        engine.setMaxGeneration(200);
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
 
-        engine.setAlgorithm(GeneticAlgorithm.NSGAII);
+        engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
         engine.addParetoMetric(ParetoMetrics.HYPERVOLUME);
        // engine.addParetoMetric(ParetoMetrics.MIN_MEAN);
 
@@ -79,8 +79,11 @@ public class SampleRunnerNSGAII {
 
         List<Solution<Cloud>> result = engine.solve();
         for (Solution sol : result) {
-            SolutionPrinter.instance$.print(sol, System.out);
+            //SolutionPrinter.instance$.print(sol, System.out);
         }
+
+        System.out.println(engine.getMutationSelector().toString());
+
 
 
         engine.setMutationSelectionStrategy(MutationSelectionStrategy.RANDOM);
@@ -93,6 +96,8 @@ public class SampleRunnerNSGAII {
 
 
         Server.instance$.serveExecutionModel(model);
+
+
 
 
     }

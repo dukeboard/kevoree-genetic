@@ -70,8 +70,14 @@ public class SampleRunnerNSGAIIWithHypervolume {
         }
 
 
+        System.out.println(engine.getMutationSelector().toString());
+
+
         ExecutionModel model = engine.getExecutionModel();
         ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
+
+
+
     }
 
 }
