@@ -115,9 +115,11 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                 val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), CrowdingComparator(),  HypervolumeComparator(problem)));
                 kalgo = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), selection, variations, ModelInitialization(populationFactory!!, problem, originAware));
             }
+            /* TO CHECK, BAD BEHAVIOR */
             GeneticAlgorithm.EpsilonMOEA -> {
                 kalgo = EpsilonMOEA(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(populationFactory!!, problem, originAware));
             }
+            /* TO CHECK, BAD BEHAVIOR */
             GeneticAlgorithm.HypervolumeMOEA -> {
                 val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), HypervolumeComparator(problem)));
                 kalgo = EpsilonMOEA(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), selection, variations, ModelInitialization(populationFactory!!, problem, originAware));
