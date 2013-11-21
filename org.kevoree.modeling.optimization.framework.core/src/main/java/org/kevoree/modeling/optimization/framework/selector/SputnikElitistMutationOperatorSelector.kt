@@ -16,13 +16,13 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
  * Date: 28/10/2013
  * Time: 18:29
  */
-public class DarwinMutationOperatorSelector<A : KMFContainer>(override val operators: List<MutationOperator<A>>, val probability: Double) : MutationOperatorSelector<A>, SolutionMutationListener<A> {
+public open class SputnikElitistMutationOperatorSelector<A : KMFContainer>(override val operators: List<MutationOperator<A>>, val probability: Double) : MutationOperatorSelector<A>, SolutionMutationListener<A> {
 
     val random = Random()
     val ranking = HashMap<FitnessFunction<A>, HashMap<MutationOperator<A>, MutatorRanking<A>>>()
     val positiveRanking = HashMap<FitnessFunction<A>, HashMap<MutationOperator<A>, MutatorRanking<A>>>()
 
-    private fun updateSelectionProbability(fitness: FitnessFunction<A>) {
+    open fun updateSelectionProbability(fitness: FitnessFunction<A>) {
         val fitnessRanks = positiveRanking.get(fitness)
         if(fitnessRanks != null && !fitnessRanks.isEmpty()){
             var bestRanking: MutatorRanking<A>? = null

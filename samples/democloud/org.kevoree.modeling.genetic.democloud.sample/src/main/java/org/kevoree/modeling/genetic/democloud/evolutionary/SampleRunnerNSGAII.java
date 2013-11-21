@@ -60,7 +60,7 @@ public class SampleRunnerNSGAII {
         engine.addFitnessFuntion(new CloudRedundancyFitness());
 
 
-        engine.setMutationSelectionStrategy(MutationSelectionStrategy.DARWIN);
+        engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_ELITIST);
 
 
 
@@ -87,6 +87,10 @@ public class SampleRunnerNSGAII {
 
 
         engine.setMutationSelectionStrategy(MutationSelectionStrategy.RANDOM);
+
+        engine.solve();
+
+        engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_CASTE);
 
         engine.solve();
 

@@ -11,7 +11,8 @@ import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 import org.kevoree.modeling.optimization.api.mutation.MutationSelectionStrategy
 import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
-import org.kevoree.modeling.optimization.engine.genetic.selector.DarwinMutationOperatorSelector
+import org.kevoree.modeling.optimization.engine.genetic.selector.SputnikElitistMutationOperatorSelector
+import org.kevoree.modeling.optimization.engine.genetic.selector.SputnikCasteMutationOperatorSelector
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,23 +30,38 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
 
     public override var mutationSelectionStrategy: MutationSelectionStrategy
         set(strategy){
-            if(strategy == MutationSelectionStrategy.RANDOM){
-                mutationSelector = DefaultRandomOperatorSelector(_operators)
-            }
-            if(strategy == MutationSelectionStrategy.DARWIN){
-                //unregister previous
-                if(mutationSelector is SolutionMutationListener<*>){
-                    solutionMutationListeners.remove(mutationSelector)
+
+            when(strategy) {
+                MutationSelectionStrategy.RANDOM -> {
+                    mutationSelector = DefaultRandomOperatorSelector(_operators)
                 }
-                mutationSelector = DarwinMutationOperatorSelector(_operators, 90.0)
-                solutionMutationListeners.add(mutationSelector as DarwinMutationOperatorSelector<A>)
+                MutationSelectionStrategy.SPUTNIK_CASTE -> {
+                    if(mutationSelector is SolutionMutationListener<*>){
+                        solutionMutationListeners.remove(mutationSelector)
+                    }
+                    mutationSelector = SputnikCasteMutationOperatorSelector(_operators, 90.0)
+                    solutionMutationListeners.add(mutationSelector as SputnikElitistMutationOperatorSelector<A>)
+                }
+                MutationSelectionStrategy.SPUTNIK_ELITIST -> {
+                    if(mutationSelector is SolutionMutationListener<*>){
+                        solutionMutationListeners.remove(mutationSelector)
+                    }
+                    mutationSelector = SputnikElitistMutationOperatorSelector(_operators, 90.0)
+                    solutionMutationListeners.add(mutationSelector as SputnikElitistMutationOperatorSelector<A>)
+                }
             }
         }
         get(){
-            if(mutationSelector is DarwinMutationOperatorSelector){
-                return MutationSelectionStrategy.DARWIN
-            } else {
-                return MutationSelectionStrategy.RANDOM
+            when(mutationSelector) {
+                is SputnikElitistMutationOperatorSelector -> {
+                    return MutationSelectionStrategy.SPUTNIK_ELITIST
+                }
+                is SputnikCasteMutationOperatorSelector -> {
+                    return MutationSelectionStrategy.SPUTNIK_CASTE
+                }
+                is DefaultRandomOperatorSelector -> {
+                    return MutationSelectionStrategy.RANDOM
+                }
             }
         }
 
@@ -65,7 +81,7 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
         }
     }
 
-     var _metricsName: MutableList<FitnessMetric>
+    var _metricsName: MutableList<FitnessMetric>
 
     public override fun addFitnessMetric(fitness: FitnessFunction<A>, metric: ParetoFitnessMetrics) {
         activateExecutionModel() //if at least one metric is added, initiate the ExecutionModel

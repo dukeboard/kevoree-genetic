@@ -9,5 +9,6 @@ package org.kevoree.modeling.optimization.api.mutation
 
 enum class MutationSelectionStrategy {
     RANDOM
-    DARWIN
+    SPUTNIK_ELITIST
+    SPUTNIK_CASTE
 }
