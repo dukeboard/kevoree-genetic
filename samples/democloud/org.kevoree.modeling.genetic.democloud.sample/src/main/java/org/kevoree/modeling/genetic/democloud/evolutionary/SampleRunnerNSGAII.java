@@ -40,7 +40,7 @@ public class SampleRunnerNSGAII {
     public static void main(String[] args) throws Exception {
 
         GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
-       engine.setAlgorithm(GeneticAlgorithm.NSGAII);
+       engine.setAlgorithm(GeneticAlgorithm.EpsilonCrowdingNSGII);
 
 
        // engine.desactivateOriginAware();
