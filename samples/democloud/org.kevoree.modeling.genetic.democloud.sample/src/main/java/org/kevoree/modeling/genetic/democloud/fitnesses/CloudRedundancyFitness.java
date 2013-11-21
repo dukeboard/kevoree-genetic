@@ -43,7 +43,7 @@ public class CloudRedundancyFitness implements FitnessFunction<Cloud> {
 
         double redundancyeval =   (count/size) ;
         //System.out.println("redunduncy is"+ size )  ;
-        return redundancyeval;
+        return Math.min(redundancyeval,1);
     }
 
 }

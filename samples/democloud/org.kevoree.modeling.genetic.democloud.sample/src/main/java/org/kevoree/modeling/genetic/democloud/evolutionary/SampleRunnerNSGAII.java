@@ -64,10 +64,10 @@ public class SampleRunnerNSGAII {
 
 
 
-        engine.setMaxGeneration(200);
+        engine.setMaxGeneration(1000);
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
 
-        engine.setAlgorithm(GeneticAlgorithm.HypervolumeNSGAII);
+        engine.setAlgorithm(GeneticAlgorithm.EpsilonNSGII);
         engine.addParetoMetric(ParetoMetrics.HYPERVOLUME);
        // engine.addParetoMetric(ParetoMetrics.MIN_MEAN);
 

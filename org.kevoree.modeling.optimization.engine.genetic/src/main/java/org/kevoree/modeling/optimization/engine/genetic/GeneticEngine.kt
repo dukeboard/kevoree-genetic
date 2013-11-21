@@ -57,7 +57,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
 
     private var _algorithm: GeneticAlgorithm = GeneticAlgorithm.EpsilonNSGII
-    private var _dominanceEpsilon = 0.1;
+    private var _dominanceEpsilon = 0.05;
     private  var originAware = true
 
     private var currentRun: Run? = null;
