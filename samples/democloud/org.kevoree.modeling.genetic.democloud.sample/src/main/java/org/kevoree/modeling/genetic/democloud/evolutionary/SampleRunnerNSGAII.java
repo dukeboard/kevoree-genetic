@@ -40,7 +40,7 @@ public class SampleRunnerNSGAII {
     public static void main(String[] args) throws Exception {
 
         GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
-       engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
+       engine.setAlgorithm(GeneticAlgorithm.NSGAII);
 
 
        // engine.desactivateOriginAware();
@@ -64,7 +64,7 @@ public class SampleRunnerNSGAII {
 
 
 
-        engine.setMaxGeneration(1000);
+        engine.setMaxGeneration(300);
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
 
         engine.setAlgorithm(GeneticAlgorithm.EpsilonNSGII);

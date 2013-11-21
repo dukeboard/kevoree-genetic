@@ -40,24 +40,24 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
                         solutionMutationListeners.remove(mutationSelector)
                     }
                     mutationSelector = SputnikCasteMutationOperatorSelector(_operators, 90.0)
-                    solutionMutationListeners.add(mutationSelector as SputnikElitistMutationOperatorSelector<A>)
+                    solutionMutationListeners.add(mutationSelector as SolutionMutationListener<A>)
                 }
                 MutationSelectionStrategy.SPUTNIK_ELITIST -> {
                     if(mutationSelector is SolutionMutationListener<*>){
                         solutionMutationListeners.remove(mutationSelector)
                     }
                     mutationSelector = SputnikElitistMutationOperatorSelector(_operators, 90.0)
-                    solutionMutationListeners.add(mutationSelector as SputnikElitistMutationOperatorSelector<A>)
+                    solutionMutationListeners.add(mutationSelector as SolutionMutationListener<A>)
                 }
             }
         }
         get(){
             when(mutationSelector) {
-                is SputnikElitistMutationOperatorSelector -> {
-                    return MutationSelectionStrategy.SPUTNIK_ELITIST
-                }
                 is SputnikCasteMutationOperatorSelector -> {
                     return MutationSelectionStrategy.SPUTNIK_CASTE
+                }
+                is SputnikElitistMutationOperatorSelector -> {
+                    return MutationSelectionStrategy.SPUTNIK_ELITIST
                 }
                 is DefaultRandomOperatorSelector -> {
                     return MutationSelectionStrategy.RANDOM
