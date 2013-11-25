@@ -17,8 +17,8 @@
         <module>tinycloud/org.kevoree.modeling.genetic.tinycloud.sample</module>
         <module>democloud/org.kevoree.modeling.genetic.democloud.model</module>
         <module>democloud/org.kevoree.modeling.genetic.democloud.sample</module>
-		   <module>democloud/org.kevoree.modeling.genetic.genetictest.model</module>
-        <module>democloud/org.kevoree.modeling.genetic.genetictest.sample</module>
+		   <module>geneticTest/org.kevoree.modeling.genetic.genetictest.model</module>
+        <module>geneticTest/org.kevoree.modeling.genetic.genetictest.sample</module>
      <!--   <module>kevoree/org.kevoree.modeling.genetic.kevoree.model</module>
         <module>kevoree/org.kevoree.modeling.genetic.kevoree.sample</module>      -->
     </modules>

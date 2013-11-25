@@ -2,7 +2,6 @@ package org.kevoree.modeling.genetic.genetictest.imagereconstruction.fitnesses;
 
 import org.imagereconstruction.RImage;
 import org.imagereconstruction.Shape;
-import org.imagereconstruction.Triangle;
 import org.kevoree.modeling.genetic.genetictest.imagereconstruction.BasicSettings;
 import org.kevoree.modeling.optimization.api.GenerationContext;
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
@@ -22,8 +21,9 @@ public class MaximizeTriangle extends BasicSettings implements FitnessFunction<R
         int counter =0;
         for(Shape x: model.getShapes())
         {
-            if(x instanceof Triangle)
+            if(x.getPoints().size()==3)
                 counter++;
+
         }
         return  counter;
 

@@ -13,12 +13,11 @@ import java.util.List;
 /**
  * User: assaad.moawad
  * Date: 12/11/13
- * Time: 10:48
+ * Time: 11:09
  * University of Luxembourg - Snt
  * assaad.mouawad@gmail.com
  */
-public class AddShape  extends BasicSettings implements MutationOperator<RImage> {
-
+public class AddPoint extends BasicSettings implements MutationOperator<RImage> {
     @Override
     public List<MutationVariable> enumerateVariables(RImage bs) {
         return Arrays.asList((MutationVariable) new QueryVar("target", "shapes[*]"));
@@ -27,36 +26,25 @@ public class AddShape  extends BasicSettings implements MutationOperator<RImage>
 
     @Override
     public void mutate(RImage parent, MutationParameters mutationParameters) {
-
-        if(parent.getShapes().size()>= MAXSHAPES)
+        Shape x = ((Shape) mutationParameters.getParam("target"));
+        if(x==null)
             return;
 
-        Shape temp = imagefactory.createShape();
-        Color c = imagefactory.createColor();
-        c.setA(RAND.nextInt(COLORSPACE));
-        c.setR(RAND.nextInt(COLORSPACE));
-        c.setG(RAND.nextInt(COLORSPACE));
-        c.setB(RAND.nextInt(COLORSPACE));
-        temp.setColor(c);
-        Point p;
+        int posMax = parent.getShapes().size();
 
-        for(int i=0; i<3; i++)
-        {
-            p=imagefactory.createPoint();
-            p.setX(RAND.nextInt(X));
-            p.setY(RAND.nextInt(Y));
-            temp.addPoints(p);
-        }
-        parent.addShapes(temp);
+        if(posMax==0)
+            return;
 
+         int pos = RAND.nextInt(posMax);
+        Shape s =  parent.getShapes().get(pos);
+        if( s.getPoints().size()==MAXPOINTPERSHAPE)
+            return;
 
-
-
-        //Shape x = ((Shape) mutationParameters.getParam("target"));
-
-
-
+        Point p=imagefactory.createPoint();
+        p.setX(RAND.nextInt(X));
+        p.setY(RAND.nextInt(Y));
+        s.addPoints(p);
 
     }
 
-}
+    }
