@@ -184,8 +184,8 @@
                                         <goal>execute</goal>
                                     </goals>
                                     <configuration>
-                                        <usernameProperty>${deploy.username}</usernameProperty>
-                                        <passwordProperty>${deploy.password}</passwordProperty>
+                                        <usernameProperty>${deployusername}</usernameProperty>
+                                        <passwordProperty>${deploypassword}</passwordProperty>
                                         <settingsKey>kevoree.oss.snapshots</settingsKey>
                                     </configuration>
                                 </execution>
