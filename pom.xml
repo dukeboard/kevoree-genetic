@@ -167,6 +167,7 @@
             <activation>
                 <property>
                     <name>CI</name>
+                    <value>true</value>
                 </property>
             </activation>
             <id>deploy-system</id>
