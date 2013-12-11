@@ -60,11 +60,11 @@ public class SampleRunnerNSGAII {
         engine.addFitnessFuntion(new CloudRedundancyFitness());
 
 
-        engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_ELITIST);
+        engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_CASTE);
 
 
 
-        engine.setMaxGeneration(300);
+        engine.setMaxGeneration(1000);
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
 
         engine.setAlgorithm(GeneticAlgorithm.EpsilonNSGII);
@@ -86,13 +86,13 @@ public class SampleRunnerNSGAII {
 
 
 
-        engine.setMutationSelectionStrategy(MutationSelectionStrategy.RANDOM);
+       // engine.setMutationSelectionStrategy(MutationSelectionStrategy.RANDOM);
 
-        engine.solve();
+       // engine.solve();
 
-        engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_CASTE);
+       // engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_CASTE);
 
-        engine.solve();
+      //  engine.solve();
 
 
         ExecutionModel model = engine.getExecutionModel();

@@ -36,14 +36,14 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
                     mutationSelector = DefaultRandomOperatorSelector(_operators)
                 }
                 MutationSelectionStrategy.SPUTNIK_CASTE -> {
-                    if(mutationSelector is SolutionMutationListener<*>){
+                    if (mutationSelector is SolutionMutationListener<*>) {
                         solutionMutationListeners.remove(mutationSelector)
                     }
                     mutationSelector = SputnikCasteMutationOperatorSelector(_operators, 90.0)
                     solutionMutationListeners.add(mutationSelector as SolutionMutationListener<A>)
                 }
                 MutationSelectionStrategy.SPUTNIK_ELITIST -> {
-                    if(mutationSelector is SolutionMutationListener<*>){
+                    if (mutationSelector is SolutionMutationListener<*>) {
                         solutionMutationListeners.remove(mutationSelector)
                     }
                     mutationSelector = SputnikElitistMutationOperatorSelector(_operators, 90.0)
@@ -62,6 +62,9 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
                 is DefaultRandomOperatorSelector -> {
                     return MutationSelectionStrategy.RANDOM
                 }
+                else -> {
+                    return MutationSelectionStrategy.RANDOM
+                }
             }
         }
 
@@ -75,7 +78,7 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
     }
 
     private fun activateExecutionModel() {
-        if(executionModel == null){
+        if (executionModel == null) {
             _executionModelFactory = DefaultExecutionModelFactory()
             executionModel = _executionModelFactory!!.createExecutionModel()
         }

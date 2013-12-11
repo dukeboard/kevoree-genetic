@@ -32,8 +32,8 @@
 
     <properties>
         <kevoree.version>${project.version}</kevoree.version>
-        <kotlin.version>0.6.602</kotlin.version>
-        <kmf.version>1.9.0</kmf.version>
+        <kotlin.version>0.6.1670</kotlin.version>
+        <kmf.version>1.9.4-SNAPSHOT</kmf.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -161,5 +161,49 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <profiles>
+        <profile>
+            <activation>
+                <property>
+                    <name>CI</name>
+                </property>
+            </activation>
+            <id>deploy-system</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.genthaler</groupId>
+                        <artifactId>credentials-maven-plugin</artifactId>
+                        <version>1.0</version>
+                        <configuration>
+                            <executions>
+                                <execution>
+                                    <phase></phase>
+                                    <goals>
+                                        <goal>execute</goal>
+                                    </goals>
+                                    <configuration>
+                                        <usernameProperty>${deploy.username}</usernameProperty>
+                                        <passwordProperty>${deploy.password}</passwordProperty>
+                                        <settingsKey>kevoree.oss.snapshots</settingsKey>
+                                    </configuration>
+                                </execution>
+                                <execution>
+                                </execution>
+                            </executions>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <repositories>
+        <repository>
+            <id>oss</id>
+            <url>http://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+    </repositories>
 
 </project>
