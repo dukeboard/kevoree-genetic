@@ -139,9 +139,9 @@
                 <configuration>
                     <executions>
                         <execution>
-                            <phase>compile</phase>
+                            <phase>validate</phase>
                             <goals>
-                                <goal>execute</goal>
+                                <goal>set</goal>
                             </goals>
                             <configuration>
                                 <usernameProperty>${deployusername}</usernameProperty>
