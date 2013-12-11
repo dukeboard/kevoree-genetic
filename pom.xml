@@ -132,6 +132,29 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>com.github.genthaler</groupId>
+                <artifactId>credentials-maven-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <executions>
+                        <execution>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>execute</goal>
+                            </goals>
+                            <configuration>
+                                <usernameProperty>${deployusername}</usernameProperty>
+                                <passwordProperty>${deploypassword}</passwordProperty>
+                                <settingsKey>kevoree.oss.snapshots</settingsKey>
+                            </configuration>
+                        </execution>
+                        <execution>
+                        </execution>
+                    </executions>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -161,7 +184,7 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-
+      <!--
     <profiles>
         <profile>
             <activation>
@@ -173,33 +196,11 @@
             <id>deploy-system</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>com.github.genthaler</groupId>
-                        <artifactId>credentials-maven-plugin</artifactId>
-                        <version>1.0</version>
-                        <configuration>
-                            <executions>
-                                <execution>
-                                    <phase>compile</phase>
-                                    <goals>
-                                        <goal>execute</goal>
-                                    </goals>
-                                    <configuration>
-                                        <usernameProperty>${deployusername}</usernameProperty>
-                                        <passwordProperty>${deploypassword}</passwordProperty>
-                                        <settingsKey>kevoree.oss.snapshots</settingsKey>
-                                    </configuration>
-                                </execution>
-                                <execution>
-                                </execution>
-                            </executions>
-                        </configuration>
-                    </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
-
+        -->
     <repositories>
         <repository>
             <id>oss</id>
