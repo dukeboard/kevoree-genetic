@@ -156,7 +156,12 @@
             </plugin>
 
         </plugins>
+
+
+
     </build>
+
+
 
     <modules>
         <module>org.kevoree.modeling.optimization.framework.execution.model.metrics</module>
