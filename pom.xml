@@ -144,15 +144,9 @@
                     </execution>
                 </executions>
             </plugin>
-
-
         </plugins>
-
-
     </build>
 
-
-    <!--
     <modules>
         <module>org.kevoree.modeling.optimization.framework.execution.model.metrics</module>
         <module>org.kevoree.modeling.optimization.framework.execution.model</module>
@@ -162,7 +156,6 @@
         <module>org.kevoree.modeling.optimization.engine.fullsearch</module>
         <module>org.kevoree.modeling.optimization.framework.web</module>
     </modules>
-    -->
 
     <distributionManagement>
         <repository>
@@ -174,23 +167,7 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-    <!--
-  <profiles>
-      <profile>
-          <activation>
-              <property>
-                  <name>CI</name>
-                  <value>true</value>
-              </property>
-          </activation>
-          <id>deploy-system</id>
-          <build>
-              <plugins>
-              </plugins>
-          </build>
-      </profile>
-  </profiles>
-      -->
+
     <repositories>
         <repository>
             <id>oss</id>
