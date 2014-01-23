@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <kmf.version>1.9.0</kmf.version>
+        <kmf.version>1.9.7</kmf.version>
     </properties>
 
     <modules>
@@ -19,6 +19,7 @@
         <module>democloud/org.kevoree.modeling.genetic.democloud.sample</module>
 		   <module>geneticTest/org.kevoree.modeling.genetic.genetictest.model</module>
         <module>geneticTest/org.kevoree.modeling.genetic.genetictest.sample</module>
+
      <!--   <module>kevoree/org.kevoree.modeling.genetic.kevoree.model</module>
         <module>kevoree/org.kevoree.modeling.genetic.kevoree.sample</module>      -->
     </modules>

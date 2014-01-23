@@ -42,14 +42,14 @@
                             <ecore>democloud.ecore</ecore>
                             <packagePrefix>org</packagePrefix>
                             <js>false</js>
-                            <ecma5>false</ecma5>
-                            <events>true</events>
-                            <selector>true</selector>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+                            <!--       <ecma5>false</ecma5> !-->
+                                  <events>true</events>
+                                  <selector>true</selector>
+                              </configuration>
+                          </execution>
+                      </executions>
+                  </plugin>
+              </plugins>
+          </build>
 
-</project>
+      </project>

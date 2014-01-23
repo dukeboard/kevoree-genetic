@@ -40,14 +40,12 @@
             <version>${project.version}</version>
         </dependency>
 
+
         <dependency>
             <groupId>org.kevoree.modeling.optimization</groupId>
             <artifactId>org.kevoree.modeling.optimization.framework.web</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-
-
     </dependencies>
 
 </project>
