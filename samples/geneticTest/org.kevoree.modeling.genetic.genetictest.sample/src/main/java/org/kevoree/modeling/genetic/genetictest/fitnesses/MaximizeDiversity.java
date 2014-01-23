@@ -59,7 +59,7 @@ public class MaximizeDiversity implements FitnessFunction<BinaryString> {
     }
     public double max() {
 
-        return 16.0;
+        return 12.0;
     }
     public FitnessOrientation orientation() {
 

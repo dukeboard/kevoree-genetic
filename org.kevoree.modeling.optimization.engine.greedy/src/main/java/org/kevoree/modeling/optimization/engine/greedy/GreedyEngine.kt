@@ -145,6 +145,8 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             }
         }
         if(front != null){
+
+            if(executionModel != null){ //this line was added by Assaad
             val newStep = _executionModelFactory!!.createStep()
             newStep.startTime = previousTime
             newStep.endTime = date.getTime()
@@ -170,7 +172,8 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             }
             currentRun!!.addSteps(newStep)
         }
-    }
+        } //this line was added by Assaad
+   }
 
     private var isChangedSinceLastStep = false
 

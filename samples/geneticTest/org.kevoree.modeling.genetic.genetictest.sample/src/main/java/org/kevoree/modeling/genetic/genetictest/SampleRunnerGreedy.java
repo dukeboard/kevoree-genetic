@@ -33,7 +33,7 @@ public class SampleRunnerGreedy {
         //  engine.addFitnessFuntion(new MaximizeDiversity());
 
         engine.setMaxGeneration(65536);
-        engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(10));
+        engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(1000));
 
 
 
@@ -43,14 +43,14 @@ public class SampleRunnerGreedy {
         }
 
 
-        ExecutionModel model = engine.getExecutionModel();
+     /*   ExecutionModel model = engine.getExecutionModel();
         ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
 
 
         JSONModelSerializer saver = new JSONModelSerializer();
         // File temp = File.createTempFile("temporaryOutput",".json");
         // FileOutputStream fou = new FileOutputStream(temp);
-        saver.serializeToStream(engine.getExecutionModel(),System.err);
+        saver.serializeToStream(engine.getExecutionModel(),System.err);*/
 
         }
 

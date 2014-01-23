@@ -4,6 +4,8 @@ import org.genetictest.BinaryString;
 import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeTotalFitness;
 import org.kevoree.modeling.genetic.genetictest.mutators.SwitchMutator;
 import org.kevoree.modeling.optimization.api.OptimizationEngine;
+import org.kevoree.modeling.optimization.api.metric.ParetoFitnessMetrics;
+import org.kevoree.modeling.optimization.api.metric.ParetoMetrics;
 import org.kevoree.modeling.optimization.api.solution.Solution;
 import org.kevoree.modeling.optimization.engine.fullsearch.FullSearchEngine;
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
@@ -32,20 +34,29 @@ public class SampleRunnerFullSearch {
         engine.addFitnessFuntion(new MaximizeTotalFitness());
       //  engine.addFitnessFuntion(new MaximizeDiversity());
 
+    //    engine.addFitnessMetric(new MaximizeTotalFitness(), ParetoFitnessMetrics.MIN);
+     //   engine.addFitnessMetric(new MaximizeTotalFitness(), ParetoFitnessMetrics.MAX);
+     //   engine.addParetoMetric(ParetoMetrics.MIN_MEAN);
 
-        engine.setMaxGeneration(65536);
-        engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(10));
+
+        engine.setMaxGeneration(5000);
+        engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(5000));
 
         List<Solution<BinaryString>> result = engine.solve();
-        for (Solution sol : result) {
+
+        System.out.println(result.size());
+
+     /*  for (Solution sol : result) {
             SolutionPrinter.instance$.print(sol, System.out);
-        }
+        }*/
+
+/*
         ExecutionModel model = engine.getExecutionModel();
         ExecutionModelExporter.instance$.exportMetrics(model, new File("results"));
         JSONModelSerializer saver = new JSONModelSerializer();
         // File temp = File.createTempFile("temporaryOutput",".json");
         // FileOutputStream fou = new FileOutputStream(temp);
-        saver.serializeToStream(engine.getExecutionModel(), System.err);
+        saver.serializeToStream(engine.getExecutionModel(), System.err);*/
 
 
 

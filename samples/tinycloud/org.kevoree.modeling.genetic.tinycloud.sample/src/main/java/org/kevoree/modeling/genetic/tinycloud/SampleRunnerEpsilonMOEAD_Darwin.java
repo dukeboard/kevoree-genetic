@@ -48,7 +48,7 @@ public class SampleRunnerEpsilonMOEAD_Darwin {
 
 
         List<Solution<Cloud>> result = engine.solve();
-        engine.setMutationSelectionStrategy(MutationSelectionStrategy.RANDOM); //DARWIN does not exist, cmt by Assaad
+        engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_CASTE); //DARWIN does not exist, changed tp Sputnik_caste by Assaad
         engine.solve();
         //engine.solve();
 

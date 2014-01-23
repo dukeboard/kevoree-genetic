@@ -1,0 +1,3 @@
+generation,startTime,endTime,org.kevoree.modeling.optimization.executionmodel.Max_CloudRedondencyFitness_CloudRedondencyFitness,org.kevoree.modeling.optimization.executionmodel.Min_CloudRedondencyFitness_CloudRedondencyFitness,org.kevoree.modeling.optimization.executionmodel.ParetoMean_pareto,
+1,1390493563893,1390493563893,0.9,0.0,0.33666666666666667,
+2,1390493563893,1390493563893,0.9,0.0,0.33666666666666667,

@@ -2,6 +2,7 @@ package org.kevoree.modeling.genetic.genetictest;
 
 import org.genetictest.BinaryString;
 import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeDiversity;
+import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeTotalFitness;
 import org.kevoree.modeling.genetic.genetictest.mutators.SwitchMutator;
 import org.kevoree.modeling.optimization.api.solution.Solution;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticAlgorithm;
@@ -30,8 +31,8 @@ public class SampleRunner {
         engine.setAlgorithm(GeneticAlgorithm.HypervolumeNSGAII);
 
 
-        engine.addFitnessFuntion(new MaximizeDiversity());
-      //  engine.addFitnessFuntion(new MaximizeTotalFitness());
+       // engine.addFitnessFuntion(new MaximizeDiversity());
+       engine.addFitnessFuntion(new MaximizeTotalFitness());
 
         engine.setMaxGeneration(1000)  ;
         engine.setPopulationFactory(new DefaultBinaryStringFactory());

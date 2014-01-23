@@ -130,7 +130,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
 
                         //create trace model
 
-
+                     if(executionModel != null){ //this line was added by Assaad
                         val newStep = _executionModelFactory!!.createStep()
                         newStep.startTime = previousTime
                         newStep.endTime = date.getTime()
@@ -155,10 +155,10 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
                             metric.update()
                         }
                         currentRun!!.addSteps(newStep)
-
-
                     }
-                    if(solutionIndex.getNumberOfSolution() > maxGeneration){
+
+                    } //this line was added by Assaad
+                    if(solutionIndex.getNumberOfSolution() >= maxGeneration){
                         return;
                     }
                     enumeratedValuesIndice.put(keyName, enumeratedValuesIndice.get(keyName)!! + 1)
@@ -221,6 +221,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
                 var previousNb = solutionIndex.getNumberOfSolution();
                 computeStep(sol)
                 if(solutionIndex.getNumberOfSolution() >= maxGeneration || previousNb == solutionIndex.getNumberOfSolution()){
+
                     return buildSolutions();
                 }
             }
