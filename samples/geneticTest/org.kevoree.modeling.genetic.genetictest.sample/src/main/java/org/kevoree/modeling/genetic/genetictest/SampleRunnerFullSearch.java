@@ -1,6 +1,8 @@
 package org.kevoree.modeling.genetic.genetictest;
 
 import org.genetictest.BinaryString;
+import org.kevoree.modeling.genetic.genetictest.fitnesses.DecimalEnumeratelFitness;
+import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeDiversityFitness;
 import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeTotalFitness;
 import org.kevoree.modeling.genetic.genetictest.mutators.SwitchMutator;
 import org.kevoree.modeling.optimization.api.OptimizationEngine;
@@ -8,12 +10,8 @@ import org.kevoree.modeling.optimization.api.metric.ParetoFitnessMetrics;
 import org.kevoree.modeling.optimization.api.metric.ParetoMetrics;
 import org.kevoree.modeling.optimization.api.solution.Solution;
 import org.kevoree.modeling.optimization.engine.fullsearch.FullSearchEngine;
-import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
-import org.kevoree.modeling.optimization.executionmodel.serializer.JSONModelSerializer;
 import org.kevoree.modeling.optimization.framework.SolutionPrinter;
-import org.kevoree.modeling.optimization.util.ExecutionModelExporter;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -25,30 +23,43 @@ import java.util.List;
 public class SampleRunnerFullSearch {
 
 
+    private static void setBool(int x)
+    {
+        MaximizeTotalFitness.MAX = (double) x;
+        MaximizeDiversityFitness.MAX = (double) x;
+        DecimalEnumeratelFitness.MAX =(double)x;
+        DefaultBinaryStringFactory.MAX =x;
+
+    }
+
     public static void main(String[] args) throws Exception {
 
    OptimizationEngine<BinaryString> engine = new FullSearchEngine<BinaryString>();
 
         engine.addOperator(new SwitchMutator());
+       // engine.addFitnessFuntion(new MaximizeTotalFitness());
+
 
         engine.addFitnessFuntion(new MaximizeTotalFitness());
-      //  engine.addFitnessFuntion(new MaximizeDiversity());
 
-    //    engine.addFitnessMetric(new MaximizeTotalFitness(), ParetoFitnessMetrics.MIN);
-     //   engine.addFitnessMetric(new MaximizeTotalFitness(), ParetoFitnessMetrics.MAX);
-     //   engine.addParetoMetric(ParetoMetrics.MIN_MEAN);
+     /*  engine.addFitnessMetric(new DecimalEnumeratelFitness(), ParetoFitnessMetrics.MIN);
+       engine.addFitnessMetric(new MaximizeTotalFitness(), ParetoFitnessMetrics.MAX);
+       engine.addParetoMetric(ParetoMetrics.MIN_MEAN);*/
 
 
-        engine.setMaxGeneration(5000);
-        engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(5000));
+        setBool(3);
+        engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(1));
+
+        engine.setMaxGeneration(8);
+
 
         List<Solution<BinaryString>> result = engine.solve();
 
         System.out.println(result.size());
 
-     /*  for (Solution sol : result) {
+      for (Solution sol : result) {
             SolutionPrinter.instance$.print(sol, System.out);
-        }*/
+        }
 
 /*
         ExecutionModel model = engine.getExecutionModel();

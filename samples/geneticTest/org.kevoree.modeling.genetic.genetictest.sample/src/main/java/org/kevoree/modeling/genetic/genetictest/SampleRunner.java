@@ -1,7 +1,8 @@
 package org.kevoree.modeling.genetic.genetictest;
 
 import org.genetictest.BinaryString;
-import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeDiversity;
+import org.kevoree.modeling.genetic.genetictest.fitnesses.DecimalEnumeratelFitness;
+import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeDiversityFitness;
 import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeTotalFitness;
 import org.kevoree.modeling.genetic.genetictest.mutators.SwitchMutator;
 import org.kevoree.modeling.optimization.api.solution.Solution;
@@ -20,6 +21,15 @@ import java.util.List;
 public class SampleRunner {
 
 
+    private static void setBool(int x)
+    {
+        MaximizeTotalFitness.MAX = (double) x;
+        MaximizeDiversityFitness.MAX = (double) x;
+        DecimalEnumeratelFitness.MAX =(double)x;
+        DefaultBinaryStringFactory.MAX =x;
+
+    }
+
     public static void main(String[] args) throws Exception {
 
 
@@ -31,11 +41,12 @@ public class SampleRunner {
         engine.setAlgorithm(GeneticAlgorithm.HypervolumeNSGAII);
 
 
-       // engine.addFitnessFuntion(new MaximizeDiversity());
-       engine.addFitnessFuntion(new MaximizeTotalFitness());
+       // engine.addFitnessFuntion(new MaximizeDiversityFitness());
+       engine.addFitnessFuntion(new DecimalEnumeratelFitness());
 
+        setBool(3);
         engine.setMaxGeneration(1000)  ;
-        engine.setPopulationFactory(new DefaultBinaryStringFactory());
+        engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(30));
 
         List<Solution<BinaryString>> result = engine.solve();
         for (Solution sol : result) {

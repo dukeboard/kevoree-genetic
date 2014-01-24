@@ -206,6 +206,9 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         for(initElem in population){
             val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null))
             var previousNb = solutionIndex.getNumberOfSolution();
+
+      //      solutionIndex.addSolution(defaultSolution) //Add initial solution to the list - Assaad
+
             computeStep(defaultSolution)
             if(solutionIndex.getNumberOfSolution() >= maxGeneration || previousNb == solutionIndex.getNumberOfSolution()){
                 return buildSolutions();
@@ -221,7 +224,6 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
                 var previousNb = solutionIndex.getNumberOfSolution();
                 computeStep(sol)
                 if(solutionIndex.getNumberOfSolution() >= maxGeneration || previousNb == solutionIndex.getNumberOfSolution()){
-
                     return buildSolutions();
                 }
             }

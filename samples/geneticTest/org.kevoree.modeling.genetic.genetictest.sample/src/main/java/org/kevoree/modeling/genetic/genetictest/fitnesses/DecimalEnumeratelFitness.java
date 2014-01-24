@@ -14,7 +14,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
  * Time: 17:52
  */
 
-public class MaximizeTotalFitness implements FitnessFunction<BinaryString> {
+public class DecimalEnumeratelFitness implements FitnessFunction<BinaryString> {
 
     public static double MAX=10.0;
 
@@ -22,10 +22,11 @@ public class MaximizeTotalFitness implements FitnessFunction<BinaryString> {
     @Override
     public double evaluate(BinaryString model, GenerationContext<BinaryString> cloudGenerationContext) {
         double result = 0;
+        double power=1;
         for (MyBoolean b : model.getValues()) {
             if(b.getValue())
-                result++;
-
+                result+=power;
+            power=power*2;
         }
         return result;
     }
@@ -36,7 +37,7 @@ public class MaximizeTotalFitness implements FitnessFunction<BinaryString> {
     }
     public double max() {
 
-        return MAX;
+        return Math.pow(2,MAX)-1;
     }
     public FitnessOrientation orientation() {
 

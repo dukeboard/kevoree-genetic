@@ -23,8 +23,8 @@ public class DefaultBinaryStringFactory implements PopulationFactory<BinaryStrin
     private DefaultGeneticTestFactory binaryfactory = new DefaultGeneticTestFactory();
     private Random rand=new Random();;
 
-    private Integer size = 100;
-    private int maxbool=12;
+    private Integer size=4;
+    public static int MAX=12;
 
     public DefaultBinaryStringFactory setSize(Integer nSize) {
         size = nSize;
@@ -41,7 +41,7 @@ public class DefaultBinaryStringFactory implements PopulationFactory<BinaryStrin
             temp=  binaryfactory.createBinaryString()    ;
             ArrayList<MyBoolean> res = new ArrayList<MyBoolean>();
 
-            for(int j=0;j<maxbool;j++)
+            for(int j=0;j<MAX;j++)
                // res.add(new Boolean(rand.nextBoolean()));
             {
                 bit= binaryfactory.createMyBoolean();

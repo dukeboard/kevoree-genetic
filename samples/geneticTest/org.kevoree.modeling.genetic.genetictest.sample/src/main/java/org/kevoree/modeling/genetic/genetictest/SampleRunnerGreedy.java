@@ -30,7 +30,7 @@ public class SampleRunnerGreedy {
         engine.addOperator(new SwitchMutator());
 
         engine.addFitnessFuntion(new MaximizeTotalFitness());
-        //  engine.addFitnessFuntion(new MaximizeDiversity());
+        //  engine.addFitnessFuntion(new MaximizeDiversityFitness());
 
         engine.setMaxGeneration(65536);
         engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(1000));
