@@ -68,6 +68,8 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         val clonedModel = modelCloner!!.clone(solution.model)!!
         val clonedContext = solution.context.createChild(modelCompare!!, clonedModel, true)
         val newSolution = DefaultSolution(clonedModel, clonedContext)
+        //Error is here Asssaad - Should change the parameters as well to point to the clonedContext and newSolution objects instead of old ones
+
         val modelListener = object : ModelElementListener {
             override fun elementChanged(evt: ModelEvent) {
                 if(clonedContext.traceSequence != null){
