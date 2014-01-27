@@ -218,7 +218,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         //Front is ready next step
         while(solutionIndex.getNumberOfSolution() < maxGeneration){
             val clonedFront = ArrayList<Solution<A>>()
-            clonedFront.addAll(front)
+            clonedFront.addAll(front) //Error is here Asssaad
             front.clear()
             for(sol in clonedFront){
                 var previousNb = solutionIndex.getNumberOfSolution();
@@ -228,6 +228,8 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
                 }
             }
         }
+
+
         return buildSolutions();
     }
 
