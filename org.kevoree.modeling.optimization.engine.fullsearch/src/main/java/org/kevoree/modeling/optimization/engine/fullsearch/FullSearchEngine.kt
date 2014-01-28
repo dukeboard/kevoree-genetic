@@ -219,6 +219,14 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         var previousNb = solutionIndex.getNumberOfSolution();
         for (initElem in population) {
             val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null))
+
+            //Adding fitness for initial default solutions
+            for (fit in _fitnesses) {
+                val rawValue = fit.evaluate(defaultSolution.model, defaultSolution.context)
+                defaultSolution.results.put(fit, FitnessNormalizer.norm(rawValue, fit))
+            }
+
+
             solutionIndex.addSolution(defaultSolution) //Add initial solution to the list - Assaad
             computeStep(defaultSolution)
             if (solutionIndex.getNumberOfSolution() >= maxGeneration) {
