@@ -216,15 +216,17 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         solutionIndex.clear()
         solutionIndex.modelCompare = modelCompare
         var population = populationFactory!!.createPopulation();
+        var previousNb = solutionIndex.getNumberOfSolution();
         for (initElem in population) {
             val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null))
-            var previousNb = solutionIndex.getNumberOfSolution();
             solutionIndex.addSolution(defaultSolution) //Add initial solution to the list - Assaad
             computeStep(defaultSolution)
-            if (solutionIndex.getNumberOfSolution() >= maxGeneration || previousNb == solutionIndex.getNumberOfSolution()) {
+            if (solutionIndex.getNumberOfSolution() >= maxGeneration) {
                 return buildSolutions();
             }
         }
+        if(previousNb == solutionIndex.getNumberOfSolution())
+            return buildSolutions();
 
         //Front is ready next step
         while (solutionIndex.getNumberOfSolution() < maxGeneration) {

@@ -48,10 +48,10 @@ public class SampleRunnerFullSearch {
        engine.addParetoMetric(ParetoMetrics.MIN_MEAN);*/
 
 
-        setBool(5);
+        setBool(19);
         engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(1));
 
-        engine.setMaxGeneration(5000000);
+        engine.setMaxGeneration(50000000);
 
 
         List<Solution<BinaryString>> result = engine.solve();
@@ -59,9 +59,9 @@ public class SampleRunnerFullSearch {
         System.out.println(result.size());
         System.out.println(DecimalEnumeratelFitness.total);
 
-    for (Solution sol : result) {
+    /*for (Solution sol : result) {
             SolutionPrinter.instance$.print(sol, System.out);
-        }
+        }*/
 
 /*
         ExecutionModel model = engine.getExecutionModel();
