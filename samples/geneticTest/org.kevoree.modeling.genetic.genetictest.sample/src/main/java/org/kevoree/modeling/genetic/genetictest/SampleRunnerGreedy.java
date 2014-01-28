@@ -1,6 +1,8 @@
 package org.kevoree.modeling.genetic.genetictest;
 
 import org.genetictest.BinaryString;
+import org.kevoree.modeling.genetic.genetictest.fitnesses.DecimalEnumeratelFitness;
+import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeDiversityFitness;
 import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeTotalFitness;
 import org.kevoree.modeling.genetic.genetictest.mutators.SwitchMutator;
 import org.kevoree.modeling.optimization.api.OptimizationEngine;
@@ -22,37 +24,57 @@ import java.util.List;
  */
 public class SampleRunnerGreedy {
 
+    private static void setBool(int x)
+    {
+        MaximizeTotalFitness.MAX = (double) x;
+        MaximizeDiversityFitness.MAX = (double) x;
+        DecimalEnumeratelFitness.MAX =(double)x;
+        DefaultBinaryStringFactory.MAX =x;
+
+    }
+
 
     public static void main(String[] args) throws Exception {
 
         OptimizationEngine<BinaryString> engine = new GreedyEngine<BinaryString>();
 
         engine.addOperator(new SwitchMutator());
+        // engine.addFitnessFuntion(new MaximizeTotalFitness());
 
-        engine.addFitnessFuntion(new MaximizeTotalFitness());
-        //  engine.addFitnessFuntion(new MaximizeDiversityFitness());
 
-        engine.setMaxGeneration(65536);
-        engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(1000));
 
+        engine.addFitnessFuntion(new DecimalEnumeratelFitness());
+
+     /*  engine.addFitnessMetric(new DecimalEnumeratelFitness(), ParetoFitnessMetrics.MIN);
+       engine.addFitnessMetric(new MaximizeTotalFitness(), ParetoFitnessMetrics.MAX);
+       engine.addParetoMetric(ParetoMetrics.MIN_MEAN);*/
+
+
+        setBool(20);
+        engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(1));
+
+        engine.setMaxGeneration(5000000);
 
 
         List<Solution<BinaryString>> result = engine.solve();
-        for (Solution sol : result) {
+
+        System.out.println(result.size());
+        System.out.println(DecimalEnumeratelFitness.total);
+
+     for (Solution sol : result) {
             SolutionPrinter.instance$.print(sol, System.out);
         }
 
-
-     /*   ExecutionModel model = engine.getExecutionModel();
-        ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
-
-
+/*
+        ExecutionModel model = engine.getExecutionModel();
+        ExecutionModelExporter.instance$.exportMetrics(model, new File("results"));
         JSONModelSerializer saver = new JSONModelSerializer();
         // File temp = File.createTempFile("temporaryOutput",".json");
         // FileOutputStream fou = new FileOutputStream(temp);
-        saver.serializeToStream(engine.getExecutionModel(),System.err);*/
+        saver.serializeToStream(engine.getExecutionModel(), System.err);*/
 
-        }
+
+    }
 
 
 
