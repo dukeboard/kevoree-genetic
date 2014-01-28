@@ -66,7 +66,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     private fun mutate(solution: Solution<A>, operator: MutationOperator<A>, parameters: MutationParameters): Solution<A> {
         val clonedModel = modelCloner!!.clone(solution.model)!!
         //Error is here Asssaad - Should change the parameters as well to point to the clonedContext and newSolution objects instead of old ones
-        
+
         /* try to unresolved if contained elements */
         for(param in parameters.getKeys()){
             val value = parameters.getParam(param)

@@ -40,26 +40,28 @@ public class SampleRunnerFullSearch {
        // engine.addFitnessFuntion(new MaximizeTotalFitness());
 
 
-        engine.addFitnessFuntion(new MaximizeTotalFitness());
+
+        engine.addFitnessFuntion(new DecimalEnumeratelFitness());
 
      /*  engine.addFitnessMetric(new DecimalEnumeratelFitness(), ParetoFitnessMetrics.MIN);
        engine.addFitnessMetric(new MaximizeTotalFitness(), ParetoFitnessMetrics.MAX);
        engine.addParetoMetric(ParetoMetrics.MIN_MEAN);*/
 
 
-        setBool(3);
+        setBool(19);
         engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(1));
 
-        engine.setMaxGeneration(8);
+        engine.setMaxGeneration(5000000);
 
 
         List<Solution<BinaryString>> result = engine.solve();
 
         System.out.println(result.size());
+        System.out.println(DecimalEnumeratelFitness.total);
 
-      for (Solution sol : result) {
+   /*   for (Solution sol : result) {
             SolutionPrinter.instance$.print(sol, System.out);
-        }
+        }*/
 
 /*
         ExecutionModel model = engine.getExecutionModel();

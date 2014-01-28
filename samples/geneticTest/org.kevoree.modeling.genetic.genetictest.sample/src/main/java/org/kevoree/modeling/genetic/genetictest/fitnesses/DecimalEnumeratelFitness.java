@@ -17,6 +17,8 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 public class DecimalEnumeratelFitness implements FitnessFunction<BinaryString> {
 
     public static double MAX=10.0;
+    public static int total=0;
+
 
 
     @Override
@@ -28,6 +30,7 @@ public class DecimalEnumeratelFitness implements FitnessFunction<BinaryString> {
                 result+=power;
             power=power*2;
         }
+        total++;
         return result;
     }
     @Override
