@@ -68,22 +68,32 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         val clonedModel = modelCloner!!.clone(solution.model)!!
         val clonedContext = solution.context.createChild(modelCompare!!, clonedModel, true)
         val newSolution = DefaultSolution(clonedModel, clonedContext)
-        //Error is here Asssaad - Should change the parameters as well to point to the clonedContext and newSolution objects instead of old ones
-
         val modelListener = object : ModelElementListener {
             override fun elementChanged(evt: ModelEvent) {
-                if(clonedContext.traceSequence != null){
+                if (clonedContext.traceSequence != null) {
                     clonedContext.traceSequence.populate(event2Trace!!.convert(evt).traces);
                 }
             }
         }
         clonedModel.addModelTreeListener(modelListener)
         //do real operation
-        operator.mutate(clonedModel, parameters)
+        //before clone parameter
+        var clonedVar = MutationParameters()
+        for (key in parameters.getKeys()) {
+            val param = parameters.getParam(key)
+            if (param != null) {
+                if (param is KMFContainer) {
+                    clonedVar.setParam(key, clonedModel.findByPath(param.path()!!) as KMFContainer)
+                } else {
+                    clonedVar.setParam(key, param)
+                }
+            }
+        }
+        operator.mutate(clonedModel, clonedVar)
         //evaluate new solution
-        for(fit in _fitnesses){
+        for (fit in _fitnesses) {
             val rawValue = fit.evaluate(newSolution.model, clonedContext)
-            newSolution.results.put(fit, FitnessNormalizer.norm(rawValue,fit))
+            newSolution.results.put(fit, FitnessNormalizer.norm(rawValue, fit))
         }
         return newSolution
     }
@@ -91,11 +101,11 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
     private val date = Date()
 
     private fun computeStep(solution: Solution<A>) {
-        for(operator in _operators){
+        for (operator in _operators) {
             val enumerationVariables = operator.enumerateVariables(solution.model);
             val enumeratedValues = HashMap<String, List<Any>>()
             //flat all variables
-            for(variable in enumerationVariables){
+            for (variable in enumerationVariables) {
                 when(variable) {
                     is QueryVar -> {
                         var queryResult = solution.model.selectByQuery(variable.query)
@@ -111,14 +121,14 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
             }
             //indice for enumerate all possible paretoFront
             val enumeratedValuesIndice = HashMap<String, Int>()
-            for(variable in enumerationVariables){
+            for (variable in enumerationVariables) {
                 enumeratedValuesIndice.set(variable.name, 0)
             }
             //enumerate all candidates
-            for(keyName in enumeratedValues.keySet()){
-                while(enumeratedValuesIndice.get(keyName)!! < enumeratedValues.get(keyName)!!.size){
+            for (keyName in enumeratedValues.keySet()) {
+                while (enumeratedValuesIndice.get(keyName)!! < enumeratedValues.get(keyName)!!.size) {
                     var paramters = MutationParameters()
-                    for(keyName2 in enumeratedValues.keySet()){
+                    for (keyName2 in enumeratedValues.keySet()) {
                         val indice = enumeratedValuesIndice.get(keyName2)!!
                         val value = enumeratedValues.get(keyName2)!!.get(indice)
                         paramters.setParam(keyName2, value)
@@ -126,46 +136,47 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
                     val previousTime = date.getTime()
                     var mutatedSolution = mutate(solution, operator, paramters)
 
-                    if(solutionIndex.addSolution(mutatedSolution)){
+                    if (solutionIndex.addSolution(mutatedSolution)) {
                         //if solution already present, do not add it to pareto Front
                         front.add(mutatedSolution)
 
                         //create trace model
 
-                     if(executionModel != null){ //this line was added by Assaad
-                        val newStep = _executionModelFactory!!.createStep()
-                        newStep.startTime = previousTime
-                        newStep.endTime = date.getTime()
-                        newStep.generationNumber = front.size
-                        val modelSolution = _executionModelFactory!!.createSolution()
-                        newStep.addSolutions(modelSolution)
-                        for(fitness in mutatedSolution.getFitnesses()){
-                            val newScore = _executionModelFactory!!.createScore()
-                            newScore.fitness = executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName())!!
-                            newScore.value = mutatedSolution.getScoreForFitness(fitness)!!
-                            newScore.name = newScore.fitness!!.name
-                            modelSolution.addScores(newScore)
-                        }
-                        //add metric and call update
-                        for(loopFitnessMetric in _metricsName){
-                            val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
-                            if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
-                                val fitMet = metric as org.kevoree.modeling.optimization.executionmodel.FitnessMetric
-                                fitMet.fitness = executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName!!)
+                        if (executionModel != null) {
+                            //this line was added by Assaad
+                            val newStep = _executionModelFactory!!.createStep()
+                            newStep.startTime = previousTime
+                            newStep.endTime = date.getTime()
+                            newStep.generationNumber = front.size
+                            val modelSolution = _executionModelFactory!!.createSolution()
+                            newStep.addSolutions(modelSolution)
+                            for (fitness in mutatedSolution.getFitnesses()) {
+                                val newScore = _executionModelFactory!!.createScore()
+                                newScore.fitness = executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName())!!
+                                newScore.value = mutatedSolution.getScoreForFitness(fitness)!!
+                                newScore.name = newScore.fitness!!.name
+                                modelSolution.addScores(newScore)
                             }
-                            newStep.addMetrics(metric) //add before update ! mandatory !
-                            metric.update()
+                            //add metric and call update
+                            for (loopFitnessMetric in _metricsName) {
+                                val metric: Metric = _executionModelFactory!!.create(loopFitnessMetric.metricClassName) as Metric
+                                if (metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric) {
+                                    val fitMet = metric as org.kevoree.modeling.optimization.executionmodel.FitnessMetric
+                                    fitMet.fitness = executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName!!)
+                                }
+                                newStep.addMetrics(metric) //add before update ! mandatory !
+                                metric.update()
+                            }
+                            currentRun!!.addSteps(newStep)
                         }
-                        currentRun!!.addSteps(newStep)
-                    }
 
                     } //this line was added by Assaad
-                    if(solutionIndex.getNumberOfSolution() >= maxGeneration){
+                    if (solutionIndex.getNumberOfSolution() >= maxGeneration) {
                         return;
                     }
                     enumeratedValuesIndice.put(keyName, enumeratedValuesIndice.get(keyName)!! + 1)
                 }
-                for(variable in enumerationVariables){
+                for (variable in enumerationVariables) {
                     enumeratedValuesIndice.set(variable.name, 0)
                 }
             }
@@ -180,18 +191,18 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         if (_fitnesses.isEmpty()) {
             throw Exception("No fitness function are configured, please configure at least one");
         }
-        if(populationFactory == null){
+        if (populationFactory == null) {
             throw Exception("No population factory are configured, please configure at least one");
         }
-        if(executionModel != null){
+        if (executionModel != null) {
             //create RUN
             currentRun = _executionModelFactory!!.createRun();
             currentRun!!.algName = "fullsearch";
             executionModel!!.addRuns(currentRun!!);
             currentRun!!.startTime = Date().getTime();
         }
-        for(fitness in _fitnesses){
-            if(executionModel != null && executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName()) == null){
+        for (fitness in _fitnesses) {
+            if (executionModel != null && executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName()) == null) {
                 val newFitness = _executionModelFactory!!.createFitness()
                 newFitness.name = fitness.javaClass.getSimpleName()
                 executionModel!!.addFitness(newFitness)
@@ -205,27 +216,25 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         solutionIndex.clear()
         solutionIndex.modelCompare = modelCompare
         var population = populationFactory!!.createPopulation();
-        for(initElem in population){
+        for (initElem in population) {
             val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null))
             var previousNb = solutionIndex.getNumberOfSolution();
-
-      //      solutionIndex.addSolution(defaultSolution) //Add initial solution to the list - Assaad
-
+            solutionIndex.addSolution(defaultSolution) //Add initial solution to the list - Assaad
             computeStep(defaultSolution)
-            if(solutionIndex.getNumberOfSolution() >= maxGeneration || previousNb == solutionIndex.getNumberOfSolution()){
+            if (solutionIndex.getNumberOfSolution() >= maxGeneration || previousNb == solutionIndex.getNumberOfSolution()) {
                 return buildSolutions();
             }
         }
 
         //Front is ready next step
-        while(solutionIndex.getNumberOfSolution() < maxGeneration){
+        while (solutionIndex.getNumberOfSolution() < maxGeneration) {
             val clonedFront = ArrayList<Solution<A>>()
             clonedFront.addAll(front) //Error is here Asssaad
             front.clear()
-            for(sol in clonedFront){
+            for (sol in clonedFront) {
                 var previousNb = solutionIndex.getNumberOfSolution();
                 computeStep(sol)
-                if(solutionIndex.getNumberOfSolution() >= maxGeneration || previousNb == solutionIndex.getNumberOfSolution()){
+                if (solutionIndex.getNumberOfSolution() >= maxGeneration || previousNb == solutionIndex.getNumberOfSolution()) {
                     return buildSolutions();
                 }
             }
