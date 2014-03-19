@@ -47,27 +47,7 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>oss-snapshot</id>
-            <url>http://oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-
-        <repository>
-            <id>oss-public</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-
-
-        <repository>
-            <id>oss-release</id>
-            <url>http://oss.sonatype.org/content/repositories/releases</url>
-        </repository>
-        <repository>
-            <id>ruleMl.repo</id>
-            <url>http://maven.kevoree.org/ruleml</url>
-        </repository>
-    </repositories>
+    
 
     <distributionManagement>
         <repository>
