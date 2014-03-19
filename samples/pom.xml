@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <kmf.version>1.9.7</kmf.version>
+        <kmf.version>1.10.4</kmf.version>
     </properties>
 
     <modules>
@@ -20,8 +20,10 @@
 		<module>geneticTest/org.kevoree.modeling.genetic.genetictest.model</module>
         <module>geneticTest/org.kevoree.modeling.genetic.genetictest.sample</module>
 
-     <!--   <module>kevoree/org.kevoree.modeling.genetic.kevoree.model</module>
-        <module>kevoree/org.kevoree.modeling.genetic.kevoree.sample</module>      -->
+
+
+        <!--   <module>kevoree/org.kevoree.modeling.genetic.kevoree.model</module>
+           <module>kevoree/org.kevoree.modeling.genetic.kevoree.sample</module>      -->
     </modules>
 
     <build>
@@ -45,11 +47,34 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>oss-snapshot</id>
+            <url>http://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+
+        <repository>
+            <id>oss-public</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+
+
+        <repository>
+            <id>oss-release</id>
+            <url>http://oss.sonatype.org/content/repositories/releases</url>
+        </repository>
+        <repository>
+            <id>ruleMl.repo</id>
+            <url>http://maven.kevoree.org/ruleml</url>
+        </repository>
+    </repositories>
+
     <distributionManagement>
         <repository>
             <id>kevoree.oss.release</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
+
         <snapshotRepository>
             <id>kevoree.oss.snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>

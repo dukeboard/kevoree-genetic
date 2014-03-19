@@ -5,6 +5,9 @@
     <artifactId>org.kevoree.modeling.optimization.engine.greedy</artifactId>
     <name>Kevoree :: Modeling :: Optimization :: Engine :: Greedy</name>
     <version>2.0.0-SNAPSHOT</version>
+    <properties>
+
+    </properties>
 
     <parent>
         <artifactId>org.kevoree.modeling.optimization.root</artifactId>
@@ -18,6 +21,11 @@
             <groupId>org.kevoree.modeling.optimization</groupId>
             <artifactId>org.kevoree.modeling.optimization.framework.core</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
         </dependency>
     </dependencies>
 

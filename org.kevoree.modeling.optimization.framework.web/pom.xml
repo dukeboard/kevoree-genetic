@@ -5,6 +5,8 @@
     <artifactId>org.kevoree.modeling.optimization.framework.web</artifactId>
     <name>Kevoree :: Modeling :: Optimization :: Framework :: Web</name>
     <version>2.0.0-SNAPSHOT</version>
+    <properties>
+    </properties>
 
     <parent>
         <artifactId>org.kevoree.modeling.optimization.root</artifactId>
@@ -28,6 +30,11 @@
             <groupId>org.kevoree.log</groupId>
             <artifactId>org.kevoree.log</artifactId>
             <version>1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
         </dependency>
     </dependencies>
 
