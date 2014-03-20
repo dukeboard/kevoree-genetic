@@ -11,4 +11,5 @@ public enum class ParetoFitnessMetrics {
     MAX
     MIN
     MEAN
+    BEST
 }

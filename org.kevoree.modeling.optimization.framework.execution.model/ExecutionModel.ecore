@@ -49,6 +49,8 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Hypervolume" eSuperTypes="#//Metric"/>
     <eClassifiers xsi:type="ecore:EClass" name="Min" eSuperTypes="#//FitnessMetric"/>
+
+    <eClassifiers xsi:type="ecore:EClass" name="Best" eSuperTypes="#//FitnessMetric"/>
     <eClassifiers xsi:type="ecore:EClass" name="Max" eSuperTypes="#//FitnessMetric"/>
     <eClassifiers xsi:type="ecore:EClass" name="Mean" eSuperTypes="#//FitnessMetric">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="sum"

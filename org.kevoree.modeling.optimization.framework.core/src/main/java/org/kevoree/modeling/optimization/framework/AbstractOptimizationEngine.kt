@@ -98,6 +98,9 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
             ParetoFitnessMetrics.MEAN -> {
                 _metricsName.add(FitnessMetric(fitness.javaClass.getSimpleName(), "org.kevoree.modeling.optimization.executionmodel.Mean"));
             }
+            ParetoFitnessMetrics.BEST -> {
+                _metricsName.add(FitnessMetric(fitness.javaClass.getSimpleName(), "org.kevoree.modeling.optimization.executionmodel.Best"));
+            }
             else -> {
             }
         }
