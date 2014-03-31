@@ -60,7 +60,7 @@ class CompoundVariation<A : KMFContainer>(val engine: GeneticEngine<A>, val prob
 
             //pre evalute solution
             problem.evaluate(clonedSolution!!)
-            if(previousSolution != null){
+            if(previousSolution as?Solution !=null){
                 for(listener in engine.solutionMutationListeners){
                     listener.process(previousSolution as org.kevoree.modeling.optimization.api.solution.Solution<A>, clonedSolution as org.kevoree.modeling.optimization.api.solution.Solution<A>)
                 }
