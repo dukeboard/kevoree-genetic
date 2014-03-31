@@ -113,7 +113,7 @@ public open class SputnikElitistMutationOperatorSelector<A : KMFContainer>(overr
         return worst!!
     }
 
-    public fun toString(): String {
+    override public fun toString(): String {
         val buffer = StringBuffer()
         buffer.append("DarwinMutationOperatorSelector\n")
         buffer.append("Best Current Ranking\n")
