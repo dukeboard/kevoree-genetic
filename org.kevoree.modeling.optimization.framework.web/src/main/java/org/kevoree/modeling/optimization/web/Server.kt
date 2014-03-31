@@ -33,8 +33,8 @@ public object Server {
         }
 
         var webServer = WebServers.createWebServer(8080)!!
-        webServer.add("/data.csv",MetricExporterHttpHandler(model))
-
+        webServer.add("/data.csv",MetricExporterHttpHandler(model,false))
+        webServer.add("/time.csv",MetricExporterHttpHandler(model,true))
         if (baseStaticDir == null) {
             Log.info("Resolve files from classloader");
             webServer.add(EmbedHandler("static"));
