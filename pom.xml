@@ -32,8 +32,8 @@
 
     <properties>
         <kevoree.version>${project.version}</kevoree.version>
-        <kotlin.version>0.6.1673</kotlin.version>
-        <kmf.version>1.10.3</kmf.version>
+        <kotlin.version>0.7.271</kotlin.version>
+        <kmf.version>1.10.4-SNAPSHOT</kmf.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -169,5 +169,19 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>kevsnap</id>
+            <url>http://oss.sonatype.org/content/groups/public</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>kevsnap</id>
+            <url>http://oss.sonatype.org/content/groups/public</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
