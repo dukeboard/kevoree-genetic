@@ -64,7 +64,7 @@ public class SampleRunnerNSGAII {
 
 
 
-        engine.setMaxGeneration(1000);
+        engine.setMaxGeneration(100);
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
 
         engine.setAlgorithm(GeneticAlgorithm.EpsilonNSGII);
