@@ -138,17 +138,15 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         var generation = 0;
         var beginTimeMilli = System.currentTimeMillis();
         try {
-            var date = Date() //Changed by Assaad
             var previousTime: Long? = null
             while (continueEngineComputation(kalgo, beginTimeMilli, generation)) {
-                previousTime = date.getTime()
+                previousTime = System.currentTimeMillis() - beginTimeMilli
                 kalgo.step();
                 if(executionModel != null){
                     //update the execution model
                     val newStep = _executionModelFactory!!.createStep()
                     newStep.startTime = previousTime
-                    date = Date() //Added by Assaad
-                    newStep.endTime = date.getTime()
+                    newStep.endTime = System.currentTimeMillis() - beginTimeMilli
                     newStep.generationNumber = generation
                     currentRun!!.addSteps(newStep)
                     //build solution model
