@@ -2,6 +2,7 @@ package org.kevoree.modeling.optimization.util
 
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation
+import org.kevoree.modeling.optimization.api.fitness.GaussianFitnessFunction
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,15 +18,21 @@ public object FitnessNormalizer {
         val minValue = fitness.min()
         val maxValue = fitness.max()
         //check fitnessRawValue
-        if(rawValue > maxValue || rawValue < minValue){
-            throw Exception("out of bound value "+rawValue+" for "+fitness);
+        if (rawValue > maxValue || rawValue < minValue) {
+            throw Exception("out of bound value " + rawValue + " for " + fitness);
         }
-        val normalizedValue = (rawValue - minValue) / (maxValue - minValue)
-        if(fitness.orientation() == FitnessOrientation.MAXIMIZE){
-            return 1 - normalizedValue
-        } else {
-            return normalizedValue
+        var normalizedValue = (rawValue - minValue) / (maxValue - minValue)
+        if (fitness.orientation == FitnessOrientation.MAXIMIZE) {
+            normalizedValue = 1 - normalizedValue
         }
+        if (fitness is GaussianFitnessFunction) {
+            var target = fitness.target()
+            var normalizedTarget = (target - minValue) / (maxValue - minValue)
+            var variance = fitness.variance()
+            var normalizedVariance = (variance ) / (maxValue - minValue)
+            normalizedValue = 1 - Math.exp(-(normalizedValue - normalizedTarget) * (normalizedValue - normalizedTarget) / (normalizedVariance*normalizedVariance) )
+        }
+        return normalizedValue
     }
 
 }

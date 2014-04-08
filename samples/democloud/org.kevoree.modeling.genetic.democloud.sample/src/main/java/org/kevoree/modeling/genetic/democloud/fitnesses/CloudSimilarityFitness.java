@@ -17,18 +17,14 @@ import java.util.List;
  * Time: 7:00 PM
  * To change this template use File | Settings | File Templates.
  */
-public class CloudSimilarityFitness implements FitnessFunction<Cloud> {
+public class CloudSimilarityFitness extends FitnessFunction<Cloud> {
 
 
     @Override
     public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
-
         double similaritymeasure =0;
         double maxsoftwaresize=0;
-
-        for(VirtualNode node : model.getNodes())
-
-        {
+        for(VirtualNode node : model.getNodes()){
             double similarity =0;
             double typesimilarity =0;
 
@@ -83,9 +79,5 @@ public class CloudSimilarityFitness implements FitnessFunction<Cloud> {
     public double max() {
 
         return 10.0;
-    }
-    public FitnessOrientation orientation() {
-
-        return FitnessOrientation.MINIMIZE;
     }
 }

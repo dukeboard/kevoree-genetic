@@ -16,9 +16,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
  * Time: 17:52
  */
 
-public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
-
-
+public class CloudAdaptationCostFitness extends FitnessFunction<Cloud> {
 
     @Override
     public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
@@ -27,7 +25,7 @@ public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
 
 
             if (trace instanceof ModelAddTrace) {
-                result = result +1;
+                result = result + 1;
             }
             if (trace instanceof ModelRemoveTrace) {
                 result = result - 1;
@@ -35,17 +33,15 @@ public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
         }
         return result;
     }
+
     @Override
     public double min() {
 
         return 0.0;
     }
+
     public double max() {
 
         return 5.0;
-    }
-    public FitnessOrientation orientation() {
-
-        return FitnessOrientation.MINIMIZE;
     }
 }

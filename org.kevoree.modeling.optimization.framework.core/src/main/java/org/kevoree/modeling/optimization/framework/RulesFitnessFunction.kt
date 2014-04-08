@@ -15,16 +15,32 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation
  * Time: 15:40
  */
 
-public class RulesFitnessFunction<A : KMFContainer> : FitnessFunction<A> {
+public class RulesFitnessFunction<A : KMFContainer> : FitnessFunction<A>() {
+
+
+    override fun evaluate(model: A?, context: GenerationContext<A>?): Double {
+        if(model!=null){
+            var nbViolatedRules = 0.0
+            for (rule in rules) {
+                if (!rule.check(model)) {
+                    nbViolatedRules++
+                }
+            }
+            return nbViolatedRules;
+        } else {
+            throw Exception("Empty model")
+        }
+
+
+        //val pres = ( (rules.size() - nbViolatedRules) / rules.size()) * 100;
+        //return 100 - Math.min(Math.max(0.toDouble(), pres.toDouble()), 100.toDouble())
+    }
 
     override fun max(): Double {
         return rules.size.toDouble()
     }
     override fun min(): Double {
         return 0.0;
-    }
-    override fun orientation(): FitnessOrientation {
-       return FitnessOrientation.MINIMIZE
     }
 
     var rules: MutableList<Rule<A>> = ArrayList<Rule<A>>()
@@ -34,16 +50,5 @@ public class RulesFitnessFunction<A : KMFContainer> : FitnessFunction<A> {
         return this;
     }
 
-    override fun evaluate(model: A, context : GenerationContext<A>): Double {
-        var nbViolatedRules = 0.0
-        for(rule in rules){
-            if(!rule.check(model)){
-                nbViolatedRules++
-            }
-        }
-        return nbViolatedRules;
-        //val pres = ( (rules.size() - nbViolatedRules) / rules.size()) * 100;
-        //return 100 - Math.min(Math.max(0.toDouble(), pres.toDouble()), 100.toDouble())
-    }
 
 }

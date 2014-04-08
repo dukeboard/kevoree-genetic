@@ -12,7 +12,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation
  * Date: 15/03/13
  * Time: 16:20
  */
-public class CompositeFitnessFunction<A : KMFContainer> : FitnessFunction<A> {
+public class CompositeFitnessFunction<A : KMFContainer> : FitnessFunction<A>() {
 
     var minValue: Double = java.lang.Double.MAX_VALUE
 
@@ -26,11 +26,8 @@ public class CompositeFitnessFunction<A : KMFContainer> : FitnessFunction<A> {
     override fun min(): Double {
         return minValue
     }
-    override fun orientation(): FitnessOrientation {
-        return orientationValue
-    }
 
-    override fun evaluate(model: A, context: GenerationContext<A>): Double {
+    override fun evaluate(model: A?, context: GenerationContext<A>?): Double {
         var value = 0.0;
         for (fit in fitnesses) {
             value = value + fit.evaluate(model, context);
@@ -42,9 +39,9 @@ public class CompositeFitnessFunction<A : KMFContainer> : FitnessFunction<A> {
 
     public fun addFitness(newfit: FitnessFunction<A>): CompositeFitnessFunction<A> {
         if(fitnesses.isEmpty()){
-            orientationValue = newfit.orientation()
+            orientationValue = newfit.orientation!!
         } else {
-            if(newfit.orientation() != orientationValue){
+            if(newfit.orientation != orientationValue){
                 System.err.println("Unconsistancy in composite fitness all fitness must have the same orientation")
                 throw Exception("Unconsistancy composite fitness errror")
             }

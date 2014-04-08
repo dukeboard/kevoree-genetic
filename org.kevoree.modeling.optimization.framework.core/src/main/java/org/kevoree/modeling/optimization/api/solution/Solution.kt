@@ -18,6 +18,8 @@ public trait Solution<A : KMFContainer> {
 
     public fun getScoreForFitness(fitnessName: FitnessFunction<A>): Double?
 
+    public fun getRawScoreForFitness(fitnessName: FitnessFunction<A>): Double?
+
     public fun getFitnesses(): Set<FitnessFunction<A>>
 
 }

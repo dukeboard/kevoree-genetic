@@ -12,6 +12,27 @@ import org.kevoree.modeling.optimization.api.solution.Solution
  */
 
 public object SolutionPrinter {
+
+    public fun simplePrint(solution: Solution<*>, writer: PrintStream) {
+        writer.print("Solution( ")
+        var isFirst: Boolean = true
+        for (fitness in solution.getFitnesses())
+        {
+            if (!isFirst)
+            {
+                writer.print(" , ")
+            }
+            writer.print(fitness.javaClass.getSimpleName())
+            writer.print("=")
+            writer.print(solution.getRawScoreForFitness(fitness))
+            writer.print("/")
+            writer.print(solution.getScoreForFitness(fitness))
+            isFirst = false
+        }
+        writer.print(" )")
+        writer.println()
+    }
+
     public fun print(solution: Solution<*>, writer: PrintStream) {
         writer.print("Solution( ")
         var isFirst: Boolean = true
@@ -23,7 +44,7 @@ public object SolutionPrinter {
             }
             writer.print(fitness.javaClass.getSimpleName())
             writer.print("=")
-            writer.print(solution.getScoreForFitness(fitness))
+            writer.print(solution.getRawScoreForFitness(fitness))
             isFirst = false
         }
         writer.print(" )")

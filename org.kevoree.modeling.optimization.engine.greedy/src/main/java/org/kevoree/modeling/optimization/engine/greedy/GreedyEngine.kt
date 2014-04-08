@@ -95,6 +95,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         for(fit in _fitnesses){
             val rawValue = fit.evaluate(newSolution.model, clonedContext)
             newSolution.results.put(fit, FitnessNormalizer.norm(rawValue, fit))
+            newSolution.rawResults.put(fit, rawValue)
         }
         return newSolution
     }
@@ -223,6 +224,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             for(fit in _fitnesses){
                 val rawValue = fit.evaluate(defaultSolution.model, defaultSolution.context)
                 defaultSolution.results.put(fit, FitnessNormalizer.norm(rawValue, fit))
+                defaultSolution.rawResults.put(fit, rawValue)
             }
             isChangedSinceLastStep = false //track modification
             computeStep(defaultSolution)

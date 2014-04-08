@@ -36,14 +36,10 @@ import java.util.List;
 public class SampleRunnerNSGAII {
 
 
-
     public static void main(String[] args) throws Exception {
 
         GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
-       engine.setAlgorithm(GeneticAlgorithm.EpsilonCrowdingNSGII);
-
-
-       // engine.desactivateOriginAware();
+        // engine.desactivateOriginAware();
 
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
@@ -51,57 +47,37 @@ public class SampleRunnerNSGAII {
 
         engine.addOperator(new CloneNodeMutator());
         engine.addOperator(new RemoveSoftwareMutator());
-        engine.addOperator(new AddSmartMutator());
-        engine.addOperator(new RemoveSmartMutator());
+        //engine.addOperator(new AddSmartMutator());
+       // engine.addOperator(new RemoveSmartMutator());
 
         engine.addFitnessFuntion(new CloudCostFitness());
         engine.addFitnessFuntion(new CloudSimilarityFitness());
         engine.addFitnessFuntion(new CloudLatencyFitness());
-        engine.addFitnessFuntion(new CloudRedundancyFitness());
+        //engine.addFitnessFuntion(new CloudRedundancyFitness());
 
 
         engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_CASTE);
 
-
-
-        engine.setMaxGeneration(100);
+        engine.setMaxGeneration(200);
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
 
         engine.setAlgorithm(GeneticAlgorithm.EpsilonNSGII);
         engine.addParetoMetric(ParetoMetrics.HYPERVOLUME);
-       // engine.addParetoMetric(ParetoMetrics.MIN_MEAN);
-
-
-
-      //  engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.MIN);
-       // engine.addFitnessMetric(new CloudCostFitness(), ParetoFitnessMetrics.MAX);
-
-
         List<Solution<Cloud>> result = engine.solve();
         for (Solution sol : result) {
-            //SolutionPrinter.instance$.print(sol, System.out);
+            SolutionPrinter.instance$.simplePrint(sol, System.out);
         }
-
-        System.out.println(engine.getMutationSelector().toString());
-
 
 
        // engine.setMutationSelectionStrategy(MutationSelectionStrategy.RANDOM);
-
        // engine.solve();
-
-       // engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_CASTE);
-
-      //  engine.solve();
 
 
         ExecutionModel model = engine.getExecutionModel();
-      //  ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
+
 
 
         Server.instance$.serveExecutionModel(model);
-
-
 
 
     }

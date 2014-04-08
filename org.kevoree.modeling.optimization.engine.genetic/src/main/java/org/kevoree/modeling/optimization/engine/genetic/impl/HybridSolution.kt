@@ -5,6 +5,7 @@ import org.kevoree.modeling.optimization.api.GenerationContext
 import org.kevoree.genetic.framework.internal.ModelOptimizationProblem
 import org.moeaframework.core.Solution
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
+import java.util.HashMap
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +15,13 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
  */
 
 public class HybridSolution<A : KMFContainer>(val numberOfObjectives: Int, val problem: ModelOptimizationProblem<A>) : org.moeaframework.core.Solution(1, numberOfObjectives), org.kevoree.modeling.optimization.api.solution.Solution<A> {
+
+    var rawResults = HashMap<FitnessFunction<A>, Double>()
+
+
+    override fun getRawScoreForFitness(fitnessName: FitnessFunction<A>): Double? {
+        return rawResults.get(fitnessName)
+    }
 
     public var alreadyEvaluated : Boolean = false
 

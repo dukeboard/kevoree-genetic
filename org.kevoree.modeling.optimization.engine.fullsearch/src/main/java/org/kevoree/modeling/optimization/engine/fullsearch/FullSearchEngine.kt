@@ -93,6 +93,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         //evaluate new solution
         for (fit in _fitnesses) {
             val rawValue = fit.evaluate(newSolution.model, clonedContext)
+            newSolution.rawResults.put(fit, rawValue)
             newSolution.results.put(fit, FitnessNormalizer.norm(rawValue, fit))
         }
         return newSolution
@@ -223,6 +224,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
             //Adding fitness for initial default solutions
             for (fit in _fitnesses) {
                 val rawValue = fit.evaluate(defaultSolution.model, defaultSolution.context)
+                defaultSolution.rawResults.put(fit, rawValue)
                 defaultSolution.results.put(fit, FitnessNormalizer.norm(rawValue, fit))
             }
 

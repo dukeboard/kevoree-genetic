@@ -13,12 +13,18 @@ public class DefaultSolution<A : KMFContainer>(override val model: A, override v
 
     var results = HashMap<FitnessFunction<A>, Double>()
 
+    var rawResults = HashMap<FitnessFunction<A>, Double>()
+
     public override fun getFitnesses(): Set<FitnessFunction<A>> {
         return results.keySet()
     }
 
     public override fun getScoreForFitness(fitnessName: FitnessFunction<A>): Double? {
         return results.get(fitnessName)
+    }
+
+    public override fun getRawScoreForFitness(fitnessName: FitnessFunction<A>): Double? {
+        return rawResults.get(fitnessName)
     }
 
 }

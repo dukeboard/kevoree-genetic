@@ -41,6 +41,7 @@ public class ModelOptimizationProblem<A : KMFContainer>(val fitnesses: List<Fitn
                 if(vloop != null){
                     //var fitness = fitnesses.get(i)
                     val rawValue = fitnessT.key.evaluate(vloop.model, vloop.context)
+                    solution.rawResults.put(fitnessT.key,rawValue)
                     solution.setObjective(fitnessT.value, FitnessNormalizer.norm(rawValue, fitnessT.key));
                 }
             }
