@@ -39,7 +39,7 @@ public class CloudLatencyFitness extends GaussianFitnessFunction<Cloud> {
     }
 
     @Override
-    public double variance() {
+    public double std() {
         return 5;
     }
 }

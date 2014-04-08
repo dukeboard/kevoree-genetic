@@ -28,9 +28,10 @@ public object FitnessNormalizer {
         if (fitness is GaussianFitnessFunction) {
             var target = fitness.target()
             var normalizedTarget = (target - minValue) / (maxValue - minValue)
-            var variance = fitness.variance()
-            var normalizedVariance = (variance ) / (maxValue - minValue)
-            normalizedValue = 1 - Math.exp(-(normalizedValue - normalizedTarget) * (normalizedValue - normalizedTarget) / (normalizedVariance*normalizedVariance) )
+            var std = fitness.std()
+            var normalizedVariance = (std ) / (maxValue - minValue)
+            normalizedVariance=normalizedVariance*normalizedVariance
+            normalizedValue = 1 - Math.exp(-(normalizedValue - normalizedTarget) * (normalizedValue - normalizedTarget) / (2*normalizedVariance) )
         }
         return normalizedValue
     }

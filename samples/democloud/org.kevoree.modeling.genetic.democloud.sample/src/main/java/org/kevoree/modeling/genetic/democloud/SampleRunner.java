@@ -5,6 +5,7 @@ import org.cloud.Cloud;
 import org.cloud.serializer.JSONModelSerializer;
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudAdaptationCostFitness;
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudCostFitness;
+import org.kevoree.modeling.genetic.democloud.fitnesses.CloudLatencyFitness;
 import org.kevoree.modeling.genetic.democloud.fitnesses.CloudRedundancyFitness;
 import org.kevoree.modeling.genetic.democloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.RemoveNodeMutator;
@@ -39,14 +40,16 @@ public class SampleRunner {
         engine.addOperator(new RemoveNodeMutator());
         engine.addFitnessFuntion(new CloudCostFitness());
         engine.addFitnessFuntion(new CloudRedundancyFitness());
+        engine.addFitnessFuntion(new CloudLatencyFitness());
         engine.addFitnessFuntion(new CloudAdaptationCostFitness());
 
         engine.setMaxGeneration(100);
         engine.setPopulationFactory(new DefaultCloudPopulationFactory().setSize(10));
 
         List<Solution<Cloud>> result = engine.solve();
+
         for (Solution sol : result) {
-            SolutionPrinter.instance$.print(sol, System.out);
+            SolutionPrinter.instance$.simplePrint(sol, System.out);
         }
 
 

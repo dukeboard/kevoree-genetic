@@ -9,6 +9,6 @@ public abstract class GaussianFitnessFunction<A extends KMFContainer> extends Fi
 
     public abstract double target();
 
-    public abstract double variance();
+    public abstract double std();
 
 }
