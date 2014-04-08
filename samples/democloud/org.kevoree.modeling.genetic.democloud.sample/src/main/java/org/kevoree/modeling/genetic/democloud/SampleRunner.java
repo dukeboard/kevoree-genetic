@@ -3,10 +3,7 @@ package org.kevoree.modeling.genetic.democloud;
 import org.cloud.Cloud;
 
 import org.cloud.serializer.JSONModelSerializer;
-import org.kevoree.modeling.genetic.democloud.fitnesses.CloudAdaptationCostFitness;
-import org.kevoree.modeling.genetic.democloud.fitnesses.CloudCostFitness;
-import org.kevoree.modeling.genetic.democloud.fitnesses.CloudLatencyFitness;
-import org.kevoree.modeling.genetic.democloud.fitnesses.CloudRedundancyFitness;
+import org.kevoree.modeling.genetic.democloud.fitnesses.*;
 import org.kevoree.modeling.genetic.democloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.RemoveNodeMutator;
 import org.kevoree.modeling.optimization.api.OptimizationEngine;
@@ -39,7 +36,7 @@ public class SampleRunner {
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
         engine.addFitnessFuntion(new CloudCostFitness());
-        engine.addFitnessFuntion(new CloudRedundancyFitness());
+        engine.addFitnessFuntion(new CloudRedundancyFitness2());
         engine.addFitnessFuntion(new CloudLatencyFitness());
         engine.addFitnessFuntion(new CloudAdaptationCostFitness());
 
