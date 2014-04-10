@@ -1,6 +1,7 @@
 package org.kevoree.modeling.genetic.testsuite.evolutionary;
 
 import org.kevoree.modeling.genetic.testsuite.TestPopulationFactory;
+import org.kevoree.modeling.genetic.testsuite.fitnesses.DTLZ.FitnessDTLZ;
 import org.kevoree.modeling.genetic.testsuite.fitnesses.ZDT.FitnessZDT;
 import org.kevoree.modeling.genetic.testsuite.fitnesses.ZDT.FitnessZDTF0;
 import org.kevoree.modeling.genetic.testsuite.fitnesses.ZDT.FitnessZDTF1;
@@ -20,7 +21,7 @@ import java.util.List;
 /**
  * Created by assaad.moawad on 4/9/2014.
  */
-public class SampleRunnerZDTNSGAII {
+public class SampleRunnerDTLZNSGAII {
     public static void main(String[] args) throws Exception {
 
         GeneticEngine<Dlist> engine = new GeneticEngine<Dlist>();
@@ -29,11 +30,14 @@ public class SampleRunnerZDTNSGAII {
         engine.addOperator(new RandomChange());
 
         //Set both fitness to the same zdt;
-        FitnessZDT.zdt=1;
+        FitnessDTLZ.dtlz=4;   //Set DTLZ4
+        FitnessDTLZ.numOfObjectif=10;  //Set 10 objectives
 
+        //Add 10 fitness functions
 
-        engine.addFitnessFuntion(new FitnessZDTF0());
-        engine.addFitnessFuntion(new FitnessZDTF1());
+        for(int i=0; i<10 ;i++){
+            engine.addFitnessFuntion(new FitnessDTLZ(i));
+        }
 
 
         engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_CASTE);

@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 
-public class ZDTPopulationFactory implements PopulationFactory<Dlist> {
+public class TestPopulationFactory implements PopulationFactory<Dlist> {
 
 
     private DefaultTestsuiteFactory factory = new DefaultTestsuiteFactory();
@@ -24,7 +24,7 @@ public class ZDTPopulationFactory implements PopulationFactory<Dlist> {
     private int size = 5;
     private int width = 30;
 
-    public ZDTPopulationFactory setSize(int xwidth, int populationSize) {
+    public TestPopulationFactory setSize(int xwidth, int populationSize) {
         size = populationSize;
         width=xwidth;
         return this;
