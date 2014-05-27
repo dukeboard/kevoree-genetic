@@ -30,11 +30,15 @@ import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
 import org.kevoree.modeling.optimization.util.FitnessNormalizer
+import org.kevoree.modeling.optimization.api.Context
+import org.kevoree.modeling.optimization.framework.DefaultContext
 
 /**
  * Created by duke on 14/08/13.
  */
 public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
+
+    override val context: Context = DefaultContext()
 
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
     override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
@@ -219,7 +223,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         }
         for(initElem in population){
             //create an initial solution
-            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null))
+            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null,context))
             //evaluate initial solution
             for(fit in _fitnesses){
                 val rawValue = fit.evaluate(defaultSolution.model, defaultSolution.context)

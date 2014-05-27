@@ -18,15 +18,16 @@ public class GenerationContext<A : KMFContainer>(
         var modelOrigin: A,
         var currentModel: A,
         val traceSequence: TraceSequence?,
-        var operator: MutationOperator<A>?){
+        var operator: MutationOperator<A>?,
+        val context: Context) {
 
     fun createChild(modelCompare: ModelCompare, newModel: A, traceAware: Boolean): GenerationContext<A> {
-        var nexTrace = if(traceAware){
+        var nexTrace = if (traceAware) {
             modelCompare.createSequence()
-        }else{
+        } else {
             null
         }
-        val child = GenerationContext(this, modelOrigin, newModel, nexTrace, operator);
+        val child = GenerationContext(this, modelOrigin, newModel, nexTrace, operator,context);
         return child;
     }
 
@@ -38,10 +39,10 @@ public class GenerationContext<A : KMFContainer>(
 
     private fun populateOperatorsStack(current: GenerationContext<A>, stack: MutableList<MutationOperator<A>>) {
         val cop = current.operator
-        if(cop != null){
+        if (cop != null) {
             stack.add(cop)
         }
-        if(current.parentContext != null){
+        if (current.parentContext != null) {
             populateOperatorsStack(current.parentContext, stack)
         }
     }

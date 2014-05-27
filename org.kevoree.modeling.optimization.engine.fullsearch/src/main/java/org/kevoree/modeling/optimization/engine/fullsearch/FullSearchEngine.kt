@@ -30,12 +30,16 @@ import org.kevoree.modeling.optimization.api.mutation.MutationOperatorSelector
 import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
 import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionComparator
 import org.kevoree.modeling.optimization.util.FitnessNormalizer
+import org.kevoree.modeling.optimization.api.Context
+import org.kevoree.modeling.optimization.framework.DefaultContext
 
 /**
  * Created by duke on 14/08/13.
  */
 
 public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
+
+    override val context: Context = DefaultContext()
 
     override var solutionComparator: SolutionComparator<A> = MeanSolutionComparator()
     override var populationFactory: PopulationFactory<A>? = null
@@ -219,7 +223,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         var population = populationFactory!!.createPopulation();
         var previousNb = solutionIndex.getNumberOfSolution();
         for (initElem in population) {
-            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null))
+            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null,context))
 
             //Adding fitness for initial default solutions
             for (fit in _fitnesses) {

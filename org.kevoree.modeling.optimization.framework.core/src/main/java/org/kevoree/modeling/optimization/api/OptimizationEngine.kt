@@ -26,6 +26,7 @@ public trait OptimizationEngine<A : KMFContainer> {
     public var mutationSelectionStrategy: MutationSelectionStrategy
     public var solutionComparator : SolutionComparator<A>
     public var solutionMutationListeners: MutableList<SolutionMutationListener<A>>
+    public val context : Context
 
     /* Execution Metric configuration */
     public fun addFitnessMetric(fitness: FitnessFunction<A>, metric: ParetoFitnessMetrics)

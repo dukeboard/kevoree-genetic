@@ -34,6 +34,8 @@ import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperato
 import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionComparator
 import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.engine.genetic.ext.HypervolumeSelection
+import org.kevoree.modeling.optimization.api.Context
+import org.kevoree.modeling.optimization.framework.DefaultContext
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,6 +46,7 @@ import org.kevoree.modeling.optimization.engine.genetic.ext.HypervolumeSelection
 
 class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
 
+    override val context: Context = DefaultContext()
     override var solutionComparator: SolutionComparator<A> = MeanSolutionComparator()
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
@@ -102,34 +105,34 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         val variations = CompoundVariation(this, problem);
 
 
-        var kalgo: Algorithm = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(populationFactory!!, problem, originAware));
+        var kalgo: Algorithm = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(populationFactory!!, problem, originAware,context));
         when(_algorithm) {
             GeneticAlgorithm.EpsilonNSGII -> {
                 //don't do nothing -> default case
             }
             GeneticAlgorithm.NSGAII -> {
                 val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), CrowdingComparator()));
-                kalgo = NSGAII(problem, NondominatedSortingPopulation(), null, selection, variations, ModelInitialization(populationFactory!!, problem, originAware));
+                kalgo = NSGAII(problem, NondominatedSortingPopulation(), null, selection, variations, ModelInitialization(populationFactory!!, problem, originAware,context));
             }
             GeneticAlgorithm.HypervolumeNSGAII -> {
                 val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), CrowdingComparator(),  HypervolumeComparator(problem)));
-                kalgo = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), selection, variations, ModelInitialization(populationFactory!!, problem, originAware));
+                kalgo = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), selection, variations, ModelInitialization(populationFactory!!, problem, originAware,context));
             }
             /* TO CHECK, BAD BEHAVIOR */
             GeneticAlgorithm.EpsilonMOEA -> {
-                kalgo = EpsilonMOEA(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(populationFactory!!, problem, originAware));
+                kalgo = EpsilonMOEA(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), TournamentSelection(), variations, ModelInitialization(populationFactory!!, problem, originAware,context));
             }
             /* TO CHECK, BAD BEHAVIOR */
             GeneticAlgorithm.HypervolumeMOEA -> {
                 val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), HypervolumeComparator(problem)));
-                kalgo = EpsilonMOEA(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), selection, variations, ModelInitialization(populationFactory!!, problem, originAware));
+                kalgo = EpsilonMOEA(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), selection, variations, ModelInitialization(populationFactory!!, problem, originAware,context));
             }
             GeneticAlgorithm.EpsilonRandom -> {
-                kalgo = RandomSearch(problem, ModelInitialization(populationFactory!!, problem, originAware), NondominatedPopulation());
+                kalgo = RandomSearch(problem, ModelInitialization(populationFactory!!, problem, originAware,context), NondominatedPopulation());
             }
             GeneticAlgorithm.EpsilonCrowdingNSGII -> {
                 val selection = TournamentSelection(2, ChainedComparator(ParetoDominanceComparator(), CrowdingComparator()));
-                kalgo = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), selection, variations, ModelInitialization(populationFactory!!, problem, originAware));
+                kalgo = NSGAII(problem, NondominatedSortingPopulation(), EpsilonBoxDominanceArchive(_dominanceEpsilon), selection, variations, ModelInitialization(populationFactory!!, problem, originAware,context));
             }
             else -> {
             }

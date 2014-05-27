@@ -7,6 +7,7 @@ import org.kevoree.genetic.framework.internal.ModelOptimizationProblem
 import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.api.trace.Event2Trace
 import org.kevoree.modeling.optimization.api.GenerationContext
+import org.kevoree.modeling.optimization.api.Context
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +16,7 @@ import org.kevoree.modeling.optimization.api.GenerationContext
  * Time: 16:43
  */
 
-public class ModelInitialization<A : KMFContainer>(val factory: PopulationFactory<A>, val problem: ModelOptimizationProblem<A>, val traceAware: Boolean) : Initialization {
+public class ModelInitialization<A : KMFContainer>(val factory: PopulationFactory<A>, val problem: ModelOptimizationProblem<A>, val traceAware: Boolean, val ctx : Context) : Initialization {
     public override fun initialize(): Array<Solution>? {
         val modelCompare = factory.getModelCompare()
         val event2trace = Event2Trace(modelCompare)
@@ -24,7 +25,7 @@ public class ModelInitialization<A : KMFContainer>(val factory: PopulationFactor
             val s = problem.newSolution()!!
             val model = models.get(i)
             var initialTraceSeq = if(traceAware){modelCompare.createSequence()}else{null}
-            val initialContext = GenerationContext(null, model, model, initialTraceSeq,null)
+            val initialContext = GenerationContext(null, model, model, initialTraceSeq,null,ctx)
             s.setVariable(0, ModelVariable(model, initialContext, factory.getCloner(), modelCompare, event2trace, traceAware));
             s
         });
