@@ -5,6 +5,7 @@ import org.kevoree.modeling.genetic.genetictest.fitnesses.DecimalEnumeratelFitne
 import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeDiversityFitness;
 import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeTotalFitness;
 import org.kevoree.modeling.genetic.genetictest.mutators.SwitchMutator;
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 import org.kevoree.modeling.optimization.api.solution.Solution;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticAlgorithm;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
@@ -23,9 +24,6 @@ public class SampleRunner {
 
     private static void setBool(int x)
     {
-        MaximizeTotalFitness.MAX = (double) x;
-        MaximizeDiversityFitness.MAX = (double) x;
-        DecimalEnumeratelFitness.MAX =(double)x;
         DefaultBinaryStringFactory.MAX =x;
 
     }
@@ -41,10 +39,11 @@ public class SampleRunner {
         engine.setAlgorithm(GeneticAlgorithm.HypervolumeNSGAII);
 
 
-       // engine.addFitnessFuntion(new MaximizeDiversityFitness());
-       engine.addFitnessFuntion(new DecimalEnumeratelFitness());
+        int max=10;
+        setBool(max);
 
-        setBool(3);
+        engine.addFitnessFunction(new DecimalEnumeratelFitness(), 0.0, Math.pow(2.0, max), FitnessOrientation.MAXIMIZE);
+
         engine.setMaxGeneration(1000)  ;
         engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(30));
 

@@ -2,11 +2,8 @@ package org.kevoree.modeling.genetic.genetictest;
 
 import org.genetictest.BinaryString;
 import org.kevoree.modeling.genetic.genetictest.fitnesses.CountBoolFitness;
-import org.kevoree.modeling.genetic.genetictest.fitnesses.DecimalEnumeratelFitness;
-import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeDiversityFitness;
-import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeTotalFitness;
 import org.kevoree.modeling.genetic.genetictest.mutators.AddBoolMutator;
-import org.kevoree.modeling.genetic.genetictest.mutators.SwitchMutator;
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 import org.kevoree.modeling.optimization.api.solution.Solution;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticAlgorithm;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
@@ -35,7 +32,7 @@ public class SampleRunnerTestMaximize {
 
 
        // engine.addFitnessFuntion(new MaximizeDiversityFitness());
-       engine.addFitnessFuntion(new CountBoolFitness());
+       engine.addFitnessFunction(new CountBoolFitness(),0.0,20.0, FitnessOrientation.MAXIMIZE);
 
         engine.setMaxGeneration(1000)  ;
         engine.setPopulationFactory(new BinaryStringFactoryMaxPopulation().setSize(4));

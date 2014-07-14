@@ -16,7 +16,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
  * Time: 9:27 AM
  * To change this template use File | Settings | File Templates.
  */
-public class CloudCostFitness extends FitnessFunction<Cloud> {
+public class CloudCostFitness implements FitnessFunction<Cloud> {
 
 
 
@@ -45,15 +45,4 @@ public class CloudCostFitness extends FitnessFunction<Cloud> {
     }
 
 
-
-
-    @Override
-    public double min() {
-
-          return 0.0;
-    }
-    public double max() {
-
-        return 10.0;
-    }
 }

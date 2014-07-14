@@ -13,7 +13,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
  * Date: 10/2/13
  * Time: 9:27 AM
  */
-public class CloudRedundancyFitness2 extends FitnessFunction<Cloud> {
+public class CloudRedundancyFitness2 implements FitnessFunction<Cloud> {
 
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
 

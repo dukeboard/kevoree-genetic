@@ -6,6 +6,7 @@ import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeDiversityFitne
 import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeTotalFitness;
 import org.kevoree.modeling.genetic.genetictest.mutators.SwitchMutator;
 import org.kevoree.modeling.optimization.api.OptimizationEngine;
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 import org.kevoree.modeling.optimization.api.solution.Solution;
 import org.kevoree.modeling.optimization.engine.greedy.GreedyEngine;
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
@@ -26,9 +27,6 @@ public class SampleRunnerGreedy {
 
     private static void setBool(int x)
     {
-        MaximizeTotalFitness.MAX = (double) x;
-        MaximizeDiversityFitness.MAX = (double) x;
-        DecimalEnumeratelFitness.MAX =(double)x;
         DefaultBinaryStringFactory.MAX =x;
 
     }
@@ -42,15 +40,12 @@ public class SampleRunnerGreedy {
         // engine.addFitnessFuntion(new MaximizeTotalFitness());
 
 
-
-        engine.addFitnessFuntion(new DecimalEnumeratelFitness());
-
-     /*  engine.addFitnessMetric(new DecimalEnumeratelFitness(), ParetoFitnessMetrics.MIN);
-       engine.addFitnessMetric(new MaximizeTotalFitness(), ParetoFitnessMetrics.MAX);
-       engine.addParetoMetric(ParetoMetrics.MIN_MEAN);*/
+        int max=10;
+        setBool(max);
 
 
-        setBool(20);
+        engine.addFitnessFunction(new DecimalEnumeratelFitness(), 0.0, Math.pow(2.0, max), FitnessOrientation.MAXIMIZE);
+
         engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(1));
 
         engine.setMaxGeneration(5000000);

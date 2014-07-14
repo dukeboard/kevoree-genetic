@@ -16,7 +16,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
  * Time: 17:52
  */
 
-public class CloudAdaptationCostFitness extends FitnessFunction<Cloud> {
+public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
 
     @Override
     public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {

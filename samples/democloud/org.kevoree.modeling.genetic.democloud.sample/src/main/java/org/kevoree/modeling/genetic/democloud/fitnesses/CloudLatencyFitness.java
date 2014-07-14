@@ -10,7 +10,7 @@ import org.kevoree.modeling.optimization.api.fitness.GaussianFitnessFunction;
  * Date: 10/2/13
  * Time: 9:27 AM
  */
-public class CloudLatencyFitness extends GaussianFitnessFunction<Cloud> {
+public class CloudLatencyFitness implements GaussianFitnessFunction<Cloud> {
 
     public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
         double latency = 0;

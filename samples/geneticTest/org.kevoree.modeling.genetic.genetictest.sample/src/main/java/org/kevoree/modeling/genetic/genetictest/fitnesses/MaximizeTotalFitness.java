@@ -14,10 +14,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
  * Time: 17:52
  */
 
-public class MaximizeTotalFitness extends FitnessFunction<BinaryString> {
-
-    public static double MAX=10.0;
-
+public class MaximizeTotalFitness implements FitnessFunction<BinaryString> {
 
     @Override
     public double evaluate(BinaryString model, GenerationContext<BinaryString> cloudGenerationContext) {
@@ -29,17 +26,5 @@ public class MaximizeTotalFitness extends FitnessFunction<BinaryString> {
         }
         return result;
     }
-    @Override
-    public double min() {
 
-        return 0.0;
-    }
-    public double max() {
-
-        return MAX;
-    }
-    public FitnessOrientation orientation() {
-
-        return FitnessOrientation.MAXIMIZE;
-    }
 }

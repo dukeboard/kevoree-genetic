@@ -6,6 +6,7 @@ import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeDiversityFitne
 import org.kevoree.modeling.genetic.genetictest.fitnesses.MaximizeTotalFitness;
 import org.kevoree.modeling.genetic.genetictest.mutators.SwitchMutator;
 import org.kevoree.modeling.optimization.api.OptimizationEngine;
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 import org.kevoree.modeling.optimization.api.metric.ParetoFitnessMetrics;
 import org.kevoree.modeling.optimization.api.metric.ParetoMetrics;
 import org.kevoree.modeling.optimization.api.solution.Solution;
@@ -25,11 +26,7 @@ public class SampleRunnerFullSearch {
 
     private static void setBool(int x)
     {
-        MaximizeTotalFitness.MAX = (double) x;
-        MaximizeDiversityFitness.MAX = (double) x;
-        DecimalEnumeratelFitness.MAX =(double)x;
         DefaultBinaryStringFactory.MAX =x;
-
     }
 
     public static void main(String[] args) throws Exception {
@@ -39,16 +36,17 @@ public class SampleRunnerFullSearch {
         engine.addOperator(new SwitchMutator());
        // engine.addFitnessFuntion(new MaximizeTotalFitness());
 
+               int max=10;
+        setBool(max);
 
 
-        engine.addFitnessFuntion(new DecimalEnumeratelFitness());
+        engine.addFitnessFunction(new DecimalEnumeratelFitness(),0.0,Math.pow(2.0,max), FitnessOrientation.MAXIMIZE);
 
      /*  engine.addFitnessMetric(new DecimalEnumeratelFitness(), ParetoFitnessMetrics.MIN);
        engine.addFitnessMetric(new MaximizeTotalFitness(), ParetoFitnessMetrics.MAX);
        engine.addParetoMetric(ParetoMetrics.MIN_MEAN);*/
 
 
-        setBool(10);
         engine.setPopulationFactory(new DefaultBinaryStringFactory().setSize(1));
 
         engine.setMaxGeneration(50000000);

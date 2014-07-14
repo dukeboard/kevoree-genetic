@@ -16,7 +16,7 @@ import org.kevoree.modeling.optimization.api.fitness.GaussianFitnessFunction;
  * Date: 10/2/13
  * Time: 9:27 AM
  */
-public class CloudRedundancyFitness extends FitnessFunction<Cloud> {
+public class CloudRedundancyFitness implements FitnessFunction<Cloud> {
 
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
 

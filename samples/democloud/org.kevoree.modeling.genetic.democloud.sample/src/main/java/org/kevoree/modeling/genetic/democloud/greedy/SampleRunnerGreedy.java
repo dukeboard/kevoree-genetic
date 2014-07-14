@@ -21,6 +21,7 @@ import org.kevoree.modeling.genetic.democloud.fitnesses.CloudSimilarityFitness;
 
 import org.kevoree.modeling.genetic.democloud.mutators.SmartMutator.AddSmartMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.SmartMutator.RemoveSmartMutator;
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 import org.kevoree.modeling.optimization.api.metric.ParetoFitnessMetrics;
 import org.kevoree.modeling.optimization.api.metric.ParetoMetrics;
 import org.kevoree.modeling.optimization.engine.genetic.GeneticAlgorithm;
@@ -67,10 +68,10 @@ public class SampleRunnerGreedy {
         engine.addOperator(new AddSmartMutator());
         engine.addOperator(new RemoveSmartMutator());
 
-        engine.addFitnessFuntion(new CloudCostFitness());
-        engine.addFitnessFuntion(new CloudLatencyFitness());
-        engine.addFitnessFuntion(new CloudRedundancyFitness());
-        engine.addFitnessFuntion(new CloudSimilarityFitness());
+        engine.addFitnessFunction(new CloudCostFitness(), 0.0, 10.0, FitnessOrientation.MINIMIZE);
+        engine.addFitnessFunction(new CloudLatencyFitness());
+        engine.addFitnessFunction(new CloudRedundancyFitness());
+        engine.addFitnessFunction(new CloudSimilarityFitness());
         //engine.addFitnessFuntion(new CloudAdaptationFitness());
 
 
