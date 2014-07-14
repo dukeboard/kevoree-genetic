@@ -14,7 +14,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
  * Time: 17:52
  */
 
-public class DecimalEnumeratelFitness implements FitnessFunction<BinaryString> {
+public class DecimalEnumeratelFitness extends FitnessFunction<BinaryString> {
 
     public static double MAX=10.0;
     public static int total=0;

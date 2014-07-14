@@ -13,7 +13,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
  * Time: 9:27 AM
  * To change this template use File | Settings | File Templates.
  */
-public class MaximizeDiversityFitness implements FitnessFunction<BinaryString> {
+public class MaximizeDiversityFitness extends FitnessFunction<BinaryString> {
     public static double MAX=10.0;
 
 
@@ -58,6 +58,7 @@ public class MaximizeDiversityFitness implements FitnessFunction<BinaryString> {
 
           return 0.0;
     }
+    @Override
     public double max() {
 
         return MAX;

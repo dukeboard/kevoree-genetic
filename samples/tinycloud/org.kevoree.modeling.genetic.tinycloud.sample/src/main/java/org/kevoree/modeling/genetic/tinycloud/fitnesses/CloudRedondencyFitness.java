@@ -8,7 +8,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 /**
  * Created by duke on 08/08/13.
  */
-public class CloudRedondencyFitness implements FitnessFunction<Cloud> {
+public class CloudRedondencyFitness extends FitnessFunction<Cloud> {
 
     private double bestRedondency = 10;
 
@@ -28,7 +28,7 @@ public class CloudRedondencyFitness implements FitnessFunction<Cloud> {
         return 0;
     }
 
-    @Override
+
     public FitnessOrientation orientation() {
         return FitnessOrientation.MAXIMIZE;
     }

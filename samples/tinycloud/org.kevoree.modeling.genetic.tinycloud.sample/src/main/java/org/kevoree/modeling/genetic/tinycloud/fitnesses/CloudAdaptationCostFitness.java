@@ -15,7 +15,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
  * Time: 17:52
  */
 
-public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
+public class CloudAdaptationCostFitness extends FitnessFunction<Cloud> {
 
     Double maxCost = 100.0;
 
@@ -44,7 +44,7 @@ public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
         return 0;
     }
 
-    @Override
+
     public FitnessOrientation orientation() {
         return FitnessOrientation.MINIMIZE;
     }

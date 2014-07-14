@@ -11,7 +11,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
  * Date: 07/08/13
  * Time: 16:14
  */
-public class CloudConsumptionFitness implements FitnessFunction<Cloud> {
+public class CloudConsumptionFitness extends FitnessFunction<Cloud> {
 
     private double maxNode = 10;
 
@@ -30,7 +30,7 @@ public class CloudConsumptionFitness implements FitnessFunction<Cloud> {
         return 0;
     }
 
-    @Override
+
     public FitnessOrientation orientation() {
         return FitnessOrientation.MINIMIZE;
     }

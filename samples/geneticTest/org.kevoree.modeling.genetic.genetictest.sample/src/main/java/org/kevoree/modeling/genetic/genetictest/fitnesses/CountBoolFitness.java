@@ -1,6 +1,5 @@
 package org.kevoree.modeling.genetic.genetictest.fitnesses;
 
-
 import org.genetictest.BinaryString;
 import org.genetictest.MyBoolean;
 import org.kevoree.modeling.optimization.api.GenerationContext;
@@ -9,37 +8,39 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 
 /**
  * Created with IntelliJ IDEA.
- * User: duke
- * Date: 05/09/13
- * Time: 17:52
+ * User: donia.elkateb
+ * Date: 10/2/13
+ * Time: 9:27 AM
+ * To change this template use File | Settings | File Templates.
  */
-
-public class MaximizeTotalFitness extends FitnessFunction<BinaryString> {
-
+public class CountBoolFitness extends FitnessFunction<BinaryString> {
     public static double MAX=10.0;
 
 
     @Override
     public double evaluate(BinaryString model, GenerationContext<BinaryString> cloudGenerationContext) {
-        double result = 0;
-        for (MyBoolean b : model.getValues()) {
-            if(b.getValue())
-                result++;
 
-        }
-        return result;
+        System.out.println("Inside fitness "+model.getValues().size());
+        return model.getValues().size();
+
     }
+
+
+
+
     @Override
     public double min() {
 
-        return 0.0;
+          return 0.0;
     }
+    @Override
     public double max() {
 
-        return MAX;
+        return 20;
     }
-    public FitnessOrientation orientation() {
 
+    @Override
+    public FitnessOrientation orientation(){
         return FitnessOrientation.MAXIMIZE;
     }
 }
