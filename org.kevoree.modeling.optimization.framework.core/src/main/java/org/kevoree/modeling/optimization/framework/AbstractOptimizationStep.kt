@@ -17,11 +17,11 @@ public class AbstractOptimizationStep<A : KMFContainer> : OptimizationStep<A> {
 
     private var engine: OptimizationEngine<A>? = null;
 
-    private var solutions: List<Solution<A>>? = null;
+    private var _solutions: List<Solution<A>>? = null;
 
     override fun getSolutions(): List<Solution<A>> {
-        if(solutions != null){
-            return solutions!!
+        if(_solutions != null){
+            return _solutions!!
         }                   else {
             return ArrayList<Solution<A>>()
         }

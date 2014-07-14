@@ -14,7 +14,7 @@ import java.util.HashMap
  * Time: 16:28
  */
 
-public class HybridSolution<A : KMFContainer>(val numberOfObjectives: Int, val problem: ModelOptimizationProblem<A>) : org.moeaframework.core.Solution(1, numberOfObjectives), org.kevoree.modeling.optimization.api.solution.Solution<A> {
+public class HybridSolution<A : KMFContainer>(val _numberOfObjectives: Int, val problem: ModelOptimizationProblem<A>) : org.moeaframework.core.Solution(1, _numberOfObjectives), org.kevoree.modeling.optimization.api.solution.Solution<A> {
 
     var rawResults = HashMap<FitnessFunction<A>, Double>()
 
@@ -47,7 +47,7 @@ public class HybridSolution<A : KMFContainer>(val numberOfObjectives: Int, val p
     }
 
     override fun copy(): Solution? {
-        val newSolution = HybridSolution(numberOfObjectives, problem);
+        val newSolution = HybridSolution(_numberOfObjectives, problem);
         newSolution.setVariable(0, getVariable(0)!!.copy());
         return newSolution;
     }
