@@ -15,7 +15,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation
  * Time: 15:40
  */
 
-public class RulesFitnessFunction<A : KMFContainer> : FitnessFunction<A>() {
+public class RulesFitnessFunction<A : KMFContainer> : FitnessFunction<A> {
 
 
     override fun evaluate(model: A?, context: GenerationContext<A>?): Double {
@@ -36,12 +36,13 @@ public class RulesFitnessFunction<A : KMFContainer> : FitnessFunction<A>() {
         //return 100 - Math.min(Math.max(0.toDouble(), pres.toDouble()), 100.toDouble())
     }
 
+    /*
     override fun max(): Double {
         return rules.size.toDouble()
     }
     override fun min(): Double {
         return 0.0;
-    }
+    } */
 
     var rules: MutableList<Rule<A>> = ArrayList<Rule<A>>()
 

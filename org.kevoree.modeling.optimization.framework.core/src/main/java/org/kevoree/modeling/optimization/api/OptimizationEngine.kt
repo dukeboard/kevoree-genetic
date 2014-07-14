@@ -10,6 +10,7 @@ import org.kevoree.modeling.optimization.api.metric.ParetoMetrics
 import org.kevoree.modeling.optimization.api.mutation.MutationSelectionStrategy
 import org.kevoree.modeling.optimization.api.solution.SolutionComparator
 import org.kevoree.modeling.optimization.api.solution.Solution
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,7 +35,9 @@ public trait OptimizationEngine<A : KMFContainer> {
 
     /* Optimization configuration */
     public fun addOperator(operator: MutationOperator<A>): OptimizationEngine<A>
-    public fun addFitnessFuntion(function: FitnessFunction<A>): OptimizationEngine<A>
+    public fun addFitnessFunction(function: FitnessFunction<A>, min : Double, max : Double, orientation : FitnessOrientation): OptimizationEngine<A>
+    public fun addGaussianFitnessFunction(function: FitnessFunction<A>, min : Double, max : Double, orientation : FitnessOrientation, target : Double, std : Double): OptimizationEngine<A>
+
     /* Optimization control methods */
     public fun solve(): List<Solution<A>>
 

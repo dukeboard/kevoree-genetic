@@ -43,7 +43,7 @@ public class HybridSolution<A : KMFContainer>(val _numberOfObjectives: Int, val 
     }
 
     override fun getFitnesses(): Set<FitnessFunction<A>> {
-        return problem.indiceFromFitness.keySet()
+        return problem.indiceFromFitness.keySet().map { e -> e.fitness }.toSet()
     }
 
     override fun copy(): Solution? {

@@ -32,6 +32,7 @@ import org.kevoree.modeling.optimization.framework.comparator.MeanSolutionCompar
 import org.kevoree.modeling.optimization.util.FitnessNormalizer
 import org.kevoree.modeling.optimization.api.Context
 import org.kevoree.modeling.optimization.framework.DefaultContext
+import org.kevoree.modeling.optimization.util.FitnessMetaData
 
 /**
  * Created by duke on 14/08/13.
@@ -49,7 +50,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
     override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
 
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
-    override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
+    override var _fitnesses: MutableList<FitnessMetaData<A>> = ArrayList<FitnessMetaData<A>>()
 
     override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelector(_operators)
 
@@ -96,9 +97,9 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         operator.mutate(clonedModel, clonedVar)
         //evaluate new solution
         for (fit in _fitnesses) {
-            val rawValue = fit.evaluate(newSolution.model, clonedContext)
-            newSolution.rawResults.put(fit, rawValue)
-            newSolution.results.put(fit, FitnessNormalizer.norm(rawValue, fit))
+            val rawValue = fit.fitness.evaluate(newSolution.model, clonedContext)
+            newSolution.rawResults.put(fit.fitness, rawValue)
+            newSolution.results.put(fit.fitness, FitnessNormalizer.norm(rawValue, fit))
         }
         return newSolution
     }
@@ -227,9 +228,9 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
 
             //Adding fitness for initial default solutions
             for (fit in _fitnesses) {
-                val rawValue = fit.evaluate(defaultSolution.model, defaultSolution.context)
-                defaultSolution.rawResults.put(fit, rawValue)
-                defaultSolution.results.put(fit, FitnessNormalizer.norm(rawValue, fit))
+                val rawValue = fit.fitness.evaluate(defaultSolution.model, defaultSolution.context)
+                defaultSolution.rawResults.put(fit.fitness, rawValue)
+                defaultSolution.results.put(fit.fitness, FitnessNormalizer.norm(rawValue, fit))
             }
 
 

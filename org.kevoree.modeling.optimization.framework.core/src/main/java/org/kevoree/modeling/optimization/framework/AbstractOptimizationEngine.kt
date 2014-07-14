@@ -13,6 +13,8 @@ import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperatorSelector
 import org.kevoree.modeling.optimization.engine.genetic.selector.SputnikElitistMutationOperatorSelector
 import org.kevoree.modeling.optimization.engine.genetic.selector.SputnikCasteMutationOperatorSelector
+import org.kevoree.modeling.optimization.util.FitnessMetaData
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,7 +26,7 @@ import org.kevoree.modeling.optimization.engine.genetic.selector.SputnikCasteMut
 public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A> {
 
     var _operators: MutableList<MutationOperator<A>>
-    var _fitnesses: MutableList<FitnessFunction<A>>
+    var _fitnesses: MutableList<FitnessMetaData<A>>
     var _executionModelFactory: DefaultExecutionModelFactory?
     var mutationSelector: MutationOperatorSelector<A>
 
@@ -72,8 +74,14 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
         _operators.add(operator);
         return this;
     }
-    public override fun addFitnessFuntion(function: FitnessFunction<A>): OptimizationEngine<A> {
-        _fitnesses.add(function);
+
+    public override fun addFitnessFunction(function: FitnessFunction<A>, min : Double, max : Double, orientation : FitnessOrientation): OptimizationEngine<A>{
+        _fitnesses.add(FitnessMetaData(function, min, max, orientation, null,null));
+        return this;
+    }
+
+    public override fun addGaussianFitnessFunction(function: FitnessFunction<A>, min : Double, max : Double, orientation : FitnessOrientation, target : Double, std : Double): OptimizationEngine<A> {
+        _fitnesses.add(FitnessMetaData(function, min, max, orientation, target,std));
         return this;
     }
 

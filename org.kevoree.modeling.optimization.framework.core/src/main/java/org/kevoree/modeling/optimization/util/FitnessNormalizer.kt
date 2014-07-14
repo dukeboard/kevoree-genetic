@@ -1,8 +1,6 @@
 package org.kevoree.modeling.optimization.util
 
-import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation
-import org.kevoree.modeling.optimization.api.fitness.GaussianFitnessFunction
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,26 +12,23 @@ import org.kevoree.modeling.optimization.api.fitness.GaussianFitnessFunction
 public object FitnessNormalizer {
 
     /* Transform raw value between 0 and 1 and 0 is the best value */
-    fun norm(rawValue: Double, fitness: FitnessFunction<*>): Double {
-        val minValue = fitness.min()
-        val maxValue = fitness.max()
+    fun norm(rawValue: Double, fitness: FitnessMetaData<*>): Double {
         //check fitnessRawValue
-        if (rawValue > maxValue || rawValue < minValue) {
+        if (rawValue > fitness.max || rawValue < fitness.min) {
             throw Exception("out of bound value " + rawValue + " for " + fitness);
         }
-        var normalizedValue = (rawValue - minValue) / (maxValue - minValue)
+        var normalizedValue = (rawValue - fitness.min) / (fitness.max - fitness.min)
         if (fitness.orientation == FitnessOrientation.MAXIMIZE) {
             normalizedValue = 1 - normalizedValue
         }
-        if (fitness is GaussianFitnessFunction) {
-            var target = fitness.target()
-            var normalizedTarget = (target - minValue) / (maxValue - minValue)
-            var std = fitness.std()
-            var normalizedVariance = (std ) / (maxValue - minValue)
-            normalizedVariance=normalizedVariance*normalizedVariance
-            normalizedValue = 1 - Math.exp(-(normalizedValue - normalizedTarget) * (normalizedValue - normalizedTarget) / (2*normalizedVariance) )
+        if (fitness.target != null && fitness.std != null) {
+            var normalizedTarget = (fitness.target - fitness.min) / (fitness.max - fitness.min)
+            var normalizedVariance = (fitness.std ) / (fitness.max - fitness.min)
+            normalizedVariance = normalizedVariance * normalizedVariance
+            normalizedValue = 1 - Math.exp(-(normalizedValue - normalizedTarget) * (normalizedValue - normalizedTarget) / (2 * normalizedVariance))
         }
         return normalizedValue
     }
+
 
 }

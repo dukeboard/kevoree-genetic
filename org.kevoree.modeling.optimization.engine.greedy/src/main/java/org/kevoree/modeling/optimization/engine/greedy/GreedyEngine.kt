@@ -32,6 +32,7 @@ import org.kevoree.modeling.optimization.framework.selector.DefaultRandomOperato
 import org.kevoree.modeling.optimization.util.FitnessNormalizer
 import org.kevoree.modeling.optimization.api.Context
 import org.kevoree.modeling.optimization.framework.DefaultContext
+import org.kevoree.modeling.optimization.util.FitnessMetaData
 
 /**
  * Created by duke on 14/08/13.
@@ -41,7 +42,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     override val context: Context = DefaultContext()
 
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
-    override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
+    override var _fitnesses: MutableList<FitnessMetaData<A>> = ArrayList<FitnessMetaData<A>>()
 
     override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelector(_operators)
     override var populationFactory: PopulationFactory<A>? = null
@@ -97,9 +98,9 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         nbMutation++
         //evaluate new solution
         for(fit in _fitnesses){
-            val rawValue = fit.evaluate(newSolution.model, clonedContext)
-            newSolution.results.put(fit, FitnessNormalizer.norm(rawValue, fit))
-            newSolution.rawResults.put(fit, rawValue)
+            val rawValue = fit.fitness.evaluate(newSolution.model, clonedContext)
+            newSolution.results.put(fit.fitness, FitnessNormalizer.norm(rawValue, fit))
+            newSolution.rawResults.put(fit.fitness, rawValue)
         }
         return newSolution
     }
@@ -226,9 +227,9 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null,context))
             //evaluate initial solution
             for(fit in _fitnesses){
-                val rawValue = fit.evaluate(defaultSolution.model, defaultSolution.context)
-                defaultSolution.results.put(fit, FitnessNormalizer.norm(rawValue, fit))
-                defaultSolution.rawResults.put(fit, rawValue)
+                val rawValue = fit.fitness.evaluate(defaultSolution.model, defaultSolution.context)
+                defaultSolution.results.put(fit.fitness, FitnessNormalizer.norm(rawValue, fit))
+                defaultSolution.rawResults.put(fit.fitness, rawValue)
             }
             isChangedSinceLastStep = false //track modification
             computeStep(defaultSolution)

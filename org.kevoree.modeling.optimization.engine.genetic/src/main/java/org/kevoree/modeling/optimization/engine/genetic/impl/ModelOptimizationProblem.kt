@@ -10,23 +10,24 @@ import java.util.HashMap
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 import org.kevoree.modeling.optimization.engine.genetic.impl.HybridSolution
 import org.kevoree.modeling.optimization.util.FitnessNormalizer
+import org.kevoree.modeling.optimization.util.FitnessMetaData
 
 /**
  * User: duke
  * Date: 11/02/13
  * Time: 14:57
  */
-public class ModelOptimizationProblem<A : KMFContainer>(val fitnesses: List<FitnessFunction<A>>, val cloner: ModelCloner, val modelCompare: ModelCompare) : AbstractProblem(1, fitnesses.size) {
+public class ModelOptimizationProblem<A : KMFContainer>(val fitnesses: List<FitnessMetaData<A>>, val cloner: ModelCloner, val modelCompare: ModelCompare) : AbstractProblem(1, fitnesses.size) {
 
-    val fitnessFromIndice = HashMap<Int, FitnessFunction<A>>();
-    val indiceFromFitness = HashMap<FitnessFunction<A>, Int>();
+    val fitnessFromIndice = HashMap<Int, FitnessMetaData<A>>();
+    val indiceFromFitness = HashMap<FitnessMetaData<A>, Int>();
 
     {
-        //asign a unique indice for each fitness
+        //assign a unique indice for each fitness
         var i = 0;
-        for(fitness in fitnesses){
-            fitnessFromIndice.put(i, fitness)
-            indiceFromFitness.put(fitness, i)
+        for(fitnessMeta in fitnesses){
+            fitnessFromIndice.put(i, fitnessMeta)
+            indiceFromFitness.put(fitnessMeta, i)
             i++;
         }
     }
@@ -40,8 +41,8 @@ public class ModelOptimizationProblem<A : KMFContainer>(val fitnesses: List<Fitn
                 val vloop = solution?.getVariable(0) as? ModelVariable<A>;
                 if(vloop != null){
                     //var fitness = fitnesses.get(i)
-                    val rawValue = fitnessT.key.evaluate(vloop.model, vloop.context)
-                    solution.rawResults.put(fitnessT.key,rawValue)
+                    val rawValue = fitnessT.key.fitness.evaluate(vloop.model, vloop.context)
+                    solution.rawResults.put(fitnessT.key.fitness,rawValue)
                     solution.setObjective(fitnessT.value, FitnessNormalizer.norm(rawValue, fitnessT.key));
                 }
             }

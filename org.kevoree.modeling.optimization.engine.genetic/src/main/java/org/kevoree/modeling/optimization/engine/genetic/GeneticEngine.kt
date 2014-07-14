@@ -36,6 +36,7 @@ import org.kevoree.modeling.optimization.api.solution.SolutionMutationListener
 import org.kevoree.modeling.optimization.engine.genetic.ext.HypervolumeSelection
 import org.kevoree.modeling.optimization.api.Context
 import org.kevoree.modeling.optimization.framework.DefaultContext
+import org.kevoree.modeling.optimization.util.FitnessMetaData
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,7 +52,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
     override var _operators: MutableList<MutationOperator<A>> = ArrayList<MutationOperator<A>>()
     override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelector(_operators)
-    override var _fitnesses: MutableList<FitnessFunction<A>> = ArrayList<FitnessFunction<A>>()
+    override var _fitnesses: MutableList<FitnessMetaData<A>> = ArrayList<FitnessMetaData<A>>()
     override var populationFactory: PopulationFactory<A>? = null
     override var maxGeneration: Int = 100
     override var maxTime: Long = -1.toLong()
