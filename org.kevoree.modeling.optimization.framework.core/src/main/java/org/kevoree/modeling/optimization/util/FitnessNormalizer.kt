@@ -18,15 +18,20 @@ public object FitnessNormalizer {
             throw Exception("out of bound value " + rawValue + " for " + fitness);
         }
         var normalizedValue = (rawValue - fitness.min) / (fitness.max - fitness.min)
-        if (fitness.orientation == FitnessOrientation.MAXIMIZE) {
-            normalizedValue = 1 - normalizedValue
-        }
+
         if (fitness.target != null && fitness.std != null) {
             var normalizedTarget = (fitness.target - fitness.min) / (fitness.max - fitness.min)
             var normalizedVariance = (fitness.std ) / (fitness.max - fitness.min)
             normalizedVariance = normalizedVariance * normalizedVariance
             normalizedValue = 1 - Math.exp(-(normalizedValue - normalizedTarget) * (normalizedValue - normalizedTarget) / (2 * normalizedVariance))
+            return normalizedValue
         }
+
+        if (fitness.orientation == FitnessOrientation.MAXIMIZE) {
+           normalizedValue = 1 - normalizedValue
+        }
+
+
         return normalizedValue
     }
 
