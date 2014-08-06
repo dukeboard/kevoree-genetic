@@ -64,8 +64,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <ecore>ExecutionModel.ecore</ecore>
-                            <packagePrefix>org.kevoree.modeling.optimization</packagePrefix>
+                            <ecore>org.kevoree.modeling.optimization.executionmodel.mm</ecore>
                             <js>false</js>
                             <events>true</events>
                         </configuration>

@@ -23,7 +23,7 @@ public class GenerationContext<A : KMFContainer>(
 
     fun createChild(modelCompare: ModelCompare, newModel: A, traceAware: Boolean): GenerationContext<A> {
         var nexTrace = if (traceAware) {
-            modelCompare.createSequence()
+            TraceSequence(modelCompare.factory)
         } else {
             null
         }

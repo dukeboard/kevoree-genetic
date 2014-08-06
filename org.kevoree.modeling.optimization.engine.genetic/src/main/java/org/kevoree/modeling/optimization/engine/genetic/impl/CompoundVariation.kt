@@ -36,7 +36,7 @@ class CompoundVariation<A : KMFContainer>(val engine: GeneticEngine<A>, val prob
             for(variable in variables){
                 when(variable) {
                     is QueryVar -> {
-                        var queryResult = clonedVar.model.selectByQuery(variable.query)
+                        var queryResult = clonedVar.model.select(variable.query)
                         if(!queryResult.isEmpty()){
                             var indice = random.nextInt(queryResult.size())
                             params.setParam(variable.name, queryResult.get(indice))

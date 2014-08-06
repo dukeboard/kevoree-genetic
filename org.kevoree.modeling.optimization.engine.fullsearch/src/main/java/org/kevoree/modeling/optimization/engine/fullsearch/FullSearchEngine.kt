@@ -5,7 +5,6 @@ import org.kevoree.modeling.optimization.api.PopulationFactory
 import org.kevoree.modeling.optimization.api.solution.Solution
 import java.util.ArrayList
 import org.kevoree.modeling.optimization.framework.DefaultSolution
-import org.kevoree.modeling.optimization.executionmodel.impl.DefaultExecutionModelFactory
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
 import org.kevoree.modeling.optimization.framework.AbstractOptimizationEngine
 import org.kevoree.modeling.optimization.framework.FitnessMetric
@@ -33,6 +32,9 @@ import org.kevoree.modeling.optimization.util.FitnessNormalizer
 import org.kevoree.modeling.optimization.api.Context
 import org.kevoree.modeling.optimization.framework.DefaultContext
 import org.kevoree.modeling.optimization.util.FitnessMetaData
+import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionmodelFactory
+import org.kevoree.modeling.optimization.util.MetricUpdater
+import org.kevoree.modeling.api.trace.TraceSequence
 
 /**
  * Created by duke on 14/08/13.
@@ -54,7 +56,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
 
     override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelector(_operators)
 
-    override var _executionModelFactory: DefaultExecutionModelFactory? = null
+    override var _executionModelFactory: DefaultExecutionmodelFactory? = null
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
 
     var originAware = true
@@ -114,7 +116,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
             for (variable in enumerationVariables) {
                 when(variable) {
                     is QueryVar -> {
-                        var queryResult = solution.model.selectByQuery(variable.query)
+                        var queryResult = solution.model.select(variable.query)
                         enumeratedValues.put(variable.name, queryResult)
                     }
                     is EnumVar -> {
@@ -171,7 +173,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
                                     fitMet.fitness = executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName!!)
                                 }
                                 newStep.addMetrics(metric) //add before update ! mandatory !
-                                metric.update()
+                                MetricUpdater.update(metric)
                             }
                             currentRun!!.addSteps(newStep)
                         }
@@ -224,7 +226,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         var population = populationFactory!!.createPopulation();
         var previousNb = solutionIndex.getNumberOfSolution();
         for (initElem in population) {
-            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null,context))
+            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, TraceSequence(modelCompare!!.factory), null,context))
 
             //Adding fitness for initial default solutions
             for (fit in _fitnesses) {

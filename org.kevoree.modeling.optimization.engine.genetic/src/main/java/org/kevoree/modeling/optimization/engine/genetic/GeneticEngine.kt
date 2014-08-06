@@ -20,7 +20,6 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator
 import org.moeaframework.core.comparator.CrowdingComparator
 import org.kevoree.modeling.optimization.framework.AbstractOptimizationEngine
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
-import org.kevoree.modeling.optimization.executionmodel.impl.DefaultExecutionModelFactory
 import org.kevoree.modeling.optimization.executionmodel.Run
 import java.util.Date
 import org.kevoree.modeling.optimization.framework.FitnessMetric
@@ -37,6 +36,8 @@ import org.kevoree.modeling.optimization.engine.genetic.ext.HypervolumeSelection
 import org.kevoree.modeling.optimization.api.Context
 import org.kevoree.modeling.optimization.framework.DefaultContext
 import org.kevoree.modeling.optimization.util.FitnessMetaData
+import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionmodelFactory
+import org.kevoree.modeling.optimization.util.MetricUpdater
 
 /**
  * Created with IntelliJ IDEA.
@@ -57,7 +58,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     override var maxGeneration: Int = 100
     override var maxTime: Long = -1.toLong()
     override var executionModel: ExecutionModel? = null
-    override var _executionModelFactory: DefaultExecutionModelFactory? = null
+    override var _executionModelFactory: DefaultExecutionmodelFactory? = null
     override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
 
     private var _algorithm: GeneticAlgorithm = GeneticAlgorithm.EpsilonNSGII
@@ -176,7 +177,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                             fitMet.fitness = executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName!!)
                         }
                         newStep.addMetrics(metric) //add before update ! mandatory !
-                        metric.update()
+                        MetricUpdater.update(metric)
                     }
                 }
                 generation++;

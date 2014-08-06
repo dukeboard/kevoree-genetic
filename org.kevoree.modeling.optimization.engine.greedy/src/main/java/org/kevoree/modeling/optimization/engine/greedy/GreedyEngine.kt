@@ -6,7 +6,6 @@ import org.kevoree.modeling.optimization.api.solution.Solution
 import java.util.ArrayList
 import org.kevoree.modeling.optimization.framework.AbstractOptimizationEngine
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
-import org.kevoree.modeling.optimization.executionmodel.impl.DefaultExecutionModelFactory
 import org.kevoree.modeling.optimization.framework.FitnessMetric
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
@@ -33,6 +32,9 @@ import org.kevoree.modeling.optimization.util.FitnessNormalizer
 import org.kevoree.modeling.optimization.api.Context
 import org.kevoree.modeling.optimization.framework.DefaultContext
 import org.kevoree.modeling.optimization.util.FitnessMetaData
+import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionmodelFactory
+import org.kevoree.modeling.api.trace.TraceSequence
+import org.kevoree.modeling.optimization.util.MetricUpdater
 
 /**
  * Created by duke on 14/08/13.
@@ -52,7 +54,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
     override var solutionComparator: SolutionComparator<A> = MeanSolutionComparator()
 
-    override var _executionModelFactory: DefaultExecutionModelFactory? = null
+    override var _executionModelFactory: DefaultExecutionmodelFactory? = null
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
 
     var mainComparator: SolutionComparator<A>? = MeanSolutionComparator<A>()
@@ -116,7 +118,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             for(variable in enumerationVariables){
                 when(variable) {
                     is QueryVar -> {
-                        var queryResult = solution.model.selectByQuery(variable.query)
+                        var queryResult = solution.model.select(variable.query)
                         enumeratedValues.put(variable.name, queryResult)
                     }
                     is EnumVar -> {
@@ -176,7 +178,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                     fitMet.fitness = executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName!!)
                 }
                 newStep.addMetrics(metric) //add before update ! mandatory !
-                metric.update()
+                MetricUpdater.update(metric)
             }
             currentRun!!.addSteps(newStep)
         }
@@ -224,7 +226,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
         }
         for(initElem in population){
             //create an initial solution
-            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, modelCompare!!.createSequence(), null,context))
+            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, TraceSequence(modelCompare!!.factory), null,context))
             //evaluate initial solution
             for(fit in _fitnesses){
                 val rawValue = fit.fitness.evaluate(defaultSolution.model, defaultSolution.context)

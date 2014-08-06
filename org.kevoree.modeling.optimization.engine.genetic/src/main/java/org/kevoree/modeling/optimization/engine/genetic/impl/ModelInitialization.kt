@@ -8,6 +8,7 @@ import org.kevoree.modeling.api.KMFContainer
 import org.kevoree.modeling.api.trace.Event2Trace
 import org.kevoree.modeling.optimization.api.GenerationContext
 import org.kevoree.modeling.optimization.api.Context
+import org.kevoree.modeling.api.trace.TraceSequence
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,7 +25,7 @@ public class ModelInitialization<A : KMFContainer>(val factory: PopulationFactor
         return Array<Solution>(models.size(), { i ->
             val s = problem.newSolution()!!
             val model = models.get(i)
-            var initialTraceSeq = if(traceAware){modelCompare.createSequence()}else{null}
+            var initialTraceSeq = if(traceAware){TraceSequence(modelCompare.factory)}else{null}
             val initialContext = GenerationContext(null, model, model, initialTraceSeq,null,ctx)
             s.setVariable(0, ModelVariable(model, initialContext, factory.getCloner(), modelCompare, event2trace, traceAware));
             s
