@@ -36,7 +36,7 @@ import org.kevoree.modeling.optimization.engine.genetic.ext.HypervolumeSelection
 import org.kevoree.modeling.optimization.api.Context
 import org.kevoree.modeling.optimization.framework.DefaultContext
 import org.kevoree.modeling.optimization.util.FitnessMetaData
-import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionModelFactory
+import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionmodelFactory
 import org.kevoree.modeling.optimization.util.MetricUpdater
 
 /**
@@ -58,7 +58,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     override var maxGeneration: Int = 100
     override var maxTime: Long = -1.toLong()
     override var executionModel: ExecutionModel? = null
-    override var _executionModelFactory: DefaultExecutionModelFactory? = null
+    override var _executionModelFactory: DefaultExecutionmodelFactory? = null
     override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
 
     private var _algorithm: GeneticAlgorithm = GeneticAlgorithm.EpsilonNSGII
