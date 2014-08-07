@@ -32,7 +32,7 @@ import org.kevoree.modeling.optimization.util.FitnessNormalizer
 import org.kevoree.modeling.optimization.api.Context
 import org.kevoree.modeling.optimization.framework.DefaultContext
 import org.kevoree.modeling.optimization.util.FitnessMetaData
-import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionmodelFactory
+import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionModelFactory
 import org.kevoree.modeling.optimization.util.MetricUpdater
 import org.kevoree.modeling.api.trace.TraceSequence
 
@@ -56,7 +56,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
 
     override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelector(_operators)
 
-    override var _executionModelFactory: DefaultExecutionmodelFactory? = null
+    override var _executionModelFactory: DefaultExecutionModelFactory? = null
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
 
     var originAware = true

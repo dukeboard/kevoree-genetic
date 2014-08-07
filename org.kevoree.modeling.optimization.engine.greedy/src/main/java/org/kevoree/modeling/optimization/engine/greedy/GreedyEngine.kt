@@ -32,7 +32,7 @@ import org.kevoree.modeling.optimization.util.FitnessNormalizer
 import org.kevoree.modeling.optimization.api.Context
 import org.kevoree.modeling.optimization.framework.DefaultContext
 import org.kevoree.modeling.optimization.util.FitnessMetaData
-import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionmodelFactory
+import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionModelFactory
 import org.kevoree.modeling.api.trace.TraceSequence
 import org.kevoree.modeling.optimization.util.MetricUpdater
 
@@ -54,7 +54,7 @@ public class GreedyEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
     override var solutionMutationListeners: MutableList<SolutionMutationListener<A>> = ArrayList<SolutionMutationListener<A>>()
     override var solutionComparator: SolutionComparator<A> = MeanSolutionComparator()
 
-    override var _executionModelFactory: DefaultExecutionmodelFactory? = null
+    override var _executionModelFactory: DefaultExecutionModelFactory? = null
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
 
     var mainComparator: SolutionComparator<A>? = MeanSolutionComparator<A>()
