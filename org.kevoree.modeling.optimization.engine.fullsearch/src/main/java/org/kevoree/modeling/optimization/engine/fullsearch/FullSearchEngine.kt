@@ -9,7 +9,6 @@ import org.kevoree.modeling.optimization.executionmodel.ExecutionModel
 import org.kevoree.modeling.optimization.framework.AbstractOptimizationEngine
 import org.kevoree.modeling.optimization.framework.FitnessMetric
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator
-import org.kevoree.modeling.optimization.api.fitness.FitnessFunction
 import org.kevoree.modeling.optimization.api.GenerationContext
 import org.kevoree.modeling.api.compare.ModelCompare
 import java.util.HashMap
@@ -32,9 +31,9 @@ import org.kevoree.modeling.optimization.util.FitnessNormalizer
 import org.kevoree.modeling.optimization.api.Context
 import org.kevoree.modeling.optimization.framework.DefaultContext
 import org.kevoree.modeling.optimization.util.FitnessMetaData
-import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionmodelFactory
 import org.kevoree.modeling.optimization.util.MetricUpdater
 import org.kevoree.modeling.api.trace.TraceSequence
+import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionModelFactory
 
 /**
  * Created by duke on 14/08/13.
@@ -56,7 +55,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
 
     override var mutationSelector: MutationOperatorSelector<A> = DefaultRandomOperatorSelector(_operators)
 
-    override var _executionModelFactory: DefaultExecutionmodelFactory? = null
+    override var _executionModelFactory: DefaultExecutionModelFactory? = null
     override var _metricsName: MutableList<FitnessMetric> = ArrayList<FitnessMetric>()
 
     var originAware = true
@@ -114,7 +113,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
             val enumeratedValues = HashMap<String, List<Any>>()
             //flat all variables
             for (variable in enumerationVariables) {
-                when(variable) {
+                when (variable) {
                     is QueryVar -> {
                         var queryResult = solution.model.select(variable.query)
                         enumeratedValues.put(variable.name, queryResult)
@@ -226,7 +225,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
         var population = populationFactory!!.createPopulation();
         var previousNb = solutionIndex.getNumberOfSolution();
         for (initElem in population) {
-            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, TraceSequence(modelCompare!!.factory), null,context))
+            val defaultSolution = DefaultSolution(initElem, GenerationContext(null, initElem, initElem, TraceSequence(modelCompare!!.factory), null, context))
 
             //Adding fitness for initial default solutions
             for (fit in _fitnesses) {
@@ -242,7 +241,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
                 return buildSolutions();
             }
         }
-        if(previousNb == solutionIndex.getNumberOfSolution())
+        if (previousNb == solutionIndex.getNumberOfSolution())
             return buildSolutions();
 
         //Front is ready next step
@@ -257,7 +256,7 @@ public class FullSearchEngine<A : KMFContainer> : AbstractOptimizationEngine<A> 
                     return buildSolutions();
                 }
             }
-            if(previousNb == solutionIndex.getNumberOfSolution()){
+            if (previousNb == solutionIndex.getNumberOfSolution()) {
                 return buildSolutions();
             }
         }

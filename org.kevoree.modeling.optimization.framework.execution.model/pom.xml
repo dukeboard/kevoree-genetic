@@ -57,7 +57,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <ecore>org.kevoree.modeling.optimization.executionmodel.mm</ecore>
+                            <ecore>org.kevoree.modeling.optimization.executionModel.mm</ecore>
                             <js>false</js>
                             <events>true</events>
                         </configuration>

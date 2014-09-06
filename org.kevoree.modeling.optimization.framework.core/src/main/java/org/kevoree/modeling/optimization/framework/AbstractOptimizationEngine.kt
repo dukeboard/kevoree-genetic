@@ -14,7 +14,7 @@ import org.kevoree.modeling.optimization.engine.genetic.selector.SputnikElitistM
 import org.kevoree.modeling.optimization.engine.genetic.selector.SputnikCasteMutationOperatorSelector
 import org.kevoree.modeling.optimization.util.FitnessMetaData
 import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation
-import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionmodelFactory
+import org.kevoree.modeling.optimization.executionmodel.factory.DefaultExecutionModelFactory
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,7 +27,7 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
 
     var _operators: MutableList<MutationOperator<A>>
     var _fitnesses: MutableList<FitnessMetaData<A>>
-    var _executionModelFactory: DefaultExecutionmodelFactory?
+    var _executionModelFactory: DefaultExecutionModelFactory?
     var mutationSelector: MutationOperatorSelector<A>
 
     public override var mutationSelectionStrategy: MutationSelectionStrategy
@@ -87,7 +87,7 @@ public trait AbstractOptimizationEngine<A : KMFContainer> : OptimizationEngine<A
 
     private fun activateExecutionModel() {
         if (executionModel == null) {
-            _executionModelFactory = DefaultExecutionmodelFactory()
+            _executionModelFactory = DefaultExecutionModelFactory()
             executionModel = _executionModelFactory!!.createExecutionModel()
         }
     }
