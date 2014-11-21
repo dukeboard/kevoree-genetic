@@ -70,7 +70,7 @@ public class CloudSimilarityFitness implements FitnessFunction<Cloud> {
         return (similaritymeasure/ (model.getNodes().size()));
     }
 
-
+/*
     @Override
     public double min() {
 
@@ -79,5 +79,5 @@ public class CloudSimilarityFitness implements FitnessFunction<Cloud> {
     public double max() {
 
         return 10.0;
-    }
+    }*/
 }

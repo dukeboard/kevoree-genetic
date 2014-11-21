@@ -3,9 +3,9 @@ package org.kevoree.modeling.genetic.democloud;
 
 
 
+import democloud.factory.DefaultDemocloudFactory;
+import democloud.factory.DemocloudFactory;
 import org.cloud.Cloud;
-import org.cloud.compare.DefaultModelCompare;
-import org.cloud.impl.DefaultCloudFactory;
 
 import org.kevoree.modeling.api.ModelCloner;
 import org.kevoree.modeling.api.compare.ModelCompare;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class DefaultCloudPopulationFactory implements PopulationFactory<Cloud> {
 
-    private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
+    private DemocloudFactory cloudfactory = new DefaultDemocloudFactory();
 
     private Integer size = 100;
 
@@ -43,12 +43,12 @@ public class DefaultCloudPopulationFactory implements PopulationFactory<Cloud> {
 
     @Override
     public ModelCloner getCloner() {
-        return new org.cloud.cloner.DefaultModelCloner();
+        return cloudfactory.createModelCloner();
     }
 
     @Override
     public ModelCompare getModelCompare() {
-        return new DefaultModelCompare();
+        return cloudfactory.createModelCompare();
     }
 
 }

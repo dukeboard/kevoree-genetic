@@ -8,13 +8,12 @@ import org.kevoree.modeling.genetic.democloud.fitnesses.CloudRedundancyFitness;
 
 import org.kevoree.modeling.genetic.democloud.mutators.AddNodeMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.RemoveNodeMutator;
-import org.kevoree.modeling.genetic.democloud.mutators.RemoveSoftwareMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.CloneNodeMutator;
 
 import org.kevoree.modeling.genetic.democloud.mutators.AddSoftwareMutator;
 import org.kevoree.modeling.genetic.democloud.mutators.SmartMutator.AddSmartMutator;
-import org.kevoree.modeling.genetic.democloud.mutators.SmartMutator.RemoveSmartMutator;
 
+import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 import org.kevoree.modeling.optimization.api.metric.ParetoFitnessMetrics;
 import org.kevoree.modeling.optimization.api.metric.ParetoMetrics;
 import org.kevoree.modeling.optimization.api.solution.Solution;
@@ -32,7 +31,6 @@ import java.util.List;
  * User: donia.elkateb
  * Date: 9/30/13
  * Time: 4:21 PM
- * To change this template use File | Settings | File Templates.
  */
 public class SampleRunnerEpsilonNSGII {
 
@@ -44,14 +42,16 @@ public class SampleRunnerEpsilonNSGII {
         engine.addOperator(new AddSoftwareMutator());
 
         engine.addOperator(new CloneNodeMutator());
-       // engine.addOperator(new RemoveSoftwareMutator());
+        // engine.addOperator(new RemoveSoftwareMutator());
 
         engine.addOperator(new AddSmartMutator());
-      //  engine.addOperator(new RemoveSmartMutator());
+        //  engine.addOperator(new RemoveSmartMutator());
 
-        engine.addFitnessFuntion(new CloudCostFitness());
-        engine.addFitnessFuntion(new CloudLatencyFitness());
-        engine.addFitnessFuntion(new CloudRedundancyFitness());
+        engine.addFitnessFunction(new CloudCostFitness(), 0, 10, FitnessOrientation.MINIMIZE);
+        engine.addFitnessFunction(new CloudLatencyFitness(), 0, 100, FitnessOrientation.MINIMIZE);
+        engine.addFitnessFunction(new CloudRedundancyFitness(), 0, 1, FitnessOrientation.MINIMIZE);
+
+
         //engine.addFitnessFuntion(new CloudAdaptationCostFitness());
 
         engine.setMaxGeneration(100);
@@ -70,7 +70,7 @@ public class SampleRunnerEpsilonNSGII {
 
 
         ExecutionModel model = engine.getExecutionModel();
-        ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
+        ExecutionModelExporter.instance$.exportMetrics(model, new File("results"));
 
 
     }

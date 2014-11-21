@@ -39,7 +39,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <ecore>cloud.ecore</ecore>
+                            <ecore>org.cloud.ecore</ecore>
                             <packagePrefix>org</packagePrefix>
                             <js>false</js>
                         <!--    <ecma5>false</ecma5>            -->

@@ -1,8 +1,9 @@
 package org.kevoree.modeling.genetic.democloud.fitnesses;
 
+import democloud.factory.DefaultDemocloudFactory;
+import democloud.factory.DemocloudFactory;
 import org.cloud.Cloud;
 import org.cloud.VirtualNode;
-import org.cloud.impl.DefaultCloudFactory;
 import org.kevoree.modeling.genetic.democloud.Requirements;
 import org.kevoree.modeling.optimization.api.GenerationContext;
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
@@ -15,7 +16,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
  */
 public class CloudRedundancyFitness2 implements FitnessFunction<Cloud> {
 
-    private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
+    private DemocloudFactory cloudfactory = new DefaultDemocloudFactory();
 
     @Override
     public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
@@ -29,6 +30,7 @@ public class CloudRedundancyFitness2 implements FitnessFunction<Cloud> {
         return Math.min(redundancyeval, 1);
     }
 
+    /*
     @Override
     public double min() {
         return 0.0;
@@ -36,6 +38,6 @@ public class CloudRedundancyFitness2 implements FitnessFunction<Cloud> {
 
     public double max() {
         return 1.0;
-    }
+    }*/
 
 }

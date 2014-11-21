@@ -1,6 +1,6 @@
 package org.kevoree.modeling.genetic.tinycloud.fitnesses;
 
-import org.cloud.Cloud;
+import cloud.Cloud;
 import org.kevoree.modeling.optimization.api.GenerationContext;
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
 import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
@@ -8,7 +8,7 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
 /**
  * Created by duke on 08/08/13.
  */
-public class CloudRedondencyFitness extends FitnessFunction<Cloud> {
+public class CloudRedondencyFitness implements FitnessFunction<Cloud> {
 
     private double bestRedondency = 10;
 

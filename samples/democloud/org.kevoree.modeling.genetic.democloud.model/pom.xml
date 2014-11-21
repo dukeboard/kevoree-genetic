@@ -18,11 +18,6 @@
             <artifactId>org.kevoree.modeling.microframework</artifactId>
             <version>${kmf.version}</version>
         </dependency>
-        <dependency>
-            <groupId>fr.inria.jfilter</groupId>
-            <artifactId>jfilter-library</artifactId>
-            <version>1.3</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -39,17 +34,14 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <ecore>democloud.ecore</ecore>
-                            <packagePrefix>org</packagePrefix>
+                            <ecore>democloud.mm</ecore>
                             <js>false</js>
-                            <!--       <ecma5>false</ecma5> !-->
-                                  <events>true</events>
-                                  <selector>true</selector>
-                              </configuration>
-                          </execution>
-                      </executions>
-                  </plugin>
-              </plugins>
-          </build>
+                            <events>true</events>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
-      </project>
+</project>

@@ -1,8 +1,9 @@
 package org.kevoree.modeling.genetic.democloud;
 
+import democloud.factory.DefaultDemocloudFactory;
+import democloud.factory.DemocloudFactory;
 import org.cloud.Cloud;
 import org.cloud.RedunduncyRequirement;
-import org.cloud.impl.DefaultCloudFactory;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,15 +14,14 @@ import org.cloud.impl.DefaultCloudFactory;
  */
 public class Requirements {
 
-    private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
+    private DemocloudFactory cloudfactory = new DefaultDemocloudFactory();
 
 
-    public double Redunduncy(Cloud parent)
-    {
+    public double Redunduncy(Cloud parent) {
 
-        RedunduncyRequirement sla    =    cloudfactory.createRedunduncyRequirement();
+        RedunduncyRequirement sla = cloudfactory.createRedunduncyRequirement();
         sla.setDuplicataPerComponent(3.0);
         return sla.getDuplicataPerComponent();
 
-}
+    }
 }

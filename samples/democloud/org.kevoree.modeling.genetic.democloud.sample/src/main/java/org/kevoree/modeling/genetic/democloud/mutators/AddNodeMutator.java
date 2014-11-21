@@ -1,8 +1,9 @@
 package org.kevoree.modeling.genetic.democloud.mutators;
 
+import democloud.factory.DefaultDemocloudFactory;
+import democloud.factory.DemocloudFactory;
 import org.cloud.Cloud;
 import org.cloud.VirtualNode;
-import org.cloud.impl.DefaultCloudFactory;
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator;
 import org.kevoree.modeling.optimization.api.mutation.QueryVar;
 
@@ -23,7 +24,7 @@ import java.util.Random;
 public class AddNodeMutator implements MutationOperator<Cloud> {
 
     private Random rand = new Random();
-    private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
+    private DemocloudFactory cloudfactory = new DefaultDemocloudFactory();
 
     @Override
     public List<MutationVariable> enumerateVariables(Cloud cloud) {

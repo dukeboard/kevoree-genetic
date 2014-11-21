@@ -50,9 +50,11 @@ public class SampleRunnerNSGAII {
         //engine.addOperator(new AddSmartMutator());
        // engine.addOperator(new RemoveSmartMutator());
 
+        /*
         engine.addFitnessFuntion(new CloudCostFitness());
         engine.addFitnessFuntion(new CloudSimilarityFitness());
         engine.addFitnessFuntion(new CloudLatencyFitness());
+        */
         //engine.addFitnessFuntion(new CloudRedundancyFitness());
 
 

@@ -38,7 +38,7 @@ public object ExecutionModelExporter {
     private fun generateHashByMetric(met: Metric): String {
         return when(met) {
             is FitnessMetric -> {
-                met.metaClassName() + "_" + met.fitness!!.name
+                met.metaClassName() + "_" + met.fitness?.name
             }
             else -> {
                 met.metaClassName()
@@ -78,7 +78,7 @@ public object ExecutionModelExporter {
                     writer.append(generateHashByMetric(metric))
                     if(metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric){
                         val fitmet = metric as FitnessMetric
-                        writer.append("_" + fitmet.fitness!!.name)
+                        writer.append("_" + fitmet.fitness?.name)
                     } else {
                         writer.append("_pareto")
                     }

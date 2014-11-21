@@ -14,11 +14,8 @@ import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
  * User: donia.elkateb
  * Date: 10/2/13
  * Time: 9:27 AM
- * To change this template use File | Settings | File Templates.
  */
 public class CloudCostFitness implements FitnessFunction<Cloud> {
-
-
 
     @Override
     public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
@@ -26,22 +23,20 @@ public class CloudCostFitness implements FitnessFunction<Cloud> {
         double pres = 0;
 
 
+        for (VirtualNode node : model.getNodes()) {
 
-        for(VirtualNode node : model.getNodes())
-        {
-
-            if ((node instanceof  Amazon) || (node instanceof  Rackspace)  )
+            if ((node instanceof Amazon) || (node instanceof Rackspace))
 
             {
 
                 //System.out.println(node.getId());
-                pres=pres + node.getPricePerHour();
+                pres = pres + node.getPricePerHour();
 
             }
 
         }
 
-        return ((pres / (model.getNodes().size()*10)));
+        return ((pres / (model.getNodes().size() * 10)));
     }
 
 

@@ -1,11 +1,11 @@
 package org.kevoree.modeling.genetic.democloud.mutators;
 
+import democloud.factory.DefaultDemocloudFactory;
+import democloud.factory.DemocloudFactory;
 import org.cloud.Cloud;
 
 import org.cloud.VirtualNode;
 
-import org.cloud.cloner.DefaultModelCloner;
-import org.cloud.impl.DefaultCloudFactory;
 import org.kevoree.modeling.api.ModelCloner;
 
 import org.kevoree.modeling.optimization.api.mutation.MutationOperator;
@@ -29,8 +29,8 @@ import java.util.Random;
 public class CloneNodeMutator implements MutationOperator<Cloud> {
 
 
-    private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
-    private ModelCloner cloner = new DefaultModelCloner();
+    private DemocloudFactory cloudfactory = new DefaultDemocloudFactory();
+    private ModelCloner cloner = cloudfactory.createModelCloner();
     private Random rand = new Random();
 
     @Override

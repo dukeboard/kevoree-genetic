@@ -2,13 +2,9 @@ package org.kevoree.modeling.genetic.democloud.fitnesses;
 
 import org.cloud.Cloud;
 import org.cloud.VirtualNode;
-import org.cloud.impl.DefaultCloudFactory;
-import org.kevoree.modeling.api.trace.TraceSequence;
 import org.kevoree.modeling.genetic.democloud.Requirements;
 import org.kevoree.modeling.optimization.api.GenerationContext;
 import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
-import org.kevoree.modeling.optimization.api.fitness.FitnessOrientation;
-import org.kevoree.modeling.optimization.api.fitness.GaussianFitnessFunction;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,8 +13,6 @@ import org.kevoree.modeling.optimization.api.fitness.GaussianFitnessFunction;
  * Time: 9:27 AM
  */
 public class CloudRedundancyFitness implements FitnessFunction<Cloud> {
-
-    private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
 
     @Override
     public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
@@ -32,6 +26,7 @@ public class CloudRedundancyFitness implements FitnessFunction<Cloud> {
         return Math.min(redundancyeval, 1);
     }
 
+    /*
     @Override
     public double min() {
         return 0.0;
@@ -39,6 +34,6 @@ public class CloudRedundancyFitness implements FitnessFunction<Cloud> {
 
     public double max() {
         return 1.0;
-    }
+    }*/
 
 }

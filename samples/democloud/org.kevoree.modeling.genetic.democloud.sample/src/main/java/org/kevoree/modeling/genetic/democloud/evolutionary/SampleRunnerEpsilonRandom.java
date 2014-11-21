@@ -48,9 +48,13 @@ public class SampleRunnerEpsilonRandom {
 
         engine.addOperator(new AddSmartMutator());
       //engine.addOperator(new RemoveSmartMutator());
+
+        /*
         engine.addFitnessFuntion(new CloudCostFitness());
         engine.addFitnessFuntion(new CloudLatencyFitness());
         engine.addFitnessFuntion(new CloudRedundancyFitness());
+        */
+
         //engine.addFitnessFuntion(new CloudAdaptationCostFitness());
 
         engine.setMaxGeneration(100);

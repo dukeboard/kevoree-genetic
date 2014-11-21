@@ -51,9 +51,13 @@ public class SampleRunnerEpsilonMOEA {
         //engine.addOperator(new RemoveSmartMutator());
        // engine.addOperator(new RemoveSoftwareMutator());
 
+        /*
         engine.addFitnessFuntion(new CloudCostFitness());
         engine.addFitnessFuntion(new CloudLatencyFitness());
         engine.addFitnessFuntion(new CloudRedundancyFitness());
+        */
+
+
         //engine.addFitnessFuntion(new CloudAdaptationCostFitness());
 
         engine.setMaxGeneration(100);

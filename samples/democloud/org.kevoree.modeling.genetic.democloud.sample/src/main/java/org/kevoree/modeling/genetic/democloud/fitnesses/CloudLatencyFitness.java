@@ -2,7 +2,7 @@ package org.kevoree.modeling.genetic.democloud.fitnesses;
 
 import org.cloud.*;
 import org.kevoree.modeling.optimization.api.GenerationContext;
-import org.kevoree.modeling.optimization.api.fitness.GaussianFitnessFunction;
+import org.kevoree.modeling.optimization.api.fitness.FitnessFunction;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +10,9 @@ import org.kevoree.modeling.optimization.api.fitness.GaussianFitnessFunction;
  * Date: 10/2/13
  * Time: 9:27 AM
  */
-public class CloudLatencyFitness implements GaussianFitnessFunction<Cloud> {
+
+
+public class CloudLatencyFitness implements FitnessFunction<Cloud> {
 
     public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
         double latency = 0;
@@ -23,6 +25,7 @@ public class CloudLatencyFitness implements GaussianFitnessFunction<Cloud> {
     }
 
 
+    /*
     @Override
     public double min() {
         return 0.0;
@@ -33,6 +36,7 @@ public class CloudLatencyFitness implements GaussianFitnessFunction<Cloud> {
         return 100.0;
     }
 
+
     @Override
     public double target() {
         return 50;
@@ -41,5 +45,6 @@ public class CloudLatencyFitness implements GaussianFitnessFunction<Cloud> {
     @Override
     public double std() {
         return 5;
-    }
+    }*/
+
 }

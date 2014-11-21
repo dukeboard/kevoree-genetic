@@ -34,6 +34,7 @@ public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
         return result;
     }
 
+    /*
     @Override
     public double min() {
 
@@ -43,5 +44,5 @@ public class CloudAdaptationCostFitness implements FitnessFunction<Cloud> {
     public double max() {
 
         return 5.0;
-    }
+    }*/
 }
