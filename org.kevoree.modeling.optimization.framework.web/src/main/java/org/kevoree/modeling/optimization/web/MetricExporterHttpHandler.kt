@@ -44,9 +44,9 @@ public class MetricExporterHttpHandler(val model: ExecutionModel, val time: Bool
     }
 
     private fun generateHashByMetric(met: Metric): String {
-        return when(met) {
+        return when (met) {
             is FitnessMetric -> {
-                met.metaClassName() + "_" + met.fitness!!.name
+                met.metaClassName() + "_" + met.fitness?.name
             }
             else -> {
                 met.metaClassName()
@@ -90,7 +90,7 @@ public class MetricExporterHttpHandler(val model: ExecutionModel, val time: Bool
                 writer.append(run.algName + "_" + hash.substring(hash.lastIndexOf('.') + 1))
                 if (metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric) {
                     val fitmet = metric as FitnessMetric
-                    writer.append("_" + fitmet.fitness!!.name)
+                    writer.append("_" + fitmet.fitness?.name)
                 } else {
                     writer.append("_pareto")
                 }

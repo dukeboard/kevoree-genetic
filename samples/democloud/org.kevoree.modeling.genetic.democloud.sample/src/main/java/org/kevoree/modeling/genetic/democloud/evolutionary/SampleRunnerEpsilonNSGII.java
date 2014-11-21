@@ -22,6 +22,7 @@ import org.kevoree.modeling.optimization.engine.genetic.GeneticEngine;
 import org.kevoree.modeling.optimization.framework.SolutionPrinter;
 import org.kevoree.modeling.optimization.executionmodel.ExecutionModel;
 import org.kevoree.modeling.optimization.util.ExecutionModelExporter;
+import org.kevoree.modeling.optimization.web.Server;
 
 import java.io.File;
 import java.util.List;
@@ -70,7 +71,10 @@ public class SampleRunnerEpsilonNSGII {
 
 
         ExecutionModel model = engine.getExecutionModel();
-        ExecutionModelExporter.instance$.exportMetrics(model, new File("results"));
+        Server.instance$.serveExecutionModel(model);
+
+
+       // ExecutionModelExporter.instance$.exportMetrics(model, new File("results"));
 
 
     }
