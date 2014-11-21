@@ -95,9 +95,9 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
             currentRun!!.startTime = Date().getTime();
         }
         for (fitness in _fitnesses) {
-            if (executionModel != null && executionModel!!.findFitnessByID(fitness.javaClass.getSimpleName()) == null) {
+            if (executionModel != null && executionModel!!.findFitnessByID(fitness.fitness.javaClass.getSimpleName()) == null) {
                 val newFitness = _executionModelFactory!!.createFitness()
-                newFitness.name = fitness.javaClass.getSimpleName()
+                newFitness.name = fitness.fitness.javaClass.getSimpleName()
                 executionModel!!.addFitness(newFitness)
             }
         }
@@ -158,10 +158,14 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                         val modelSolution = _executionModelFactory!!.createSolution()
                         newStep.addSolutions(modelSolution)
                         for (i in 0..solution.getNumberOfObjectives() - 1) {
-                            val fitnessName = problem.fitnessFromIndice.get(i).javaClass.getSimpleName()
+                            val fitnessName = problem.fitnessFromIndice.get(i)?.fitness?.javaClass?.getSimpleName()
+
                             val value = solution.getObjective(i);
                             val newScore = _executionModelFactory!!.createScore()
-                            newScore.fitness = executionModel!!.findFitnessByID(fitnessName)
+                            if(fitnessName!= null){
+                                newScore.fitness = executionModel!!.findFitnessByID(fitnessName)
+                            }
+                            
                             newScore.value = value
                             newScore.name = newScore.fitness!!.name
                             modelSolution.addScores(newScore)
@@ -173,6 +177,11 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                         if (metric is org.kevoree.modeling.optimization.executionmodel.FitnessMetric) {
                             val fitMet = metric as org.kevoree.modeling.optimization.executionmodel.FitnessMetric
                             fitMet.fitness = executionModel!!.findFitnessByID(loopFitnessMetric.fitnessName!!)
+
+                            System.out.println(fitMet.fitness);
+                            System.out.println(loopFitnessMetric.fitnessName!!);
+
+
                         }
                         newStep.addMetrics(metric) //add before update ! mandatory !
                         MetricUpdater.update(metric)
