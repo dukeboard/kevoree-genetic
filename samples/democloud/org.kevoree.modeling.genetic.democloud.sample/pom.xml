@@ -63,5 +63,12 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>oss-public</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+    </repositories>
+
 
 </project>

@@ -165,7 +165,7 @@ class GeneticEngine<A : KMFContainer> : AbstractOptimizationEngine<A> {
                             if(fitnessName!= null){
                                 newScore.fitness = executionModel!!.findFitnessByID(fitnessName)
                             }
-                            
+
                             newScore.value = value
                             newScore.name = newScore.fitness!!.name
                             modelSolution.addScores(newScore)
